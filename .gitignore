@@ -1,0 +1,15 @@
+node_modules
+.DS_Store
+.idea
+.eslintcache
+.clinerules
+.claude
+design/.*
+lib
+dist
+coverage
+*.log
+*.swp
+*.tgz
+*.zip
+*~
