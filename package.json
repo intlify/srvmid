@@ -40,6 +40,7 @@
     "lint:typecheck": "pnpm run --color \"/^typecheck:/\"",
     "prepare": "git config --local core.hooksPath .githooks",
     "release": "bumpp \"package.json\" \"packages/**/package.json\" \"packages/**/jsr.json\" --commit \"release: v\" --all --push --tag",
+    "test": "echo test ...",
     "typecheck:deno": "pnpm -r --if-present typecheck:deno",
     "typecheck:tsc": "tsgo --noEmit --diagnostics"
   },
