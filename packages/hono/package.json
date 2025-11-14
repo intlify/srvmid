@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@intlify/core": "^9.6.0",
-    "@intlify/utils": "^0.11.1"
+    "@intlify/utils": "^0.14.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231016.0",
