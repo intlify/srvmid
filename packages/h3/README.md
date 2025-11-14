@@ -340,7 +340,7 @@ The advantage of this way is that it is not necessary to specify the resource sc
 
 `@intlify/h3` has a concept of composable utilities & helpers.
 
-See the [API References](./docs/index.md)
+See the [API References](https://github.com/intlify/srvmid/blob/main/packages/h3/docs/index.md)
 
 ## 🙌 Contributing guidelines
 
