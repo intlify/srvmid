@@ -10,6 +10,7 @@ TAG="alpha"
 # Release packages for npm registry
 for PKG in packages/* ; do
   if [[ -d $PKG ]]; then
+    pushd $PKG
     echo "⚡ Publishing $PKG with tag $TAG"
     pnpm publish --access public --no-git-checks --tag $TAG
     popd > /dev/null
