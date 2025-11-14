@@ -16,7 +16,8 @@ import {
   // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
 } from '@intlify/core'
-import { getHeaderLocale } from '@intlify/utils/h3'
+import { getHeaderLocale } from '@intlify/utils'
+import { toWebRequest } from 'h3'
 
 export * from '@intlify/utils/h3'
 
@@ -172,7 +173,7 @@ export function defineI18nMiddleware<
  * @returns A locale string, which will be detected of **first** from `Accept-Language` header
  */
 export const detectLocaleFromAcceptLanguageHeader = (event: H3Event): Locale =>
-  getHeaderLocale(event).toString()
+  getHeaderLocale(toWebRequest(event)).toString()
 
 /**
  * The type definition of Locale Message for `@intlify/h3` package

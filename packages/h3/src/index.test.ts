@@ -12,6 +12,13 @@ import type { H3Event } from 'h3'
 
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const eventMock = {
+    web: {
+      request: {
+        headers: {
+          get: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
+        }
+      }
+    },
     node: {
       req: {
         method: 'GET',
@@ -57,6 +64,13 @@ describe('useTranslation', () => {
       }
     })
     const eventMock = {
+      web: {
+        request: {
+          headers: {
+            get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+          }
+        }
+      },
       node: {
         req: {
           method: 'GET',

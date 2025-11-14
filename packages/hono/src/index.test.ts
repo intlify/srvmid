@@ -14,7 +14,11 @@ import {
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const mockContext = {
     req: {
-      header: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
+      raw: {
+        headers: {
+          get: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
+        }
+      }
     }
   } as Context
 
@@ -54,7 +58,11 @@ describe('useTranslation', () => {
     })
     const mockContext = {
       req: {
-        header: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+        raw: {
+          headers: {
+            get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+          }
+        }
       },
       get: (_key: string) => context
     } as Context
@@ -71,7 +79,11 @@ describe('useTranslation', () => {
   test('not initialize context', () => {
     const mockContext = {
       req: {
-        header: _name => 'ja,en'
+        raw: {
+          headers: {
+            get: _name => 'ja,en'
+          }
+        }
       },
       get: (_key: string) => {}
     } as Context

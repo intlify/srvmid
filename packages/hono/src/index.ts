@@ -10,7 +10,7 @@
  */
 
 import { translate as _translate, createCoreContext, NOT_REOSLVED } from '@intlify/core'
-import { getHeaderLocale } from '@intlify/utils/hono'
+import { getHeaderLocale } from '@intlify/utils'
 
 export * from '@intlify/utils/hono'
 
@@ -172,7 +172,7 @@ export function defineI18nMiddleware<
  * ```
  */
 export const detectLocaleFromAcceptLanguageHeader = (ctx: Context): Locale =>
-  getHeaderLocale(ctx).toString()
+  getHeaderLocale(ctx.req.raw).toString()
 
 type ResolveResourceKeys<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type

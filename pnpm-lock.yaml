@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@intlify/utils':
+      specifier: ^1.0.1
+      version: 1.0.1
     '@types/node':
       specifier: ^24.10.0
       version: 24.10.1
@@ -126,8 +129,8 @@ importers:
         specifier: ^11.1.12
         version: 11.1.12
       '@intlify/utils':
-        specifier: ^0.13.0
-        version: 0.13.0
+        specifier: 'catalog:'
+        version: 1.0.1
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -163,8 +166,8 @@ importers:
         specifier: ^9.6.0
         version: 9.14.5
       '@intlify/utils':
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: 'catalog:'
+        version: 1.0.1
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20231016.0
@@ -842,13 +845,9 @@ packages:
     resolution: {integrity: sha512-9gB+E53BYuAEMhbCAxVgG38EZrk59sxBtv3jSizNL2hEWlgjBjAw1AwpLHtNaeda12pe6W20OGEa0TwuMSRbyQ==}
     engines: {node: '>= 16'}
 
-  '@intlify/utils@0.11.1':
-    resolution: {integrity: sha512-nP3EjYFcTXfbBws8FJHcYQ7JdgIvpmEd99MlfTaTnqM8GSrRQUZh2sn5awhbnjcd0xQ8vWGX/OLNDumvd7sjDg==}
-    engines: {node: '>= 18'}
-
-  '@intlify/utils@0.13.0':
-    resolution: {integrity: sha512-8i3uRdAxCGzuHwfmHcVjeLQBtysQB2aXl/ojoagDut5/gY5lvWCQ2+cnl2TiqE/fXj/D8EhWG/SLKA7qz4a3QA==}
-    engines: {node: '>= 18'}
+  '@intlify/utils@1.0.1':
+    resolution: {integrity: sha512-1ErRU0yOK0f6aZnIg4I5/O6BqWYf9r3uA5KNEkwvmCi9TCPgtOmiz1EwcAijl8UYB60Rkgcc7pErfoFGEZoyeQ==}
+    engines: {node: '>= 20'}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -4802,9 +4801,7 @@ snapshots:
 
   '@intlify/shared@9.14.5': {}
 
-  '@intlify/utils@0.11.1': {}
-
-  '@intlify/utils@0.13.0': {}
+  '@intlify/utils@1.0.1': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
