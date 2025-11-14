@@ -2,6 +2,8 @@ packages:
   - packages/*
 
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - eslint-plugin-jsdoc
 
 onlyBuiltDependencies:
   - esbuild
