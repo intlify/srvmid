@@ -1,6 +1,11 @@
 import type { KnipConfig } from 'knip'
 
 export default {
+  workspaces: {
+    'packages/h3': {
+      ignore: ['**/playground/**']
+    }
+  },
   ignore: ['**/src/**.test-d.ts'],
-  ignoreDependencies: ['lint-staged', 'tsx', '@vitest/coverage-v8']
+  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8']
 } satisfies KnipConfig

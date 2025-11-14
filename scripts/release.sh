@@ -15,15 +15,3 @@ for PKG in packages/* ; do
     popd > /dev/null
   fi
 done
-
-# Release packages for jsr registry
-for PKG in packages/* ; do
-  if [[ -d $PKG ]]; then
-    pushd $PKG
-    pnpx tsx ../../scripts/jsr.ts --package $PKG --tag $TAG
-    pnpm install --no-frozen-lockfile
-    echo "⚡ Publishing $PKG for jsr registry"
-    pnpx jsr publish -c jsr.json --allow-dirty
-    popd > /dev/null
-  fi
-done

@@ -1,0 +1,72 @@
+{
+  "name": "@intlify/h3",
+  "description": "Internationalization middleware & utilities for h3",
+  "version": "1.0.0",
+  "author": {
+    "name": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com"
+  },
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/kazupon",
+  "bugs": {
+    "url": "https://github.com/intlify/srvmid/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intlify/srvmid.git",
+    "directory": "packages/h3"
+  },
+  "keywords": [
+    "i18n",
+    "h3",
+    "internationalization",
+    "intlify",
+    "utilities",
+    "middleware"
+  ],
+  "homepage": "https://github.com/intlify/srvmid/packages/h3#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.20.0",
+  "engines": {
+    "node": ">= 20"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "unbuild",
+    "build:docs": "typedoc --excludeInternal",
+    "play:basic": "pnpx tsx ./playground/basic/index.ts",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@intlify/core": "^11.1.12",
+    "@intlify/utils": "^0.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/supertest": "^6.0.3",
+    "h3": "^1.15.4",
+    "supertest": "^7.1.4",
+    "typedoc": "^0.28.14",
+    "typedoc-plugin-markdown": "^4.9.0",
+    "typescript": "^5.9.3",
+    "unbuild": "^3.6.1"
+  }
+}

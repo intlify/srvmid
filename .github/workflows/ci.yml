@@ -124,7 +124,7 @@ jobs:
         run: pnpm build
 
       - name: Type checking
-        run: pnpm typecheck:deno && pnpm typecheck:tsc -p ./tsconfig.ci.json
+        run: pnpm typecheck
 
   e2e:
     runs-on: ${{ matrix.os }}

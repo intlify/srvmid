@@ -22,7 +22,8 @@
   },
   "type": "module",
   "scripts": {
-    "build": "echo build ...",
+    "build": "pnpm -r build",
+    "build:docs": "pnpm -r build:docs",
     "changelog": "pnpx gh-changelogen --repo=intlify/srvmid",
     "clean": "git clean -df",
     "dev": "pnpx @eslint/config-inspector --config eslint.config.ts",
@@ -34,15 +35,12 @@
     "fix:prettier": "prettier . --write --experimental-cli",
     "lint": "pnpm run --color \"/^lint:/\"",
     "lint:eslint": "eslint . --cache",
-    "lint:jsr": "pnpm -r --if-present lint:jsr",
     "lint:knip": "knip",
     "lint:prettier": "prettier . --check --experimental-cli",
-    "lint:typecheck": "pnpm run --color \"/^typecheck:/\"",
     "prepare": "git config --local core.hooksPath .githooks",
-    "release": "bumpp \"package.json\" \"packages/**/package.json\" \"packages/**/jsr.json\" --commit \"release: v\" --all --push --tag",
-    "test": "echo test ...",
-    "typecheck:deno": "pnpm -r --if-present typecheck:deno",
-    "typecheck:tsc": "tsgo --noEmit --diagnostics"
+    "release": "bumpp \"package.json\" \"packages/**/package.json\" --commit \"release: v\" --all --push --tag",
+    "test": "vitest run --typecheck",
+    "typecheck": "tsgo --noEmit --diagnostics"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.1",
@@ -70,7 +68,6 @@
     "knip": "^5.69.1",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
-    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4",
     "vitest": "^3.2.4"

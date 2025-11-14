@@ -28,11 +28,21 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
   stylistic(),
   comments({
     kazupon: {
-      ignores: ['./scripts/**', './**/test/**', './**/src/**/*.test.ts', './**/src/**/*.test-d.ts']
+      ignores: [
+        './**/playground/**',
+        './scripts/**',
+        './**/test/**',
+        './**/src/**/*.test.ts',
+        './**/src/**/*.test-d.ts',
+        './**/spec/**',
+        './**/src/**/*.spec.ts',
+        './**/src/**/*.spec-d.ts'
+      ]
     }
   }),
   jsdoc({
-    typescript: 'syntax'
+    typescript: 'syntax',
+    ignores: ['./**/playground/**', './**/spec/**']
   }),
   imports({
     typescript: true,
@@ -91,6 +101,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
     'pnpm-lock.yaml',
     'CHANGELOG.md',
     '.github/FUNDING.yml',
+    './**/playground/**',
     'design/**'
   ]) as Linter.Config
 )
