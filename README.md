@@ -15,7 +15,7 @@ If you are interested in contributing to `srvmid`, I highly recommend checking o
 
 ## 🤝 Sponsors
 
-The development of Gunshi is supported by my OSS sponsors!
+The development of `srvmid` is supported by my OSS sponsors!
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/kazupon/sponsors/sponsors.svg">
