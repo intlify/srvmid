@@ -64,9 +64,9 @@
     "@types/supertest": "^6.0.3",
     "h3": "^1.15.4",
     "supertest": "^7.1.4",
-    "typedoc": "^0.28.14",
-    "typedoc-plugin-markdown": "^4.9.0",
-    "typescript": "^5.9.3",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typescript": "catalog:",
     "unbuild": "catalog:"
   }
 }

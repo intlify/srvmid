@@ -14,6 +14,8 @@ import { getHeaderLocale } from '@intlify/utils/hono'
 
 export * from '@intlify/utils/hono'
 
+export type { CoreContext } from '@intlify/core'
+
 import type {
   CoreContext,
   CoreOptions,

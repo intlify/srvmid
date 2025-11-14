@@ -50,8 +50,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "unbuild",
+    "build:docs": "typedoc --excludeInternal",
     "play:basic": "wrangler dev ./playground/basic/index.ts",
-    "test": "vitest typecheck --run",
     "prepack": "pnpm build"
   },
   "dependencies": {
@@ -62,6 +62,9 @@
     "@cloudflare/workers-types": "^4.20231016.0",
     "@types/node": "catalog:",
     "hono": "^3.8.1",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "wrangler": "^3.6.0"
   }

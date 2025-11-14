@@ -9,6 +9,15 @@ catalogs:
     '@types/node':
       specifier: ^24.10.0
       version: 24.10.1
+    typedoc:
+      specifier: ^0.28.14
+      version: 0.28.14
+    typedoc-plugin-markdown:
+      specifier: ^4.9.0
+      version: 4.9.0
+    typescript:
+      specifier: ^5.9.3
+      version: 5.9.3
     unbuild:
       specifier: ^3.6.1
       version: 3.6.1
@@ -130,13 +139,13 @@ importers:
         specifier: ^7.1.4
         version: 7.1.4
       typedoc:
-        specifier: ^0.28.14
+        specifier: 'catalog:'
         version: 0.28.14(typescript@5.9.3)
       typedoc-plugin-markdown:
-        specifier: ^4.9.0
+        specifier: 'catalog:'
         version: 4.9.0(typedoc@0.28.14(typescript@5.9.3))
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       unbuild:
         specifier: 'catalog:'
@@ -160,6 +169,15 @@ importers:
       hono:
         specifier: ^3.8.1
         version: 3.12.12
+      typedoc:
+        specifier: 'catalog:'
+        version: 0.28.14(typescript@5.9.3)
+      typedoc-plugin-markdown:
+        specifier: 'catalog:'
+        version: 4.9.0(typedoc@0.28.14(typescript@5.9.3))
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
       unbuild:
         specifier: 'catalog:'
         version: 3.6.1(typescript@5.9.3)

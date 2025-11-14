@@ -90,14 +90,14 @@ const DEFAULT_LOCALE = 'en'
 const localeDetector = (ctx: Context): string => {
   try {
     return getQueryLocale(ctx).toString()
-  } catch () {
+  } catch {
     return DEFAULT_LOCALE
   }
 }
 
 const middleware = defineI18nMiddleware({
   // set your custom locale detector
-  locale: localeDetector,
+  locale: localeDetector
   // something options
   // ...
 })
@@ -105,12 +105,16 @@ const middleware = defineI18nMiddleware({
 
 ## 🧩 Type-safe resources
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!WARNING]
 > **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
 > We would like to get feedback from you 🙂.
 
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/hono/tree/main/playground/typesafe-schema)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can support the type-safe resources with schema using TypeScript on `defineI18nMiddleware` options.
 
@@ -167,12 +171,16 @@ If you are using [Visual Studio Code](https://code.visualstudio.com/) as an edit
 
 ## 🖌️ Resource keys completion
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!WARNING]
 > **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
 > We would like to get feedback from you 🙂.
 
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can completion resources key on translation function with `useTranslation`.
 
@@ -182,8 +190,12 @@ resource keys completion has twe ways.
 
 ### Type parameter for `useTranslation`
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/hono/tree/main/playground/local-schema)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can `useTranslation` set the type parameter to the resource schema you want to key completion of the translation function.
 
@@ -198,13 +210,17 @@ app.get('/', c => {
   const t = useTranslation<ResourceSchema>(c)
   // you can completion when you type `t('`
   return c.json(t('hello', { name: 'hono' }))
-}),
+})
 ```
 
 ### global resource schema with `declare module '@intlify/hono'`
 
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/hono/tree/main/playground/global-schema)
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can do resource key completion with the translation function using the typescript `declare module`.
 
@@ -226,8 +242,7 @@ app.get('/', c => {
   const t = useTranslation(c)
   // you can completion when you type `t('`
   return c.json(t('hello', { name: 'hono' }))
-}),
-
+})
 ```
 
 The advantage of this way is that it is not necessary to specify the resource schema in the `useTranslation` type parameter.
@@ -236,37 +251,11 @@ The advantage of this way is that it is not necessary to specify the resource sc
 
 `@intlify/hono` has a concept of composable utilities & helpers.
 
-### Utilities
-
-`@intlify/hono` composable utilities accept context (from
-`(context) => {})`) as their first argument. (Exclud `useTranslation`) return the [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
-
-### Translations
-
-- `useTranslation(context)`: use translation function
-
-### Headers
-
-- `getHeaderLocale(context, options)`: get locale from `accept-language` header
-- `getHeaderLocales(context, options)`: get some locales from `accept-language` header
-
-### Cookies
-
-- `getCookieLocale(context, options)`: get locale from cookie
-- `setCookieLocale(context, options)`: set locale to cookie
-
-### Misc
-
-- `getPathLocale(context, options)`: get locale from path
-- `getQueryLocale(context, options)`: get locale from query
-
-## Helpers
-
-- `detectLocaleFromAcceptLanguageHeader(context)`: detect locale from `accept-language` header
+See the [API References](https://github.com/intlify/srvmid/blob/main/packages/hono/docs/index.md)
 
 ## 🙌 Contributing guidelines
 
-If you are interested in contributing to `@intlify/hono`, I highly recommend checking out [the contributing guidelines](/CONTRIBUTING.md) here. You'll find all the relevant information such as [how to make a PR](/CONTRIBUTING.md#pull-request-guidelines), [how to setup development](/CONTRIBUTING.md#development-setup)) etc., there.
+If you are interested in contributing to `@intlify/hono`, I highly recommend checking out [the contributing guidelines](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md) here. You'll find all the relevant information such as [how to make a PR](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md#pull-request-guidelines), [how to setup development](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md#development-setup) etc., there.
 
 ## ©️ License
 
@@ -278,5 +267,5 @@ If you are interested in contributing to `@intlify/hono`, I highly recommend che
 [npm-version-href]: https://npmjs.com/package/@intlify/hono
 [npm-downloads-src]: https://img.shields.io/npm/dm/@intlify/hono?style=flat&colorA=18181B&colorB=FFAD33
 [npm-downloads-href]: https://npmjs.com/package/@intlify/hono
-[ci-src]: https://github.com/intlify/utils/actions/workflows/ci.yml/badge.svg
-[ci-href]: https://github.com/intlify/utils/actions/workflows/ci.yml
+[ci-src]: https://github.com/intlify/srvmid/actions/workflows/ci.yml/badge.svg
+[ci-href]: https://github.com/intlify/srvmid/actions/workflows/ci.yml
