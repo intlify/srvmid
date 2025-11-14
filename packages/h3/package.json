@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "@intlify/core": "^11.1.12",
-    "@intlify/utils": "^0.13.0"
+    "@intlify/utils": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
