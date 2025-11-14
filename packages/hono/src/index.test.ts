@@ -68,7 +68,7 @@ describe('useTranslation', () => {
     expect(t('hello', { name: 'hono' })).toEqual('こんにちは, hono')
   })
 
-  test('not initilize context', () => {
+  test('not initialize context', () => {
     const mockContext = {
       req: {
         header: _name => 'ja,en'

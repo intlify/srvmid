@@ -27,7 +27,7 @@ The **first language tag** of header, if header is not exists, or `*` (any langu
 
 ## Description
 
-parse header string, default `accept-language`. if you use `accept-language`, this function retuns the **first language tag** of `accept-language` header.
+parse header string, default `accept-language`. if you use `accept-language`, this function returns the **first language tag** of `accept-language` header.
 
 ## Example
 
