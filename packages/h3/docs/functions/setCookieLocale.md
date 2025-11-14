@@ -8,7 +8,7 @@
 
 ```ts
 function setCookieLocale(
-   event, 
+   response, 
    locale, 
    options?): void;
 ```
@@ -19,9 +19,9 @@ set locale to the response `Set-Cookie` header.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | The H3Event \| H3 event |
+| `response` | `Response` | The Response \| response |
 | `locale` | `string` \| `Locale` | The locale value |
-| `options?` | `CookieOptions` | The cookie options, `name` option is `i18n_locale` as default, and `path` option is `/` as default. |
+| `options?` | `CookieOptions` | The CookieOptions \| cookie options, `name` option is `i18n_locale` as default |
 
 ## Returns
 
@@ -29,18 +29,22 @@ set locale to the response `Set-Cookie` header.
 
 ## Example
 
-example for h3:
+example for Web API response on Bun:
 
 ```ts
-import { createApp, eventHandler } from 'h3'
-import { getCookieLocale } from '@intlify/utils/h3'
+import { setCookieLocale } from '@intlify/utils/web'
 
-app.use(eventHandler(event) => {
-  setCookieLocale(event, 'ja-JP')
-  // ...
+Bun.serve({
+  port: 8080,
+  fetch(req) {
+    const res = new Response('こんにちは、世界！')
+    setCookieLocale(res, 'ja-JP')
+    // ...
+    return res
+  },
 })
 ```
 
 ## Throws
 
-Throws the SyntaxError if `locale` is invalid.
+Throws the `SyntaxError` if `locale` is invalid.

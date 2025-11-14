@@ -12,7 +12,21 @@
 import { translate as _translate, createCoreContext, NOT_REOSLVED } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
 
-export * from '@intlify/utils/hono'
+export {
+  getCookieLocale,
+  getHeaderLanguage,
+  getHeaderLanguages,
+  getHeaderLocale,
+  getHeaderLocales,
+  getPathLocale,
+  getQueryLocale,
+  setCookieLocale,
+  tryCookieLocale,
+  tryHeaderLocale,
+  tryHeaderLocales,
+  tryPathLocale,
+  tryQueryLocale
+} from '@intlify/utils'
 
 export type { CoreContext } from '@intlify/core'
 

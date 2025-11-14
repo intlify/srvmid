@@ -7,7 +7,7 @@
 # Function: getHeaderLocales()
 
 ```ts
-function getHeaderLocales(event, __namedParameters?): Locale[];
+function getHeaderLocales(request, options?): Locale[];
 ```
 
 get locales from header
@@ -16,8 +16,8 @@ get locales from header
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | The H3Event \| H3 event |
-| `__namedParameters?` | `HeaderOptions` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `HeaderOptions` | The HeaderOptions \| header options object |
 
 ## Returns
 
@@ -31,19 +31,21 @@ wrap language tags with Intl.Locale \| locale, languages tags will be parsed fro
 
 ## Example
 
-example for h3:
+example for Web API request on Bun:
 
 ```ts
-import { createApp, eventHandler } from 'h3'
-import { getHeaderLocales } from '@intlify/utils/h3'
+import { getHeaderLocales } from '@intlify/utils/web'
 
-app.use(eventHandler(event) => {
-  const locales = getHeaderLocales(event)
-  // ...
-  return `accepted locales: ${locales.map(locale => locale.toString()).join(', ')}`
+Bun.serve({
+  port: 8080,
+  fetch(req) {
+    const locales = getHeaderLocales(req)
+    // ...
+    return new Response(`accpected locales: ${locales.map(locale => locale.toString()).join(', ')}`)
+  },
 })
 ```
 
 ## Throws
 
-Throws the RangeError if header are not a well-formed BCP 47 language tag.
+Throws the `RangeError` if header are not a well-formed BCP 47 language tag.

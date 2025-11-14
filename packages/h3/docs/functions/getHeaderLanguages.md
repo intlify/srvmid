@@ -7,7 +7,7 @@
 # Function: getHeaderLanguages()
 
 ```ts
-function getHeaderLanguages(event, __namedParameters?): string[];
+function getHeaderLanguages(request, options?): string[];
 ```
 
 get languages from header
@@ -16,8 +16,8 @@ get languages from header
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | The H3Event \| H3 event |
-| `__namedParameters?` | `HeaderOptions` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `HeaderOptions` | The HeaderOptions \| header options object. `name` option is `accept-language` as default. |
 
 ## Returns
 
@@ -31,16 +31,16 @@ parse header string, default `accept-language` header
 
 ## Example
 
-example for h3:
+example for Web API request on Deno:
 
 ```ts
-import { createApp, eventHandler } from 'h3'
-import { getHeaderLanguages } from '@intlify/utils/h3'
+import { getHeaderLanguages } from 'https://esm.sh/@intlify/utils/web'
 
-const app = createApp()
-app.use(eventHandler(event) => {
-  const langTags = getHeaderLanguages(event)
+Deno.serve({
+  port: 8080,
+}, (req) => {
+  const langTags = getHeaderLanguages(req)
   // ...
-  return `accepted languages: ${acceptLanguages.join(', ')}`
+  return new Response(`accepted languages: ${langTags.join(', ')}`
 })
 ```

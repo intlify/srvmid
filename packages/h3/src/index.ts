@@ -19,7 +19,21 @@ import {
 import { getHeaderLocale } from '@intlify/utils'
 import { toWebRequest } from 'h3'
 
-export * from '@intlify/utils/h3'
+export {
+  getCookieLocale,
+  getHeaderLanguage,
+  getHeaderLanguages,
+  getHeaderLocale,
+  getHeaderLocales,
+  getPathLocale,
+  getQueryLocale,
+  setCookieLocale,
+  tryCookieLocale,
+  tryHeaderLocale,
+  tryHeaderLocales,
+  tryPathLocale,
+  tryQueryLocale
+} from '@intlify/utils'
 
 export type { CoreContext } from '@intlify/core'
 

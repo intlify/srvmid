@@ -7,7 +7,7 @@
 # Function: getHeaderLanguages()
 
 ```ts
-function getHeaderLanguages(context, __namedParameters?): string[];
+function getHeaderLanguages(request, options?): string[];
 ```
 
 get languages from header
@@ -16,14 +16,14 @@ get languages from header
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `context` | `Context` | A Context \| Hono context |
-| `__namedParameters?` | `HeaderOptions` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `HeaderOptions` | The HeaderOptions \| header options object. `name` option is `accept-language` as default. |
 
 ## Returns
 
 `string`[]
 
-An array of language tags, if you use `accept-language` header and `*` (any language) or empty string is detected, return an empty array.
+The array of language tags, if you use `accept-language` header and `*` (any language) or empty string is detected, return an empty array.
 
 ## Description
 
@@ -31,16 +31,16 @@ parse header string, default `accept-language` header
 
 ## Example
 
-example for Hono
+example for Web API request on Deno:
 
 ```ts
-import { Hono } from 'hono'
-import { getHeaderLanguages } from '@intlify/utils/hono'
+import { getHeaderLanguages } from 'https://esm.sh/@intlify/utils/web'
 
-const app = new Hono()
-app.use('/', c => {
-  const langTags = getHeaderLanguages(c)
+Deno.serve({
+  port: 8080,
+}, (req) => {
+  const langTags = getHeaderLanguages(req)
   // ...
-  return c.text(`accepted languages: ${acceptLanguages.join(', ')}`)
+  return new Response(`accepted languages: ${langTags.join(', ')}`
 })
 ```
