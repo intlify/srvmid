@@ -37,8 +37,9 @@
     "lint:eslint": "eslint . --cache",
     "lint:knip": "knip",
     "lint:prettier": "prettier . --check --experimental-cli",
-    "prepare": "git config --local core.hooksPath .githooks",
     "play:h3": "pnpm --filter @intlify/h3 run play:basic",
+    "play:hono": "pnpm --filter @intlify/hono run play:basic",
+    "prepare": "git config --local core.hooksPath .githooks",
     "release": "bumpp \"package.json\" \"packages/**/package.json\" --commit \"release: v\" --all --push --tag",
     "test": "vitest run --typecheck",
     "typecheck": "tsgo --noEmit --diagnostics"
@@ -68,10 +69,12 @@
     "eslint-plugin-yml": "^1.19.0",
     "knip": "^5.69.1",
     "lint-staged": "^16.2.6",
+    "miniflare": "^3.20231016.0",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "vitest-environment-miniflare": "^2.14.1"
   },
   "prettier": "@kazupon/prettier-config",
   "lint-staged": {

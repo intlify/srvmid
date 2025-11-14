@@ -1,6 +1,10 @@
 packages:
   - packages/*
 
+catalog:
+  '@types/node': ^24.10.0
+  unbuild: ^3.6.1
+
 minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude:
@@ -9,4 +13,6 @@ minimumReleaseAgeExclude:
 onlyBuiltDependencies:
   - deno
   - esbuild
+  - sharp
   - unrs-resolver
+  - workerd
