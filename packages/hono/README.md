@@ -143,7 +143,7 @@ const i18nMiddleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
   // ...
 })
 
-// someting your implementation code ...
+// something your implementation code ...
 // ...
 ```
 
@@ -247,7 +247,7 @@ app.get('/', c => {
 
 The advantage of this way is that it is not necessary to specify the resource schema in the `useTranslation` type parameter.
 
-## 🛠️ Utilites & Helpers
+## 🛠️ Utilities & Helpers
 
 `@intlify/hono` has a concept of composable utilities & helpers.
 

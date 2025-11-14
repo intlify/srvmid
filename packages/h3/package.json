@@ -37,20 +37,27 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.cjs",
+  "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
     "./dist/*": "./dist/*",
     "./package.json": "./package.json"
   },
   "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
   "scripts": {
-    "build": "unbuild",
+    "build": "tsdown",
     "build:docs": "typedoc --excludeInternal",
     "play:basic": "pnpx tsx ./playground/basic/index.ts",
     "prepack": "pnpm build"
@@ -63,10 +70,11 @@
     "@types/node": "catalog:",
     "@types/supertest": "^6.0.3",
     "h3": "^1.15.4",
+    "publint": "catalog:",
     "supertest": "^7.1.4",
+    "tsdown": "catalog:",
     "typedoc": "catalog:",
     "typedoc-plugin-markdown": "catalog:",
-    "typescript": "catalog:",
-    "unbuild": "catalog:"
+    "typescript": "catalog:"
   }
 }
