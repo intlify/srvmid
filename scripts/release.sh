@@ -5,7 +5,7 @@ set -e
 # Restore all git changes
 git restore --source=HEAD --staged --worktree -- package.json pnpm-lock.yaml
 
-TAG="beta"
+TAG="alpha"
 
 # Release packages for npm registry
 for PKG in packages/* ; do
