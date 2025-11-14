@@ -38,6 +38,7 @@
     "lint:knip": "knip",
     "lint:prettier": "prettier . --check --experimental-cli",
     "prepare": "git config --local core.hooksPath .githooks",
+    "play:h3": "pnpm --filter @intlify/h3 run play:basic",
     "release": "bumpp \"package.json\" \"packages/**/package.json\" --commit \"release: v\" --all --push --tag",
     "test": "vitest run --typecheck",
     "typecheck": "tsgo --noEmit --diagnostics"
