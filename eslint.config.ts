@@ -102,6 +102,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
     'CHANGELOG.md',
     '.github/FUNDING.yml',
     './**/playground/**',
+    './packages/h3/docs/**',
     'design/**'
   ]) as Linter.Config
 )
