@@ -7,7 +7,7 @@
 # Function: getPathLocale()
 
 ```ts
-function getPathLocale(event, __namedParameters?): Locale;
+function getPathLocale(request, options?): Locale;
 ```
 
 get the locale from the path
@@ -16,8 +16,8 @@ get the locale from the path
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | the H3Event \| H3 event |
-| `__namedParameters?` | `PathOptions` | - |
+| `request` | `Request` | the Request \| request |
+| `options?` | `PathOptions` | the PathOptions \| path options object |
 
 ## Returns
 
@@ -27,4 +27,4 @@ The locale that resolved from path
 
 ## Throws
 
-Throws the RangeError if the language in the path, that is not a well-formed BCP 47 language tag.
+Throws the `RangeError` if the language in the path, that is not a well-formed BCP 47 language tag.

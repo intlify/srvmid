@@ -7,7 +7,7 @@
 # Function: getHeaderLocale()
 
 ```ts
-function getHeaderLocale(event, __namedParameters?): Locale;
+function getHeaderLocale(request, options?): Locale;
 ```
 
 get locale from header
@@ -16,8 +16,8 @@ get locale from header
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | The H3Event \| H3 event |
-| `__namedParameters?` | `HeaderOptions` & `object` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `HeaderOptions` & `object` | The HeaderOptions \| header options object. `lang` option is `en-US` as default, you must specify the language tag with the [BCP 47 syntax](https://datatracker.ietf.org/doc/html/rfc4646#section-2.1). `name` option is `accept-language` as default, and `parser` option is parseDefaultHeader as default. |
 
 ## Returns
 
@@ -31,19 +31,21 @@ wrap language tag with Intl.Locale \| locale, languages tags will be parsed from
 
 ## Example
 
-example for h3:
-
 ```ts
-import { createApp, eventHandler } from 'h3'
-import { getHeaderLocale } from '@intlify/utils/h3'
+example for Web API request on Bun:
 
-app.use(eventHandler(event) => {
-  const locale = getHeaderLocale(event)
-  // ...
-  return `accepted locale: ${locale.toString()}`
+import { getHeaderLocale } from '@intlify/utils/web'
+
+Bun.serve({
+  port: 8080,
+  fetch(req) {
+    const locale = getHeaderLocale(req)
+    // ...
+    return new Response(`accpected locale: ${locale.toString()}`)
+  },
 })
 ```
 
 ## Throws
 
-Throws the RangeError if `lang` option or header are not a well-formed BCP 47 language tag.
+Throws the `RangeError` if `lang` option or header are not a well-formed BCP 47 language tag.

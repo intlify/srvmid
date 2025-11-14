@@ -1,8 +1,8 @@
-[**@intlify/h3**](../index.md)
+[**@intlify/hono**](../index.md)
 
 ***
 
-[@intlify/h3](../index.md) / tryHeaderLocale
+[@intlify/hono](../index.md) / tryHeaderLocale
 
 # Function: tryHeaderLocale()
 

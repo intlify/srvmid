@@ -20,6 +20,11 @@ Internationalization middleware & utilities for hono
 | [getPathLocale](functions/getPathLocale.md) | get the locale from the path |
 | [getQueryLocale](functions/getQueryLocale.md) | get the locale from the query |
 | [setCookieLocale](functions/setCookieLocale.md) | set locale to the response `Set-Cookie` header. |
+| [tryCookieLocale](functions/tryCookieLocale.md) | try to get locale from cookie |
+| [tryHeaderLocale](functions/tryHeaderLocale.md) | try to get locale from header |
+| [tryHeaderLocales](functions/tryHeaderLocales.md) | try to get locales from header |
+| [tryPathLocale](functions/tryPathLocale.md) | try to get the locale from the path |
+| [tryQueryLocale](functions/tryQueryLocale.md) | try to get the locale from the query |
 | [useTranslation](functions/useTranslation.md) | use translation function in event handler |
 
 ## Interfaces

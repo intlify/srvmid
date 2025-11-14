@@ -7,7 +7,7 @@
 # Function: getCookieLocale()
 
 ```ts
-function getCookieLocale(event, __namedParameters?): Locale;
+function getCookieLocale(request, options?): Locale;
 ```
 
 get locale from cookie
@@ -16,10 +16,8 @@ get locale from cookie
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | The H3Event \| H3 event |
-| `__namedParameters?` | \{ `lang?`: `string`; `name?`: `string`; \} | - |
-| `__namedParameters.lang?` | `string` | - |
-| `__namedParameters.name?` | `string` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `CookieLocaleOptions` | The CookieLocaleOptions \| cookie locale options, `lang` option is `en-US` as default, you must specify the language tag with the [BCP 47 syntax](https://datatracker.ietf.org/doc/html/rfc4646#section-2.1). `name` option is `i18n_locale` as default. |
 
 ## Returns
 
@@ -29,14 +27,15 @@ The locale that resolved from cookie
 
 ## Example
 
-example for h3:
+example for Web API request on Deno:
 
 ```ts
-import { createApp, eventHandler } from 'h3'
-import { getCookieLocale } from '@intlify/utils/h3'
+import { getCookieLocale } from 'https://esm.sh/@intlify/utils/web'
 
-app.use(eventHandler(event) => {
-  const locale = getCookieLocale(event)
+Deno.serve({
+  port: 8080,
+}, (req) => {
+  const locale = getCookieLocale(req)
   console.log(locale) // output `Intl.Locale` instance
   // ...
 })
@@ -44,4 +43,4 @@ app.use(eventHandler(event) => {
 
 ## Throws
 
-Throws a RangeError if `lang` option or cookie name value are not a well-formed BCP 47 language tag.
+Throws a `RangeError` if `lang` option or cookie name value are not a well-formed BCP 47 language tag.

@@ -7,7 +7,7 @@
 # Function: getCookieLocale()
 
 ```ts
-function getCookieLocale(context, __namedParameters?): Locale;
+function getCookieLocale(request, options?): Locale;
 ```
 
 get locale from cookie
@@ -16,10 +16,8 @@ get locale from cookie
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `context` | `Context` | A Context \| Hono context |
-| `__namedParameters?` | \{ `lang?`: `string`; `name?`: `string`; \} | - |
-| `__namedParameters.lang?` | `string` | - |
-| `__namedParameters.name?` | `string` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `CookieLocaleOptions` | The CookieLocaleOptions \| cookie locale options, `lang` option is `en-US` as default, you must specify the language tag with the [BCP 47 syntax](https://datatracker.ietf.org/doc/html/rfc4646#section-2.1). `name` option is `i18n_locale` as default. |
 
 ## Returns
 
@@ -29,15 +27,15 @@ The locale that resolved from cookie
 
 ## Example
 
-example for Hono:
+example for Web API request on Deno:
 
 ```ts
-import { Hono } from 'hono'
-import { getCookieLocale } from '@intlify/utils/hono'
+import { getCookieLocale } from 'https://esm.sh/@intlify/utils/web'
 
-const app = new Hono()
-app.use('/', c => {
-  const locale = getCookieLocale(c)
+Deno.serve({
+  port: 8080,
+}, (req) => {
+  const locale = getCookieLocale(req)
   console.log(locale) // output `Intl.Locale` instance
   // ...
 })
@@ -45,4 +43,4 @@ app.use('/', c => {
 
 ## Throws
 
-Throws a RangeError if `lang` option or cookie name value are not a well-formed BCP 47 language tag.
+Throws a `RangeError` if `lang` option or cookie name value are not a well-formed BCP 47 language tag.

@@ -7,7 +7,7 @@
 # Function: getHeaderLocales()
 
 ```ts
-function getHeaderLocales(context, __namedParameters?): Locale[];
+function getHeaderLocales(request, options?): Locale[];
 ```
 
 get locales from header
@@ -16,14 +16,14 @@ get locales from header
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `context` | `Context` | A Context \| Hono context |
-| `__namedParameters?` | `HeaderOptions` | - |
+| `request` | `Request` | The Request \| request |
+| `options?` | `HeaderOptions` | The HeaderOptions \| header options object |
 
 ## Returns
 
 `Locale`[]
 
-Some locales that wrapped from header, if you use `accept-language` header and `*` (any language) or empty string is detected, return an empty array.
+The locales that wrapped from header, if you use `accept-language` header and `*` (any language) or empty string is detected, return an empty array.
 
 ## Description
 
@@ -31,16 +31,21 @@ wrap language tags with Intl.Locale \| locale, languages tags will be parsed fro
 
 ## Example
 
-example for Hono:
+example for Web API request on Bun:
 
 ```ts
-import { Hono } from 'hono'
-import { getHeaderLocales } from '@intlify/utils/hono'
+import { getHeaderLocales } from '@intlify/utils/web'
 
-const app = new Hono()
-app.use('/', c => {
-  const locales = getHeaderLocales(c)
-  // ...
-  return c.text(`accepted locales: ${locales.map(locale => locale.toString()).join(', ')}`)
+Bun.serve({
+  port: 8080,
+  fetch(req) {
+    const locales = getHeaderLocales(req)
+    // ...
+    return new Response(`accpected locales: ${locales.map(locale => locale.toString()).join(', ')}`)
+  },
 })
 ```
+
+## Throws
+
+Throws the `RangeError` if header are not a well-formed BCP 47 language tag.
