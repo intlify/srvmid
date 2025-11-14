@@ -4,7 +4,7 @@ node_modules
 .eslintcache
 .clinerules
 .claude
-design/.*
+.wrangler
 lib
 dist
 coverage
