@@ -1,13 +1,17 @@
 # srvmid
 
+[![CI][ci-src]][ci-href]
+
 Internationalization server middleware & utilities
 
 ## 📦 Packages
 
-| Package                          | NPM                                                           |
-| -------------------------------- | ------------------------------------------------------------- |
-| [`@intlify/h3`](packages/h3)     | [![npm version][npm-version-h3-src]][npm-version-h3-href]     |
-| [`@intlify/hono`](packages/hono) | [![npm version][npm-version-hono-src]][npm-version-hono-href] |
+This repository is monorepo for the below packages:
+
+| Package                          | Description                                                               | NPM                                                           |
+| -------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [`@intlify/h3`](packages/h3)     | Internationalization middleware & utilities for [h3](https://h3.dev/)     | [![npm version][npm-version-h3-src]][npm-version-h3-href]     |
+| [`@intlify/hono`](packages/hono) | Internationalization middleware & utilities for [Hono](https://hono.dev/) | [![npm version][npm-version-hono-src]][npm-version-hono-href] |
 
 ## 🙌 Contributing guidelines
 
@@ -33,3 +37,5 @@ The development of `srvmid` is supported by my OSS sponsors!
 [npm-version-h3-href]: https://npmjs.com/package/@intlify/h3
 [npm-version-hono-src]: https://img.shields.io/npm/v/@intlify/hono?style=flat&colorA=18181B&colorB=FFAD33
 [npm-version-hono-href]: https://npmjs.com/package/@intlify/hono
+[ci-src]: https://github.com/intlify/srvmid/actions/workflows/ci.yml/badge.svg
+[ci-href]: https://github.com/intlify/srvmid/actions/workflows/ci.yml
