@@ -1,5 +1,5 @@
-import { getQueryLocale } from '@intlify/utils/h3'
-import { createApp, eventHandler, toNodeListener } from 'h3'
+import { getQueryLocale } from '@intlify/utils'
+import { eventHandler, H3, toNodeListener } from 'h3'
 import supertest from 'supertest'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
@@ -10,10 +10,10 @@ import {
 } from '../src/index.ts'
 
 import type { CoreContext } from '@intlify/core'
-import type { App, H3Event } from 'h3'
+import type { H3Event } from 'h3'
 import type { DefineLocaleMessage } from '../src/index.ts'
 
-let app: App
+let app: H3
 let request: ReturnType<typeof supertest>
 
 afterEach(() => {
@@ -21,7 +21,7 @@ afterEach(() => {
 })
 
 test('translation', async () => {
-  const middleware = defineI18nMiddleware({
+  const { onRequest, onResponse } = defineI18nMiddleware({
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
@@ -32,7 +32,9 @@ test('translation', async () => {
       }
     }
   })
-  app = createApp({ ...middleware })
+  app = new H3()
+  app.use(onRequest)
+  app.use(onResponse)
   request = supertest(toNodeListener(app))
 
   app.use(
@@ -51,10 +53,10 @@ describe('custom locale detection', () => {
   test('basic', async () => {
     // define custom locale detector
     const localeDetector = (event: H3Event): string => {
-      return getQueryLocale(event).toString()
+      return getQueryLocale(event.req).toString()
     }
 
-    const middleware = defineI18nMiddleware({
+    const { onRequest, onResponse } = defineI18nMiddleware({
       locale: localeDetector,
       messages: {
         en: {
@@ -65,7 +67,9 @@ describe('custom locale detection', () => {
         }
       }
     })
-    app = createApp({ ...middleware })
+    app = new H3()
+    app.use(onRequest)
+    app.use(onResponse)
     request = supertest(toNodeListener(app))
 
     app.use(
@@ -94,7 +98,7 @@ describe('custom locale detection', () => {
       event: H3Event,
       i18n: CoreContext<string, DefineLocaleMessage>
     ) => {
-      const locale = getQueryLocale(event).toString()
+      const locale = getQueryLocale(event.req).toString()
       await sleep(100)
       const loader = messages[locale]
       if (loader && !i18n.messages[locale]) {
@@ -104,7 +108,7 @@ describe('custom locale detection', () => {
       return locale
     }
 
-    const middleware = defineI18nMiddleware({
+    const { onRequest, onResponse } = defineI18nMiddleware({
       locale: localeDetector,
       messages: {
         en: {
@@ -112,7 +116,9 @@ describe('custom locale detection', () => {
         }
       }
     })
-    app = createApp({ ...middleware })
+    app = new H3()
+    app.use(onRequest)
+    app.use(onResponse)
     request = supertest(toNodeListener(app))
 
     app.use(
@@ -150,7 +156,7 @@ describe('custom locale detection', () => {
       event: H3Event,
       i18n: CoreContext<string, DefineLocaleMessage>
     ) => {
-      const locale = getQueryLocale(event).toString()
+      const locale = getQueryLocale(event.req).toString()
       await sleep(100)
       const loader = messages[locale]
       if (loader && !i18n.messages[locale]) {
@@ -160,7 +166,7 @@ describe('custom locale detection', () => {
       return locale
     }
 
-    const middleware = defineI18nMiddleware({
+    const { onRequest, onResponse } = defineI18nMiddleware({
       locale: localeDetector,
       messages: {
         en: {
@@ -168,7 +174,9 @@ describe('custom locale detection', () => {
         }
       }
     })
-    app = createApp({ ...middleware })
+    app = new H3()
+    app.use(onRequest)
+    app.use(onResponse)
     request = supertest(toNodeListener(app))
 
     app.use(

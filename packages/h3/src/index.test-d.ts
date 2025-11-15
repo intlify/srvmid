@@ -33,11 +33,6 @@ test('defineI18nMiddleware', () => {
 
 test('translation function', async () => {
   const eventMock = {
-    node: {
-      req: {
-        method: 'GET'
-      }
-    },
     context: {}
   } as H3Event
 
@@ -51,7 +46,7 @@ test('translation function', async () => {
   }
 
   const t = await useTranslation<typeof _resources>(eventMock)
-  expectTypeOf<string>(t('test')).toMatchTypeOf<string>()
-  expectTypeOf<string>(t('foo')).toMatchTypeOf<string>()
-  expectTypeOf<string>(t('bar.buz.baz')).toMatchTypeOf<string>()
+  expectTypeOf<string>(t('test')).toExtend<string>()
+  expectTypeOf<string>(t('foo')).toExtend<string>()
+  expectTypeOf<string>(t('bar.buz.baz')).toExtend<string>()
 })

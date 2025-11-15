@@ -1,5 +1,5 @@
+import { eventHandler, H3, toNodeListener } from 'h3'
 import { createServer } from 'node:http'
-import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
@@ -17,7 +17,7 @@ declare module '../../src/index.ts' {
   // please use `declare module '@intlifly/h3'`, if you want to use global resource schema in your project.
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
-const middleware = defineI18nMiddleware({
+const { onRequest, onResponse } = defineI18nMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,
   messages: {
     en,
@@ -25,10 +25,11 @@ const middleware = defineI18nMiddleware({
   }
 })
 
-const app = createApp({ ...middleware })
+const app = new H3()
+app.use(onRequest)
+app.use(onResponse)
 
-const router = createRouter()
-router.get(
+app.get(
   '/',
   eventHandler(async event => {
     const t = await useTranslation(event)
@@ -36,5 +37,4 @@ router.get(
   })
 )
 
-app.use(router)
 createServer(toNodeListener(app)).listen(3000)

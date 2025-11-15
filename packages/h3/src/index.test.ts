@@ -1,5 +1,6 @@
 import { createCoreContext } from '@intlify/core'
 import { describe, expect, test } from 'vitest'
+import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
 
 import {
   defineI18nMiddleware,
@@ -12,19 +13,9 @@ import type { H3Event } from 'h3'
 
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const eventMock = {
-    web: {
-      request: {
-        headers: {
-          get: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
-        }
-      }
-    },
-    node: {
-      req: {
-        method: 'GET',
-        headers: {
-          'accept-language': 'en-US,en;q=0.9,ja;q=0.8'
-        }
+    req: {
+      headers: {
+        get: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
       }
     }
   } as H3Event
@@ -44,7 +35,7 @@ test('defineI18nMiddleware', () => {
     }
   })
   expect(middleware.onRequest).toBeDefined()
-  expect(middleware.onAfterResponse).toBeDefined()
+  expect(middleware.onResponse).toBeDefined()
 })
 
 describe('useTranslation', () => {
@@ -64,31 +55,20 @@ describe('useTranslation', () => {
       }
     })
     const eventMock = {
-      web: {
-        request: {
-          headers: {
-            get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
-          }
-        }
-      },
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': 'ja,en'
-          }
+      req: {
+        headers: {
+          get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
         }
       },
       context: {
-        i18n: context as CoreContext
+        [SYMBOL_I18N]: context as CoreContext
       }
     } as H3Event
     const locale = context.locale as unknown
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
     // @ts-ignore ignore type error because this is test
     context.locale = bindLocaleDetector
-    // @ts-ignore ignore type error because this is test
-    eventMock.context._i18nLocale = bindLocaleDetector
+    eventMock.context[SYMBOL_I18N_LOCALE] = bindLocaleDetector
 
     // test `useTranslation`
     const t = await useTranslation(eventMock)
@@ -97,12 +77,9 @@ describe('useTranslation', () => {
 
   test('not initialize context', async () => {
     const eventMock = {
-      node: {
-        req: {
-          method: 'GET',
-          headers: {
-            'accept-language': 'ja,en'
-          }
+      req: {
+        headers: {
+          get: _name => (_name === 'accept-language' ? 'ja,en' : '')
         }
       },
       context: {}
