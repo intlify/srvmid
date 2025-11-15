@@ -27,7 +27,7 @@ function useTranslation<Schema, Event>(event): Promise<TranslationFunction<Schem
 }>>>>;
 ```
 
-use translation function in event handler
+Use translation function in event handler
 
 ## Type Parameters
 
@@ -40,7 +40,7 @@ use translation function in event handler
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `Event` | A h3 event |
+| `event` | `Event` | A H3 event |
 
 ## Returns
 
@@ -63,23 +63,16 @@ use translation function in event handler
   `test`: `string`;
 \}\>\>\>\>
 
-Return a translation function, which can be translated with i18n resource messages
+Return a translation function, which can be translated with internationalization resource messages
 
 ## Example
 
 ```js
-import { createRouter } from 'h3'
-
-const router = createRouter()
-router.get(
+app.get(
   '/',
   eventHandler(async (event) => {
     const t = await useTranslation(event)
-    return t('hello', { name: 'h3' })
+    return t('hello', { name: 'H3' })
   }),
 )
 ```
-
-## Description
-
-This function must be initialized with defineI18nMiddleware. See about the [defineI18nMiddleware](defineI18nMiddleware.md)

@@ -68,10 +68,9 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@types/supertest": "^6.0.3",
     "h3": "^2.0.1-rc.5",
     "publint": "catalog:",
-    "supertest": "^7.1.4",
+    "srvx": "^0.9.6",
     "tsdown": "catalog:",
     "typedoc": "catalog:",
     "typedoc-plugin-markdown": "catalog:",

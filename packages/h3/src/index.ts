@@ -17,7 +17,7 @@ import {
   parseTranslateArgs
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
-import { onRequest, onResponse } from 'h3'
+import { definePlugin, onRequest, onResponse } from 'h3'
 import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
 
 export {
@@ -83,6 +83,52 @@ export interface I18nMiddleware {
 }
 
 /**
+ * Internationalization plugin options for H3
+ *
+ * @typeParam Schema - Locale message schema type, default is {@linkcode DefaultLocaleMessageSchema}
+ * @typeParam Locales - Locale type, default is `string`
+ * @typeParam Message - Message type, default is `string`
+ */
+export type I18nPluginOptions<
+  Schema = DefaultLocaleMessageSchema,
+  Locales = string,
+  Message = string
+> = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
+
+/**
+ * Internationalization plugin for H3
+ *
+ * @example
+ * ```ts
+ * import { H3 } from 'h3'
+ * import { plugin as i18n } from '@intlify/h3'
+ *
+ * const app = new H3({
+ *   plugins: [
+ *     i18n({
+ *       messages: {
+ *         en: {
+ *           hello: 'Hello {name}!',
+ *         },
+ *         ja: {
+ *           hello: 'こんにちは、{name}！',
+ *         },
+ *       },
+ *       // your locale detection logic here
+ *       locale: (event) => {
+ *         // ...
+ *       },
+ *     })
+ *   ]
+ * })
+ */
+export const plugin = definePlugin<I18nPluginOptions>((h3, options) => {
+  const { onRequest, onResponse } = defineI18nMiddleware(options)
+  h3.use(onRequest)
+  h3.use(onResponse)
+})
+
+/**
  * Define internationalization middleware for H3
  *
  * Define the middleware to be specified the bellows:
@@ -111,13 +157,15 @@ export interface I18nMiddleware {
  * })
  *
  * const app = new H3()
- *   .use(i18nMiddleware.onRequest) // register `onRequest` hook before yourr application middlewares
- *   .use(i18nMiddleware.onResponse) // register `onResponse` hook before yourr application middlewares
+ *   .use(i18nMiddleware.onRequest) // register `onRequest` hook before your application middlewares
+ *   .use(i18nMiddleware.onResponse) // register `onResponse` hook before your application middlewares
  * ```
  *
  * @param options - An `i18n` options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
  *
  * @returns A defined internationalization middleware, which is included `onRequest` and `onResponse` options of `H3`
+ *
+ * @internal
  */
 export function defineI18nMiddleware<
   Schema = DefaultLocaleMessageSchema,
@@ -135,7 +183,7 @@ export function defineI18nMiddleware<
   let staticLocaleDetector: LocaleDetector | null = null
   if (typeof orgLocale === 'string') {
     console.warn(
-      `defineI18nMiddleware 'locale' option is static ${orgLocale} locale! you should specify dynamic locale detector function.`
+      `'locale' option is static ${orgLocale} locale! you should specify dynamic locale detector function.`
     )
     staticLocaleDetector = () => orgLocale
   }

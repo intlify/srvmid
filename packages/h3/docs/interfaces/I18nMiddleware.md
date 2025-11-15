@@ -6,15 +6,11 @@
 
 # Interface: I18nMiddleware
 
-i18n middleware for h3
-
-## Description
-
-The middleware for h3 [`createApp`]([https://www.jsdocs.io/package/h3#createApp](https://www.jsdocs.io/package/h3#createApp))
+Internationalization middleware for H3
 
 ## Properties
 
 | Property | Type | Description |
 | ------ | ------ | ------ |
-| <a id="onafterresponse"></a> `onAfterResponse` | (`event`, `response?`) => `void` \| `Promise`\<`void`\> | `onAfterResponse` option of `createApp` |
-| <a id="onrequest"></a> `onRequest` | (`event`) => `void` \| `Promise`\<`void`\> | `onRequest` option of `createApp` |
+| <a id="onrequest"></a> `onRequest` | `Middleware` | Request middleware which is defined with [`onRequest`](https://h3.dev/utils/more#onrequesthook) |
+| <a id="onresponse"></a> `onResponse` | `Middleware` | Response middleware which is defined with [`onResponse`](https://h3.dev/utils/more#onresponsehook) |

@@ -2,13 +2,13 @@ packages:
   - packages/*
 
 catalog:
+  '@intlify/utils': ^1.0.1
   '@types/node': ^24.10.0
+  publint: ^0.3.15
+  tsdown: ^0.16.4
   typedoc: ^0.28.14
   typedoc-plugin-markdown: ^4.9.0
   typescript: ^5.9.3
-  tsdown: ^0.16.4
-  publint: ^0.3.15
-  '@intlify/utils': ^1.0.1
 
 minimumReleaseAge: 1440
 
@@ -18,6 +18,7 @@ minimumReleaseAgeExclude:
 onlyBuiltDependencies:
   - deno
   - esbuild
+  - msw
   - sharp
   - unrs-resolver
   - workerd
