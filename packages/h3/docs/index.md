@@ -6,12 +6,17 @@
 
 Internationalization middleware & utilities for h3
 
+## Variables
+
+| Variable | Description |
+| ------ | ------ |
+| [plugin](variables/plugin.md) | Internationalization plugin for H3 |
+
 ## Functions
 
 | Function | Description |
 | ------ | ------ |
-| [defineI18nMiddleware](functions/defineI18nMiddleware.md) | define i18n middleware for h3 |
-| [detectLocaleFromAcceptLanguageHeader](functions/detectLocaleFromAcceptLanguageHeader.md) | locale detection with `Accept-Language` header |
+| [detectLocaleFromAcceptLanguageHeader](functions/detectLocaleFromAcceptLanguageHeader.md) | Locale detection with `Accept-Language` header |
 | [getCookieLocale](functions/getCookieLocale.md) | get locale from cookie |
 | [getHeaderLanguage](functions/getHeaderLanguage.md) | get language from header |
 | [getHeaderLanguages](functions/getHeaderLanguages.md) | get languages from header |
@@ -25,17 +30,18 @@ Internationalization middleware & utilities for h3
 | [tryHeaderLocales](functions/tryHeaderLocales.md) | try to get locales from header |
 | [tryPathLocale](functions/tryPathLocale.md) | try to get the locale from the path |
 | [tryQueryLocale](functions/tryQueryLocale.md) | try to get the locale from the query |
-| [useTranslation](functions/useTranslation.md) | use translation function in event handler |
+| [useTranslation](functions/useTranslation.md) | Use translation function in event handler |
 
 ## Interfaces
 
 | Interface | Description |
 | ------ | ------ |
 | [DefineLocaleMessage](interfaces/DefineLocaleMessage.md) | The type definition of Locale Message for `@intlify/h3` package |
-| [I18nMiddleware](interfaces/I18nMiddleware.md) | i18n middleware for h3 |
+| [I18nMiddleware](interfaces/I18nMiddleware.md) | Internationalization middleware for H3 |
 
 ## Type Aliases
 
 | Type Alias | Description |
 | ------ | ------ |
 | [CoreContext](type-aliases/CoreContext.md) | - |
+| [I18nPluginOptions](type-aliases/I18nPluginOptions.md) | Internationalization plugin options for H3 |

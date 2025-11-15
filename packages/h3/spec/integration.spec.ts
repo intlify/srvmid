@@ -1,41 +1,41 @@
-import { getQueryLocale } from '@intlify/utils/h3'
-import { createApp, eventHandler, toNodeListener } from 'h3'
-import supertest from 'supertest'
+import { eventHandler, H3 } from 'h3'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import {
-  defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
+  getQueryLocale,
+  plugin as i18n,
   useTranslation
 } from '../src/index.ts'
 
 import type { CoreContext } from '@intlify/core'
-import type { App, H3Event } from 'h3'
+import type { H3Event } from 'h3'
 import type { DefineLocaleMessage } from '../src/index.ts'
 
-let app: App
-let request: ReturnType<typeof supertest>
+let app: H3
 
 afterEach(() => {
   vi.resetAllMocks()
 })
 
 test('translation', async () => {
-  const middleware = defineI18nMiddleware({
-    locale: detectLocaleFromAcceptLanguageHeader,
-    messages: {
-      en: {
-        hello: 'hello, {name}'
-      },
-      ja: {
-        hello: 'こんにちは, {name}'
-      }
-    }
+  app = new H3({
+    plugins: [
+      i18n({
+        locale: detectLocaleFromAcceptLanguageHeader,
+        messages: {
+          en: {
+            hello: 'hello, {name}'
+          },
+          ja: {
+            hello: 'こんにちは, {name}'
+          }
+        }
+      })
+    ]
   })
-  app = createApp({ ...middleware })
-  request = supertest(toNodeListener(app))
 
-  app.use(
+  app.get(
     '/',
     eventHandler(async event => {
       const t = await useTranslation(event)
@@ -43,32 +43,39 @@ test('translation', async () => {
     })
   )
 
-  const res = await request.get('/').set('accept-language', 'en;q=0.9,ja;q=0.8')
-  expect(res.body).toEqual({ message: 'hello, h3' })
+  const response = await app.fetch(
+    new Request('http://localhost/', {
+      headers: { 'accept-language': 'en;q=0.9,ja;q=0.8' }
+    })
+  )
+  const body = await response.json()
+  expect(body).toEqual({ message: 'hello, h3' })
 })
 
 describe('custom locale detection', () => {
   test('basic', async () => {
     // define custom locale detector
     const localeDetector = (event: H3Event): string => {
-      return getQueryLocale(event).toString()
+      return getQueryLocale(event.req).toString()
     }
 
-    const middleware = defineI18nMiddleware({
-      locale: localeDetector,
-      messages: {
-        en: {
-          hello: 'hello, {name}'
-        },
-        ja: {
-          hello: 'こんにちは, {name}'
-        }
-      }
+    app = new H3({
+      plugins: [
+        i18n({
+          locale: localeDetector,
+          messages: {
+            en: {
+              hello: 'hello, {name}'
+            },
+            ja: {
+              hello: 'こんにちは, {name}'
+            }
+          }
+        })
+      ]
     })
-    app = createApp({ ...middleware })
-    request = supertest(toNodeListener(app))
 
-    app.use(
+    app.get(
       '/',
       eventHandler(async event => {
         const t = await useTranslation(event)
@@ -76,8 +83,9 @@ describe('custom locale detection', () => {
       })
     )
 
-    const res = await request.get('/?locale=ja')
-    expect(res.body).toEqual({ message: 'こんにちは, h3' })
+    const response = await app.fetch(new Request('http://localhost/?locale=ja'))
+    const body = await response.json()
+    expect(body).toEqual({ message: 'こんにちは, h3' })
   })
 
   test('async', async () => {
@@ -94,7 +102,7 @@ describe('custom locale detection', () => {
       event: H3Event,
       i18n: CoreContext<string, DefineLocaleMessage>
     ) => {
-      const locale = getQueryLocale(event).toString()
+      const locale = getQueryLocale(event.req).toString()
       await sleep(100)
       const loader = messages[locale]
       if (loader && !i18n.messages[locale]) {
@@ -104,18 +112,23 @@ describe('custom locale detection', () => {
       return locale
     }
 
-    const middleware = defineI18nMiddleware({
-      locale: localeDetector,
-      messages: {
-        en: {
-          hello: 'hello, {name}'
-        }
-      }
+    app = new H3({
+      plugins: [
+        i18n({
+          locale: localeDetector,
+          messages: {
+            en: {
+              hello: 'hello, {name}'
+            },
+            ja: {
+              hello: 'こんにちは, {name}'
+            }
+          }
+        })
+      ]
     })
-    app = createApp({ ...middleware })
-    request = supertest(toNodeListener(app))
 
-    app.use(
+    app.get(
       '/',
       eventHandler(async event => {
         const t = await useTranslation(event)
@@ -132,8 +145,9 @@ describe('custom locale detection', () => {
       }
     }
     for (const locale of ['en', 'ja']) {
-      const res = await request.get(`/?locale=${locale}`)
-      expect(res.body).toEqual(translated[locale])
+      const response = await app.fetch(new Request(`http://localhost/?locale=${locale}`))
+      const body = await response.json()
+      expect(body).toEqual(translated[locale])
     }
   })
   test('async parallel', async () => {
@@ -150,7 +164,7 @@ describe('custom locale detection', () => {
       event: H3Event,
       i18n: CoreContext<string, DefineLocaleMessage>
     ) => {
-      const locale = getQueryLocale(event).toString()
+      const locale = getQueryLocale(event.req).toString()
       await sleep(100)
       const loader = messages[locale]
       if (loader && !i18n.messages[locale]) {
@@ -160,16 +174,18 @@ describe('custom locale detection', () => {
       return locale
     }
 
-    const middleware = defineI18nMiddleware({
-      locale: localeDetector,
-      messages: {
-        en: {
-          hello: 'hello, {name}'
-        }
-      }
+    app = new H3({
+      plugins: [
+        i18n({
+          locale: localeDetector,
+          messages: {
+            en: {
+              hello: 'hello, {name}'
+            }
+          }
+        })
+      ]
     })
-    app = createApp({ ...middleware })
-    request = supertest(toNodeListener(app))
 
     app.use(
       '/',
@@ -192,7 +208,10 @@ describe('custom locale detection', () => {
     // request in parallel
     const resList = await Promise.all(
       ['en', 'ja'].map(locale =>
-        request.get(`/?locale=${locale}`).then((res: { body: string }) => res.body)
+        app
+          .fetch(new Request(`http://localhost/?locale=${locale}`))
+          // @ts-ignore
+          .then(res => res.json())
       )
     )
     expect(resList).toEqual([translated['en'], translated['ja']])

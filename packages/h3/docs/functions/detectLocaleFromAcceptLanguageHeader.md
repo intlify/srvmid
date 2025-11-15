@@ -10,13 +10,13 @@
 function detectLocaleFromAcceptLanguageHeader(event): string;
 ```
 
-locale detection with `Accept-Language` header
+Locale detection with `Accept-Language` header
 
 ## Parameters
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `event` | `H3Event` | A h3 event |
+| `event` | `H3Event` | A H3 event |
 
 ## Returns
 
@@ -27,10 +27,10 @@ A locale string, which will be detected of **first** from `Accept-Language` head
 ## Example
 
 ```js
-import { createApp } from 'h3'
-import { defineI18nMiddleware, detectLocaleWithAcceeptLanguageHeader } from '@intlify/h3'
+import { H3 } from 'h3'
+import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
 
-const middleware = defineI18nMiddleware({
+const i18nMiddleware = defineI18nMiddleware({
   messages: {
     en: {
       hello: 'Hello {name}!',
@@ -39,8 +39,10 @@ const middleware = defineI18nMiddleware({
       hello: 'こんにちは、{name}！',
     },
   },
-  locale: detectLocaleWithAcceeptLanguageHeader
+  locale: detectLocaleFromAcceptLanguageHeader
 })
 
-const app = createApp({ ...middleware })
+const app = new H3()
+  .use(i18nMiddleware.onRequest)
+  .use(i18nMiddleware.onResponse)
 ```

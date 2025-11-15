@@ -24,10 +24,6 @@ declare module '@intlify/h3' {
 }
 ```
 
-## Description
-
-The typealias is used to strictly define the type of the Locale message.
-
 ## Extends
 
 - `LocaleMessage`\<`string`\>.`ResourceSchema`

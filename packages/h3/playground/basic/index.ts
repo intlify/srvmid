@@ -1,33 +1,35 @@
-import { createServer } from 'node:http'
-import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
+import { H3 } from 'h3'
+import { serve } from 'srvx'
 import {
-  defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
+  plugin as i18n,
   useTranslation
-} from '../../src/index.ts' // `@inlify/h3`
+} from '../../src/index.ts' // `@intlify/h3`
 
-const middleware = defineI18nMiddleware({
-  locale: detectLocaleFromAcceptLanguageHeader,
-  messages: {
-    en: {
-      hello: 'hello, {name}'
-    },
-    ja: {
-      hello: 'こんにちは, {name}'
-    }
-  }
+const app = new H3({
+  plugins: [
+    i18n({
+      locale: detectLocaleFromAcceptLanguageHeader,
+      messages: {
+        en: {
+          hello: 'hello, {name}'
+        },
+        ja: {
+          hello: 'こんにちは, {name}'
+        }
+      }
+    })
+  ]
 })
 
-const app = createApp({ ...middleware })
+app.get('/', async event => {
+  const t = await useTranslation(event)
+  return t('hello', { name: 'h3' })
+})
 
-const router = createRouter()
-router.get(
-  '/',
-  eventHandler(async event => {
-    const t = await useTranslation(event)
-    return t('hello', { name: 'h3' })
-  })
-)
+const server = serve({
+  port: 3000,
+  fetch: app.fetch
+})
 
-app.use(router)
-createServer(toNodeListener(app)).listen(3000)
+await server.ready()

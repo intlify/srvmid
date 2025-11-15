@@ -3,7 +3,8 @@ import type { KnipConfig } from 'knip'
 export default {
   workspaces: {
     'packages/h3': {
-      ignore: ['**/playground/**']
+      ignore: ['**/playground/**'],
+      ignoreDependencies: ['srvx']
     },
     'packages/hono': {
       ignore: ['**/playground/**']

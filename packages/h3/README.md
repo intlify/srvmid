@@ -4,25 +4,25 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![CI][ci-src]][ci-href]
 
-Internationalization middleware & utilities for h3 (and therefore also for Nitro, which is using h3)
+Internationalization middleware & utilities for h3 (and therefore also for Nitro, which is using H3)
 
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 > [!NOTE]
-> You’re viewing the `srvmid` repository, which is developing for h3 v2. If you want to check h3 v1, please see the [`@intlify/h3` repository](https://github.com/intlify/h3/tree/main)
+> You’re viewing the `srvmid` repository, which is developing for H3 v2. If you want to check H3 v1, please see the [`@intlify/h3` repository](https://github.com/intlify/h3/tree/main)
 
 <!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ## 🌟 Features
+
+✅️️ &nbsp;**Internationalization utils:** support [internationalization
+utils](https://github.com/intlify/srvmid/blob/main/packages/h3/docs/index.md) via [@intlify/utils](https://github.com/intlify/utils)
 
 ✅️ &nbsp;**Translation:** Simple API like
 [vue-i18n](https://vue-i18n.intlify.dev/)
 
 ✅ &nbsp;**Custom locale detector:** You can implement your own locale detector
 on server-side
-
-✅️️ &nbsp;**Useful utilities:** support internationalization composables
-utilities via [@intlify/utils](https://github.com/intlify/utils)
 
 ## 💿 Installation
 
@@ -40,48 +40,74 @@ pnpm add @intlify/h3
 bun add @intlify/h3
 ```
 
-## 🚀 Usage (h3)
+## 🚀 Usage
+
+### Detect locale with utils
+
+Detect locale from `accept-language` header:
+
+```ts
+import { H3 } from 'h3'
+import { getHeaderLocale } from '@intlify/h3'
+
+const app = new H3()
+
+app.get('/', event => {
+  // detect locale from HTTP header which has `Accept-Language: ja,en-US;q=0.7,en;q=0.3`
+  const locale = getHeaderLocale(event.req)
+  return locale.toString()
+})
+```
+
+Detect locale from URL query:
+
+```ts
+import { H3 } from 'h3'
+import { getQueryLocale } from '@intlify/h3'
+
+const app = new H3()
+
+app.get('/', event => {
+  // detect locale from query which has 'http://localhost:3000?locale=en'
+  const locale = getQueryLocale(event.req)
+  return locale.toString()
+})
+```
+
+### Translation
 
 ```ts
 import { createServer } from 'node:http'
-import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
-import {
-  defineI18nMiddleware,
-  detectLocaleFromAcceptLanguageHeader,
-  useTranslation
-} from '@intlify/h3'
+import { H3, toNodeListener } from 'h3'
+import { plugin as i18n, detectLocaleFromAcceptLanguageHeader, useTranslation } from '@intlify/h3'
 
-// define middleware with vue-i18n like options
-const middleware = defineI18nMiddleware({
-  // detect locale with `accept-language` header
-  locale: detectLocaleFromAcceptLanguageHeader,
-  // resource messages
-  messages: {
-    en: {
-      hello: 'Hello {name}!'
-    },
-    ja: {
-      hello: 'こんにちは、{name}！'
-    }
-  }
-  // something options
-  // ...
+// install plugin with `H3` constructor
+const app = new H3({
+  plugins: [
+    i18n({
+      // detect locale with `accept-language` header
+      locale: detectLocaleFromAcceptLanguageHeader,
+      // resource messages
+      messages: {
+        en: {
+          hello: 'Hello {name}!'
+        },
+        ja: {
+          hello: 'こんにちは、{name}！'
+        }
+      }
+      // something options
+      // ...
+    })
+  ]
 })
 
-// install middleware with `createApp` option
-const app = createApp({ ...middleware })
+app.get('/', async event => {
+  // use `useTranslation` in event handler
+  const t = await useTranslation(event)
+  return t('hello', { name: 'h3' })
+})
 
-const router = createRouter()
-router.get(
-  '/',
-  eventHandler(async event => {
-    // use `useTranslation` in event handler
-    const t = await useTranslation(event)
-    return t('hello', { name: 'h3' })
-  })
-)
-
-app.use(router)
 createServer(toNodeListener(app)).listen(3000)
 ```
 
@@ -120,19 +146,25 @@ You can detect locale with your custom logic from current `H3Event`.
 example for detecting locale from url query:
 
 ```ts
-import { defineI18nMiddleware, getQueryLocale } from '@intlify/h3'
+import { H3 } from 'h3'
+import { plugin as i18n, getQueryLocale } from '@intlify/h3'
+
 import type { H3Event } from 'h3'
 
 // define custom locale detector
 const localeDetector = (event: H3Event): string => {
-  return getQueryLocale(event).toString()
+  return getQueryLocale(event.req).toString()
 }
 
-const middleware = defineI18nMiddleware({
-  // set your custom locale detector
-  locale: localeDetector
-  // something options
-  // ...
+const app = new H3({
+  plugins: [
+    i18n({
+      // set your custom locale detector
+      locale: localeDetector
+      // something options
+      // ...
+    })
+  ]
 })
 ```
 
@@ -146,11 +178,13 @@ You can make that function asynchronous. This is useful when loading resources a
 <!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ```ts
-import { defineI18nMiddleware } from '@intlify/h3'
-import type { DefineLocaleMessage } from '@intlify/h3'
-import type { H3Event } from 'h3'
+import { H3 } from 'h3'
+import { plugin as i18n, getCookieLocale } from '@intlify/h3'
 
-const loader = (path: string) => import(path).then(m => m.default || m)
+import type { H3Event } from 'h3'
+import type { DefineLocaleMessage, CoreContext } from '@intlify/h3'
+
+const loader = (path: string) => import(path).then(m => m.default)
 const messages: Record<string, () => ReturnType<typeof loader>> = {
   en: () => loader('./locales/en.json'),
   ja: () => loader('./locales/ja.json')
@@ -162,7 +196,7 @@ const localeDetector = async (
   i18n: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
   // detect locale
-  const locale = getCookieLocale(event).toString()
+  const locale = getCookieLocale(event.req).toString()
 
   // resource lazy loading
   const loader = messages[locale]
@@ -174,11 +208,15 @@ const localeDetector = async (
   return locale
 }
 
-const middleware = defineI18nMiddleware({
-  // set your custom locale detector
-  locale: localeDetector
-  // something options
-  // ...
+const app = new H3({
+  plugins: [
+    i18n({
+      // set your custom locale detector
+      locale: localeDetector
+      // something options
+      // ...
+    })
+  ]
 })
 ```
 
@@ -191,7 +229,7 @@ const middleware = defineI18nMiddleware({
 > We would like to get feedback from you 🙂.
 
 > [!NOTE]
-> The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/typesafe-schema)
+> The example code is [here](https://github.com/intlify/h3/tree/main/playground/typesafe-schema)
 
 <!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
@@ -209,13 +247,13 @@ your application code:
 
 ```ts
 import { defineI18nMiddleware } from '@intlify/h3'
-import { createApp } from 'h3'
+import { H3 } from 'h3'
 import en from './locales/en.ts'
 
 // define resource schema, as 'en' is master resource schema
 type ResourceSchema = typeof en
 
-const middleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
+const i18nMiddleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
   messages: {
     en: { hello: 'Hello, {name}' }
   }
@@ -223,7 +261,10 @@ const middleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
   // ...
 })
 
-const app = createApp({ ...middleware })
+const app = new H3()
+app.use(i18nMiddleware.onRequest)
+app.use(i18nMiddleware.onResponse)
+
 // something your implementation code ...
 // ...
 ```
@@ -267,7 +308,7 @@ You can completion resources key on translation function with `useTranslation`.
 
 ![Key Completion](assets/key-completion.gif)
 
-resource keys completion has twe ways.
+resource keys completion has two ways.
 
 ### Type parameter for `useTranslation`
 
@@ -283,19 +324,15 @@ You can `useTranslation` set the type parameter to the resource schema you want 
 the part of example:
 
 ```ts
-const router = createRouter()
-router.get(
-  '/',
-  eventHandler(async event => {
-    type ResourceSchema = {
-      hello: string
-    }
-    // set resource schema as type parameter
-    const t = await useTranslation<ResourceSchema>(event)
-    // you can completion when you type `t('`
-    return t('hello', { name: 'h3' })
-  })
-)
+app.get('/', async event => {
+  type ResourceSchema = {
+    hello: string
+  }
+  // set resource schema as type parameter
+  const t = await useTranslation<ResourceSchema>(event)
+  // you can completion when you type `t('`
+  return t('hello', { name: 'h3' })
+})
 ```
 
 ### global resource schema with `declare module '@intlify/h3'`
@@ -323,15 +360,11 @@ declare module '@intlify/h3' {
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
 
-const router = createRouter()
-router.get(
-  '/',
-  eventHandler(async event => {
-    const t = await useTranslation(event)
-    // you can completion when you type `t('`
-    return t('hello', { name: 'h3' })
-  })
-)
+app.get('/', async event => {
+  const t = await useTranslation(event)
+  // you can completion when you type `t('`
+  return t('hello', { name: 'h3' })
+})
 ```
 
 The advantage of this way is that it is not necessary to specify the resource schema in the `useTranslation` type parameter.

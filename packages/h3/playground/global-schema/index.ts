@@ -1,10 +1,10 @@
-import { createServer } from 'node:http'
-import { createApp, createRouter, eventHandler, toNodeListener } from 'h3'
+import { H3 } from 'h3'
+import { serve } from 'srvx'
 import {
-  defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
+  plugin as i18n,
   useTranslation
-} from '../../src/index.ts' // in your project, `import { ... } from '@inlify/h3'`
+} from '../../src/index.ts' // in your project, `import { ... } from '@intlify/h3'`
 
 import en from './locales/en.ts'
 import ja from './locales/ja.ts'
@@ -17,24 +17,27 @@ declare module '../../src/index.ts' {
   // please use `declare module '@intlifly/h3'`, if you want to use global resource schema in your project.
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
-const middleware = defineI18nMiddleware({
-  locale: detectLocaleFromAcceptLanguageHeader,
-  messages: {
-    en,
-    ja
-  }
+
+const app = new H3({
+  plugins: [
+    i18n({
+      locale: detectLocaleFromAcceptLanguageHeader,
+      messages: {
+        en,
+        ja
+      }
+    })
+  ]
 })
 
-const app = createApp({ ...middleware })
+app.get('/', async event => {
+  const t = await useTranslation(event)
+  return t('hello', { name: 'h3' })
+})
 
-const router = createRouter()
-router.get(
-  '/',
-  eventHandler(async event => {
-    const t = await useTranslation(event)
-    return t('hello', { name: 'h3' })
-  })
-)
+const server = serve({
+  port: 3000,
+  fetch: app.fetch
+})
 
-app.use(router)
-createServer(toNodeListener(app)).listen(3000)
+await server.ready()

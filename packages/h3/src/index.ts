@@ -17,7 +17,8 @@ import {
   parseTranslateArgs
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
-import { toWebRequest } from 'h3'
+import { definePlugin, onRequest, onResponse } from 'h3'
+import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
 
 export {
   getCookieLocale,
@@ -52,12 +53,12 @@ import type {
   SchemaParams,
   TranslateOptions
 } from '@intlify/core'
-import type { AppOptions, H3Event } from 'h3'
+import type { H3Event, Middleware } from 'h3'
 
 declare module 'h3' {
   interface H3EventContext {
-    i18n?: CoreContext
-    _i18nLocale?: LocaleDetector
+    [SYMBOL_I18N]?: CoreContext
+    [SYMBOL_I18N_LOCALE]?: LocaleDetector
   }
 }
 
@@ -68,31 +69,79 @@ type DefaultLocaleMessageSchema<
 > = IsEmptyObject<Schema> extends true ? LocaleMessage<string> : Schema
 
 /**
- * i18n middleware for h3
- *
- * @description
- * The middleware for h3 [`createApp`]({@link https://www.jsdocs.io/package/h3#createApp})
+ * Internationalization middleware for H3
  */
 export interface I18nMiddleware {
   /**
-   * `onRequest` option of `createApp`
+   * Request middleware which is defined with [`onRequest`](https://h3.dev/utils/more#onrequesthook)
    */
-  onRequest: NonNullable<AppOptions['onRequest']>
+  onRequest: Middleware
   /**
-   * `onAfterResponse` option of `createApp`
+   * Response middleware which is defined with [`onResponse`](https://h3.dev/utils/more#onresponsehook)
    */
-  onAfterResponse: NonNullable<AppOptions['onAfterResponse']>
+  onResponse: Middleware
 }
 
 /**
- * define i18n middleware for h3
+ * Internationalization plugin options for H3
+ *
+ * @typeParam Schema - Locale message schema type, default is {@linkcode DefaultLocaleMessageSchema}
+ * @typeParam Locales - Locale type, default is `string`
+ * @typeParam Message - Message type, default is `string`
+ */
+export type I18nPluginOptions<
+  Schema = DefaultLocaleMessageSchema,
+  Locales = string,
+  Message = string
+> = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
+
+/**
+ * Internationalization plugin for H3
+ *
+ * @example
+ * ```ts
+ * import { H3 } from 'h3'
+ * import { plugin as i18n } from '@intlify/h3'
+ *
+ * const app = new H3({
+ *   plugins: [
+ *     i18n({
+ *       messages: {
+ *         en: {
+ *           hello: 'Hello {name}!',
+ *         },
+ *         ja: {
+ *           hello: 'こんにちは、{name}！',
+ *         },
+ *       },
+ *       // your locale detection logic here
+ *       locale: (event) => {
+ *         // ...
+ *       },
+ *     })
+ *   ]
+ * })
+ */
+export const plugin = definePlugin<I18nPluginOptions>((h3, options) => {
+  const { onRequest, onResponse } = defineI18nMiddleware(options)
+  h3.use(onRequest)
+  h3.use(onResponse)
+})
+
+/**
+ * Define internationalization middleware for H3
+ *
+ * Define the middleware to be specified the bellows:
+ *
+ * - [`H3.use`]({@link https://h3.dev/guide/api/h3#h3use})
  *
  * @example
  *
  * ```js
+ * import { H3 } from 'h3'
  * import { defineI18nMiddleware } from '@intlify/h3'
  *
- * const middleware = defineI18nMiddleware({
+ * const i18nMiddleware = defineI18nMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -107,15 +156,16 @@ export interface I18nMiddleware {
  *   },
  * })
  *
- * const app = createApp({ ...middleware })
+ * const app = new H3()
+ *   .use(i18nMiddleware.onRequest) // register `onRequest` hook before your application middlewares
+ *   .use(i18nMiddleware.onResponse) // register `onResponse` hook before your application middlewares
  * ```
  *
- * @description
- * Define the middleware to be specified for h3 [`createApp`]({@link https://www.jsdocs.io/package/h3#createApp})
+ * @param options - An `i18n` options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
  *
- * @param options - An i18n options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
+ * @returns A defined internationalization middleware, which is included `onRequest` and `onResponse` options of `H3`
  *
- * @returns A defined i18n middleware, which is included `onRequest` and `onAfterResponse` options of `createApp`
+ * @internal
  */
 export function defineI18nMiddleware<
   Schema = DefaultLocaleMessageSchema,
@@ -133,7 +183,7 @@ export function defineI18nMiddleware<
   let staticLocaleDetector: LocaleDetector | null = null
   if (typeof orgLocale === 'string') {
     console.warn(
-      `defineI18nMiddleware 'locale' option is static ${orgLocale} locale! you should specify dynamic locale detector function.`
+      `'locale' option is static ${orgLocale} locale! you should specify dynamic locale detector function.`
     )
     staticLocaleDetector = () => orgLocale
   }
@@ -147,27 +197,28 @@ export function defineI18nMiddleware<
   }
 
   return {
-    onRequest(event: H3Event) {
-      event.context._i18nLocale = getLocaleDetector(event, i18n as CoreContext)
-      i18n.locale = event.context._i18nLocale
-      event.context.i18n = i18n as CoreContext
-    },
-    onAfterResponse(event: H3Event) {
+    onRequest: onRequest(event => {
+      event.context[SYMBOL_I18N_LOCALE] = getLocaleDetector(event, i18n as CoreContext)
+      i18n.locale = event.context[SYMBOL_I18N_LOCALE]
+      event.context[SYMBOL_I18N] = i18n as CoreContext
+    }),
+    onResponse: onResponse((_, event) => {
       i18n.locale = orgLocale
-      delete event.context.i18n
-    }
+      delete event.context[SYMBOL_I18N]
+      delete event.context[SYMBOL_I18N_LOCALE]
+    })
   }
 }
 
 /**
- * locale detection with `Accept-Language` header
+ * Locale detection with `Accept-Language` header
  *
  * @example
  * ```js
- * import { createApp } from 'h3'
- * import { defineI18nMiddleware, detectLocaleWithAcceeptLanguageHeader } from '@intlify/h3'
+ * import { H3 } from 'h3'
+ * import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
  *
- * const middleware = defineI18nMiddleware({
+ * const i18nMiddleware = defineI18nMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -176,18 +227,20 @@ export function defineI18nMiddleware<
  *       hello: 'こんにちは、{name}！',
  *     },
  *   },
- *   locale: detectLocaleWithAcceeptLanguageHeader
+ *   locale: detectLocaleFromAcceptLanguageHeader
  * })
  *
- * const app = createApp({ ...middleware })
+ * const app = new H3()
+ *   .use(i18nMiddleware.onRequest)
+ *   .use(i18nMiddleware.onResponse)
  * ```
  *
- * @param event - A h3 event
+ * @param event - A H3 event
  *
  * @returns A locale string, which will be detected of **first** from `Accept-Language` header
  */
 export const detectLocaleFromAcceptLanguageHeader = (event: H3Event): Locale =>
-  getHeaderLocale(toWebRequest(event)).toString()
+  getHeaderLocale(event.req).toString()
 
 /**
  * The type definition of Locale Message for `@intlify/h3` package
@@ -206,9 +259,6 @@ export const detectLocaleFromAcceptLanguageHeader = (event: H3Event): Locale =>
  *   }
  * }
  * ```
- *
- * @description
- * The typealias is used to strictly define the type of the Locale message.
  */
 export interface DefineLocaleMessage extends LocaleMessage<string> {}
 
@@ -331,52 +381,45 @@ interface TranslationFunction<
 }
 
 /**
- * use translation function in event handler
+ * Use translation function in event handler
  *
  * @example
  * ```js
- * import { createRouter } from 'h3'
- *
- * const router = createRouter()
- * router.get(
+ * app.get(
  *   '/',
  *   eventHandler(async (event) => {
  *     const t = await useTranslation(event)
- *     return t('hello', { name: 'h3' })
+ *     return t('hello', { name: 'H3' })
  *   }),
  * )
  * ```
  *
- * @description
- * This function must be initialized with defineI18nMiddleware. See about the {@link defineI18nMiddleware}
+ * @param event - A H3 event
  *
- * @param event - A h3 event
- *
- * @returns Return a translation function, which can be translated with i18n resource messages
+ * @returns Return a translation function, which can be translated with internationalization resource messages
  */
 export async function useTranslation<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
-  if (event.context.i18n == null) {
+  if (event.context[SYMBOL_I18N] == null) {
     throw new Error(
-      'middleware not initialized, please setup `onRequest` and `onAfterResponse` options of `createApp` with the middleware obtained with `defineI18nMiddleware`'
+      'middleware not initialized, please setup `onRequest` and `onResponse` options of `H3` with the middleware obtained with `defineI18nMiddleware`'
     )
   }
 
-  const localeDetector = event.context._i18nLocale as unknown as LocaleDetector
-  let locale: string
-  if (localeDetector.constructor.name === 'AsyncFunction') {
-    locale = await localeDetector(event)
-    event.context.i18n.locale = locale
-  }
+  const localeDetector = event.context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
+  // Always await detector call - works for both sync and async detectors
+  // (awaiting a non-promise value returns it immediately)
+  const locale = await localeDetector(event)
+  event.context[SYMBOL_I18N].locale = locale
 
   function translate(key: string, ...args: unknown[]): string {
     const [_, options] = parseTranslateArgs(key, ...args)
     const [arg2] = args
 
     const result = Reflect.apply(_translate, null, [
-      event.context.i18n!,
+      event.context[SYMBOL_I18N]!,
       key,
       arg2,
       {
