@@ -4,7 +4,7 @@ import {
   detectLocaleFromAcceptLanguageHeader,
   plugin as i18n,
   useTranslation
-} from '../../src/index.ts' // `@inlify/h3`
+} from '../../src/index.ts' // `@intlify/h3`
 
 const app = new H3({
   plugins: [

@@ -1,4 +1,4 @@
-// in your project, `import { ... } from '@inlify/h3'`
+// in your project, `import { ... } from '@intlify/h3'`
 import { H3 } from 'h3'
 import { defineI18nMiddleware } from '../../src/index.ts'
 

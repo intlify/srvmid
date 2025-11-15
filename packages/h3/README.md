@@ -63,7 +63,7 @@ Detect locale from URL query:
 
 ```ts
 import { H3 } from 'h3'
-import { getQueryLocale } from '@inlify/h3'
+import { getQueryLocale } from '@inltify/h3'
 
 const app = new H3()
 

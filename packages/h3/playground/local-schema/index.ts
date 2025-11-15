@@ -4,7 +4,7 @@ import {
   detectLocaleFromAcceptLanguageHeader,
   plugin as i18n,
   useTranslation
-} from '../../src/index.ts' // in your project, `import { ... } from '@inlify/h3'`
+} from '../../src/index.ts' // in your project, `import { ... } from '@intlify/h3'`
 
 import en from './locales/en.ts'
 import ja from './locales/ja.ts'
