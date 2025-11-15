@@ -408,11 +408,10 @@ export async function useTranslation<
   }
 
   const localeDetector = event.context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
-  let locale: string
-  if (localeDetector.constructor.name === 'AsyncFunction') {
-    locale = await localeDetector(event)
-    event.context[SYMBOL_I18N].locale = locale
-  }
+  // Always await detector call - works for both sync and async detectors
+  // (awaiting a non-promise value returns it immediately)
+  const locale = await localeDetector(event)
+  event.context[SYMBOL_I18N].locale = locale
 
   function translate(key: string, ...args: unknown[]): string {
     const [_, options] = parseTranslateArgs(key, ...args)
