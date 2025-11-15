@@ -63,7 +63,7 @@ Detect locale from URL query:
 
 ```ts
 import { H3 } from 'h3'
-import { getQueryLocale } from '@inltify/h3'
+import { getQueryLocale } from '@intlify/h3'
 
 const app = new H3()
 
@@ -229,7 +229,7 @@ const app = new H3({
 > We would like to get feedback from you 🙂.
 
 > [!NOTE]
-> The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/typesafe-schema)
+> The example code is [here](https://github.com/intlify/h3/tree/main/playground/typesafe-schema)
 
 <!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
@@ -308,7 +308,7 @@ You can completion resources key on translation function with `useTranslation`.
 
 ![Key Completion](assets/key-completion.gif)
 
-resource keys completion has twe ways.
+resource keys completion has two ways.
 
 ### Type parameter for `useTranslation`
 

@@ -205,6 +205,7 @@ export function defineI18nMiddleware<
     onResponse: onResponse((_, event) => {
       i18n.locale = orgLocale
       delete event.context[SYMBOL_I18N]
+      delete event.context[SYMBOL_I18N_LOCALE]
     })
   }
 }
@@ -215,7 +216,7 @@ export function defineI18nMiddleware<
  * @example
  * ```js
  * import { H3 } from 'h3'
- * import { defineI18nMiddleware, detectLocaleWithAcceeptLanguageHeader } from '@intlify/h3'
+ * import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
  *
  * const i18nMiddleware = defineI18nMiddleware({
  *   messages: {
@@ -226,7 +227,7 @@ export function defineI18nMiddleware<
  *       hello: 'こんにちは、{name}！',
  *     },
  *   },
- *   locale: detectLocaleWithAcceeptLanguageHeader
+ *   locale: detectLocaleFromAcceptLanguageHeader
  * })
  *
  * const app = new H3()
