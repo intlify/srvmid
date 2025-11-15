@@ -4,7 +4,7 @@
 
 # @intlify/hono
 
-Internationalization middleware & utilities for hono
+Internationalization middleware & utilities for Hono
 
 ## Functions
 

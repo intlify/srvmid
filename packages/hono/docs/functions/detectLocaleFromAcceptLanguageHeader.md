@@ -28,7 +28,7 @@ A locale string, which will be detected of **first** from `Accept-Language` head
 
 ```js
 import { Hono } from 'hono'
-import { defineI18nMiddleware, detectLocaleWithAcceeptLanguageHeader } from '@intlify/hono'
+import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/hono'
 
 const i18nMiddleware = defineI18nMiddleware({
   messages: {
@@ -39,7 +39,7 @@ const i18nMiddleware = defineI18nMiddleware({
       hello: 'こんにちは、{name}！',
     },
   },
-  locale: detectLocaleWithAcceeptLanguageHeader
+  locale: detectLocaleFromAcceptLanguageHeader
 })
 
 const app = new Hono()

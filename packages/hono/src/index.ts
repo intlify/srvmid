@@ -1,5 +1,5 @@
 /**
- * Internationalization middleware & utilities for hono
+ * Internationalization middleware & utilities for Hono
  *
  * @module
  */
@@ -167,7 +167,7 @@ export function defineI18nMiddleware<
  * @example
  * ```js
  * import { Hono } from 'hono'
- * import { defineI18nMiddleware, detectLocaleWithAcceeptLanguageHeader } from '@intlify/hono'
+ * import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/hono'
  *
  * const i18nMiddleware = defineI18nMiddleware({
  *   messages: {
@@ -178,7 +178,7 @@ export function defineI18nMiddleware<
  *       hello: 'こんにちは、{name}！',
  *     },
  *   },
- *   locale: detectLocaleWithAcceeptLanguageHeader
+ *   locale: detectLocaleFromAcceptLanguageHeader
  * })
  *
  * const app = new Hono()
