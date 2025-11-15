@@ -62,7 +62,7 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
-    "@intlify/core": "^9.6.0",
+    "@intlify/core": "^11.0.0",
     "@intlify/utils": "catalog:"
   },
   "devDependencies": {
