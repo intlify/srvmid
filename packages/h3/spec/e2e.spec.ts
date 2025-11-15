@@ -32,7 +32,7 @@ describe('e2e', () => {
   test('util-header', async () => {
     const target = path.resolve(import.meta.dirname, '../playground/util-header/index.ts')
     serve = spawn('pnpx', ['tsx', target])
-    await delay(1000) // wait for server to start
+    await delay(2000) // wait for server to start
     const stdout = await runCommand(
       `curl -H 'Accept-Language: ja,en-US;q=0.7,en;q=0.3' http://localhost:3000`
     )
@@ -42,7 +42,7 @@ describe('e2e', () => {
   test('util-query', async () => {
     const target = path.resolve(import.meta.dirname, '../playground/util-query/index.ts')
     serve = spawn('pnpx', ['tsx', target])
-    await delay(1000) // wait for server to start
+    await delay(2000) // wait for server to start
     const stdout = await runCommand(`curl http://localhost:3000?locale=en`)
     expect(stdout).toContain(`en`)
   })
@@ -50,7 +50,7 @@ describe('e2e', () => {
   test('translation', async () => {
     const target = path.resolve(import.meta.dirname, '../playground/basic/index.ts')
     serve = spawn('pnpx', ['tsx', target])
-    await delay(1000) // wait for server to start
+    await delay(2000) // wait for server to start
     const stdout = await runCommand(
       `curl -H 'Accept-Language: ja,en-US;q=0.7,en;q=0.3' http://localhost:3000`
     )
