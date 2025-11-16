@@ -9,7 +9,12 @@
  * @license MIT
  */
 
-import { translate as _translate, createCoreContext, NOT_REOSLVED } from '@intlify/core'
+import {
+  translate as _translate,
+  createCoreContext,
+  NOT_REOSLVED, // @ts-expect-error -- NOTE(kazupon): internal function
+  parseTranslateArgs
+} from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
 
 export {
@@ -50,6 +55,7 @@ import type { Context, MiddlewareHandler, Next } from 'hono'
 declare module 'hono' {
   interface ContextVariableMap {
     i18n?: CoreContext
+    i18nLocaleDetector?: LocaleDetector
   }
 }
 
@@ -108,7 +114,7 @@ export interface DefineLocaleMessage extends LocaleMessage<string> {}
  *     },
  *   },
  *   // your locale detection logic here
- *   locale: (event) => {
+ *   locale: (c) => {
  *     // ...
  *   },
  * })
@@ -138,23 +144,25 @@ export function defineI18nMiddleware<
     staticLocaleDetector = () => orgLocale
   }
 
-  const getLocaleDetector = (ctx: Context): LocaleDetector => {
-    // deno-fmt-ignore
+  const getLocaleDetector = (ctx: Context, i18n: CoreContext): LocaleDetector => {
     return typeof orgLocale === 'function'
-      ? orgLocale.bind(null, ctx)
+      ? orgLocale.bind(null, ctx, i18n)
       : staticLocaleDetector == null
         ? detectLocaleFromAcceptLanguageHeader.bind(null, ctx)
-        : staticLocaleDetector.bind(null, ctx)
+        : staticLocaleDetector.bind(null, ctx, i18n)
   }
 
   return async (ctx: Context, next: Next) => {
-    i18n.locale = getLocaleDetector(ctx)
+    const detector = getLocaleDetector(ctx, i18n as CoreContext)
+    i18n.locale = detector
+    ctx.set('i18nLocaleDetector', detector)
     ctx.set('i18n', i18n as CoreContext)
 
     await next()
 
     i18n.locale = orgLocale
     ctx.set('i18n', undefined)
+    ctx.set('i18nLocaleDetector', undefined)
   }
 }
 
@@ -307,9 +315,6 @@ interface TranslationFunction<
 /**
  * use translation function in event handler
  *
- * @description
- * This function must be initialized with defineI18nMiddleware. See about the {@link defineI18nMiddleware}
- *
  * @param ctx - A Hono context
  * @returns Return a translation function, which can be translated with i18n resource messages
  *
@@ -333,16 +338,16 @@ interface TranslationFunction<
  * app.use('*', i18nMiddleware)
  * // setup other middlewares ...
  *
- * app.get('/', (ctx) => {
- *   const t = useTranslation(ctx)
+ * app.get('/', async (ctx) => {
+ *   const t = await useTranslation(ctx)
  *   return ctx.text(t('hello', { name: 'hono' }))
  * })
  * ```
  */
-export function useTranslation<
+export async function useTranslation<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   HonoContext extends Context = Context
->(ctx: HonoContext): TranslationFunction<Schema, DefineLocaleMessage> {
+>(ctx: HonoContext): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const i18n = ctx.get('i18n')
   if (i18n == null) {
     throw new Error(
@@ -350,8 +355,31 @@ export function useTranslation<
     )
   }
 
+  const localeDetector = ctx.get('i18nLocaleDetector')
+  if (localeDetector == null) {
+    throw new Error(
+      'locale detector not found in context, please make sure that the i18n middleware is correctly set up'
+    )
+  }
+  // Always await detector call - works for both sync and async detectors
+  // (awaiting a non-promise value returns it immediately)
+  const locale = await localeDetector(ctx)
+  i18n.locale = locale
+
   function translate(key: string, ...args: unknown[]): string {
-    const result = Reflect.apply(_translate, null, [i18n!, key, ...args])
+    const [_, options] = parseTranslateArgs(key, ...args)
+    const [arg2] = args
+
+    const result = Reflect.apply(_translate, null, [
+      i18n,
+      key,
+      arg2,
+      {
+        // bind to request locale
+        locale,
+        ...options
+      }
+    ])
     return NOT_REOSLVED === result ? key : (result as string)
   }
 

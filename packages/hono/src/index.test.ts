@@ -40,7 +40,7 @@ test('defineI18nMiddleware', () => {
 })
 
 describe('useTranslation', () => {
-  test('basic', () => {
+  test('basic', async () => {
     /**
      * setup `defineI18nMiddleware` emulates
      */
@@ -63,19 +63,22 @@ describe('useTranslation', () => {
           }
         }
       },
-      get: (_key: string) => context
+      get: (key: string) => {
+        if (key === 'i18n') {
+          return context
+        } else if (key === 'i18nLocaleDetector') {
+          const locale = context.locale as unknown
+          return (locale as LocaleDetector).bind(null, mockContext)
+        }
+      }
     } as Context
-    const locale = context.locale as unknown
-    const bindLocaleDetector = (locale as LocaleDetector).bind(null, mockContext)
-    // @ts-ignore ignore type error because this is test
-    context.locale = bindLocaleDetector
 
     // test `useTranslation`
-    const t = useTranslation(mockContext)
+    const t = await useTranslation(mockContext)
     expect(t('hello', { name: 'hono' })).toEqual('こんにちは, hono')
   })
 
-  test('not initialize context', () => {
+  test('not initialize context', async () => {
     const mockContext = {
       req: {
         raw: {
@@ -87,6 +90,6 @@ describe('useTranslation', () => {
       get: (_key: string) => {}
     } as Context
 
-    expect(() => useTranslation(mockContext)).toThrowError()
+    await expect(() => useTranslation(mockContext)).rejects.toThrowError()
   })
 })
