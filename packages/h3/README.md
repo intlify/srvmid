@@ -76,6 +76,8 @@ app.get('/', event => {
 
 ### Translation
 
+If you want to use translation, you need to install plugin. As a result, you can use `useTranslation` within the handler:
+
 ```ts
 import { createServer } from 'node:http'
 import { H3, toNodeListener } from 'h3'
@@ -84,6 +86,7 @@ import { plugin as i18n, detectLocaleFromAcceptLanguageHeader, useTranslation } 
 // install plugin with `H3` constructor
 const app = new H3({
   plugins: [
+    // configure plugin options
     i18n({
       // detect locale with `accept-language` header
       locale: detectLocaleFromAcceptLanguageHeader,
@@ -294,10 +297,6 @@ If you are using [Visual Studio Code](https://code.visualstudio.com/) as an edit
 ## 🖌️ Resource keys completion
 
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
-> [!WARNING]
-> **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
-> We would like to get feedback from you 🙂.
 
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
