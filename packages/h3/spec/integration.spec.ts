@@ -53,7 +53,7 @@ test('translation', async () => {
 })
 
 describe('custom locale detection', () => {
-  test('basic', async () => {
+  test('basic detection', async () => {
     // define custom locale detector
     const localeDetector = (event: H3Event): string => {
       return getQueryLocale(event.req).toString()
@@ -88,7 +88,7 @@ describe('custom locale detection', () => {
     expect(body).toEqual({ message: 'こんにちは, h3' })
   })
 
-  test('async', async () => {
+  test('detect with async loading', async () => {
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
     const loader = (path: string) => import(path).then(m => m.default || m)
@@ -150,7 +150,8 @@ describe('custom locale detection', () => {
       expect(body).toEqual(translated[locale])
     }
   })
-  test('async parallel', async () => {
+
+  test('detect with async parallel loading', async () => {
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
     const loader = (path: string) => import(path).then(m => m.default || m)

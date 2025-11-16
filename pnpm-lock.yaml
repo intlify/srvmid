@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@intlify/core':
+      specifier: ^11.1.12
+      version: 11.1.12
     '@intlify/utils':
       specifier: ^1.0.1
       version: 1.0.1
@@ -123,7 +126,7 @@ importers:
   packages/h3:
     dependencies:
       '@intlify/core':
-        specifier: ^11.1.12
+        specifier: 'catalog:'
         version: 11.1.12
       '@intlify/utils':
         specifier: 'catalog:'
@@ -157,7 +160,7 @@ importers:
   packages/hono:
     dependencies:
       '@intlify/core':
-        specifier: ^11.0.0
+        specifier: 'catalog:'
         version: 11.1.12
       '@intlify/utils':
         specifier: 'catalog:'

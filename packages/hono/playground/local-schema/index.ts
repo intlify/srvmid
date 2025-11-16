@@ -18,11 +18,11 @@ const i18n = defineI18nMiddleware({
 
 const app: Hono = new Hono()
 app.use('*', i18n)
-app.get('/', c => {
+app.get('/', async c => {
   type ResourceSchema = {
     hello: string
   }
-  const t = useTranslation<ResourceSchema>(c)
+  const t = await useTranslation<ResourceSchema>(c)
   return c.text(t('hello', { name: 'hono' }))
 })
 

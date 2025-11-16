@@ -101,9 +101,9 @@ const app = new Hono()
 // install middleware with `app.use`
 app.use('*', i18nMiddleware)
 
-app.get('/', c => {
+app.get('/', async c => {
   // use `useTranslation` in handler
-  const t = useTranslation(c)
+  const t = await useTranslation(c)
   return c.text(t('hello', { name: 'hono' }) + `\n`)
 })
 
@@ -129,6 +129,54 @@ const localeDetector = (ctx: Context): string => {
   } catch {
     return DEFAULT_LOCALE
   }
+}
+
+const middleware = defineI18nMiddleware({
+  // set your custom locale detector
+  locale: localeDetector
+  // something options
+  // ...
+})
+```
+
+You can make that function asynchronous. This is useful when loading resources along with locale detection.
+
+<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
+> [!NOTE]
+> The case which a synchronous function returns a promise is not supported. you need to use `async function`.
+
+<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
+
+```ts
+import { Hono } from 'hono'
+import { defineI18nMiddleware, getCookieLocale } from '@intlify/hono'
+
+import type { Context } from 'hono'
+import type { DefineLocaleMessage, CoreContext } from '@intlify/h3'
+
+const loader = (path: string) => import(path).then(m => m.default)
+const messages: Record<string, () => ReturnType<typeof loader>> = {
+  en: () => loader('./locales/en.json'),
+  ja: () => loader('./locales/ja.json')
+}
+
+// define custom locale detector and lazy loading
+const localeDetector = async (
+  ctx: Context,
+  i18n: CoreContext<string, DefineLocaleMessage>
+): Promise<string> => {
+  // detect locale
+  const locale = getCookieLocale(ctx.req.raw).toString()
+
+  // resource lazy loading
+  const loader = messages[locale]
+  if (loader && !i18n.messages[locale]) {
+    const message = await loader()
+    i18n.messages[locale] = message
+  }
+
+  return locale
 }
 
 const middleware = defineI18nMiddleware({
@@ -234,12 +282,12 @@ You can `useTranslation` set the type parameter to the resource schema you want 
 the part of example:
 
 ```ts
-app.get('/', c => {
+app.get('/', async c => {
   type ResourceSchema = {
     hello: string
   }
   // set resource schema as type parameter
-  const t = useTranslation<ResourceSchema>(c)
+  const t = await useTranslation<ResourceSchema>(c)
   // you can completion when you type `t('`
   return c.json(t('hello', { name: 'hono' }))
 })
@@ -270,8 +318,8 @@ declare module '@intlify/hono' {
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
 
-app.get('/', c => {
-  const t = useTranslation(c)
+app.get('/', async c => {
+  const t = await useTranslation(c)
   // you can completion when you type `t('`
   return c.json(t('hello', { name: 'hono' }))
 })

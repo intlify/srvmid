@@ -20,8 +20,8 @@ const i18n = defineI18nMiddleware({
 
 const app: Hono = new Hono()
 app.use('*', i18n)
-app.get('/', c => {
-  const t = useTranslation(c)
+app.get('/', async c => {
+  const t = await useTranslation(c)
   return c.text(t('hello', { name: 'hono' }) + `\n`)
 })
 

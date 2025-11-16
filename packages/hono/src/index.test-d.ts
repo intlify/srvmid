@@ -16,5 +16,5 @@ test('defineI18nMiddleware', () => {
     }
   })
 
-  expectTypeOf<MiddlewareHandler>(middleware).toMatchTypeOf<MiddlewareHandler>()
+  expectTypeOf<MiddlewareHandler>(middleware).toExtend<MiddlewareHandler>()
 })
