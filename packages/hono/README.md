@@ -139,7 +139,7 @@ const middleware = defineI18nMiddleware({
 })
 ```
 
-ou can make that function asynchronous. This is useful when loading resources along with locale detection.
+You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
