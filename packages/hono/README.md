@@ -8,14 +8,14 @@ Internationalization middleware & utilities for [Hono](https://hono.dev/)
 
 ## 🌟 Features
 
+✅️️ &nbsp;**Internationalization utilities:** support [internationalization
+utils](https://github.com/intlify/srvmid/blob/main/packages/hono/docs/index.md) via [@intlify/utils](https://github.com/intlify/utils)
+
 ✅️ &nbsp;**Translation:** Simple API like
 [vue-i18n](https://vue-i18n.intlify.dev/)
 
 ✅ &nbsp;**Custom locale detector:** You can implement your own locale detector
 on server-side
-
-✅️️ &nbsp;**Useful utilities:** support internationalization composables
-utilities via [@intlify/utils](https://github.com/intlify/utils)
 
 ## 💿 Installation
 
@@ -34,6 +34,42 @@ bun add @intlify/hono
 ```
 
 ## 🚀 Usage
+
+### Detect locale with utils
+
+Detect locale from `accept-language` header:
+
+```ts
+import { Hono } from 'hono'
+import { getHeaderLocale } from '@intlify/h3'
+
+const app = new Hono()
+
+app.get('/', c => {
+  // detect locale from HTTP header which has `Accept-Language: ja,en-US;q=0.7,en;q=0.3`
+  const locale = getHeaderLocale(c.req.raw)
+  return c.text(locale.toString())
+})
+```
+
+Detect locale from URL query:
+
+```ts
+import { Hono } from 'hono'
+import { getQueryLocale } from '@intlify/h3'
+
+const app = new Hono()
+
+app.get('/', c => {
+  // detect locale from query which has 'http://localhost:3000?locale=en'
+  const locale = getQueryLocale(c.req.raw)
+  return c.text(locale.toString())
+})
+```
+
+### Translation
+
+If you want to use translation, you need to install middleware. As a result, you can use `useTranslation` within the handler:
 
 ```ts
 import { Hono } from 'hono'
@@ -89,7 +125,7 @@ const DEFAULT_LOCALE = 'en'
 // define custom locale detector
 const localeDetector = (ctx: Context): string => {
   try {
-    return getQueryLocale(ctx).toString()
+    return getQueryLocale(ctx.req.raw).toString()
   } catch {
     return DEFAULT_LOCALE
   }
@@ -172,10 +208,6 @@ If you are using [Visual Studio Code](https://code.visualstudio.com/) as an edit
 ## 🖌️ Resource keys completion
 
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
-> [!WARNING]
-> **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
-> We would like to get feedback from you 🙂.
 
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
