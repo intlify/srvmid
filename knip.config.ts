@@ -11,10 +11,5 @@ export default {
     }
   },
   ignore: ['**/src/**.test-d.ts'],
-  ignoreDependencies: [
-    'lint-staged',
-    '@vitest/coverage-v8',
-    'vitest-environment-miniflare',
-    'miniflare'
-  ]
+  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8']
 } satisfies KnipConfig

@@ -1,10 +1,9 @@
-// @vitest-environment miniflare
-import { getQueryLocale } from '@intlify/utils/hono'
 import { Hono } from 'hono'
 import { afterEach, expect, test, vi } from 'vitest'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
+  getQueryLocale,
   useTranslation
 } from '../src/index.ts'
 
@@ -49,7 +48,7 @@ test('custom locale detection', async () => {
   // define custom locale detector
   const localeDetector = (ctx: Context): string => {
     try {
-      return getQueryLocale(ctx).toString()
+      return getQueryLocale(ctx.req.raw).toString()
     } catch {
       return defaultLocale
     }

@@ -1,6 +1,6 @@
 // in your project, `import { ... } from '@inlify/hono'`
-import { defineI18nMiddleware } from '../../src/index.ts'
 import { Hono } from 'hono'
+import { defineI18nMiddleware } from '../../src/index.ts'
 
 // define resource schema
 type ResourceSchema = {
@@ -20,7 +20,7 @@ const i18n = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
   // ...
 })
 
-const app = new Hono()
+const app: Hono = new Hono()
 app.use('*', i18n)
 // something your implementation code ...
 // ...
