@@ -25,7 +25,7 @@ const i18n = defineI18nMiddleware({
   }
 })
 
-const app = new Hono()
+const app: Hono = new Hono()
 app.use('*', i18n)
 app.get('/', c => {
   const t = useTranslation(c)

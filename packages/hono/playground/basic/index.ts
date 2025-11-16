@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { serve } from 'srvx'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
@@ -17,11 +18,16 @@ const i18n = defineI18nMiddleware({
   }
 })
 
-const app = new Hono()
+const app: Hono = new Hono()
 app.use('*', i18n)
 app.get('/', c => {
   const t = useTranslation(c)
   return c.text(t('hello', { name: 'hono' }) + `\n`)
 })
 
-export default app
+const server = serve({
+  port: 3000,
+  fetch: app.fetch
+})
+
+await server.ready()

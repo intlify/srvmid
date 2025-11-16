@@ -1,4 +1,3 @@
-// @vitest-environment miniflare
 import { Hono } from 'hono'
 import { afterEach, expect, test, vi } from 'vitest'
 import {

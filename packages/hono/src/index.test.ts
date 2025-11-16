@@ -1,4 +1,3 @@
-// @vitest-environment miniflare
 import { createCoreContext } from '@intlify/core'
 import { describe, expect, test } from 'vitest'
 

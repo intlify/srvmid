@@ -49,7 +49,7 @@ import type { Context, MiddlewareHandler, Next } from 'hono'
 
 declare module 'hono' {
   interface ContextVariableMap {
-    i18n: CoreContext
+    i18n?: CoreContext
   }
 }
 
@@ -149,7 +149,7 @@ export function defineI18nMiddleware<
 
   return async (ctx: Context, next: Next) => {
     i18n.locale = getLocaleDetector(ctx)
-    ctx.set('i18n', i18n)
+    ctx.set('i18n', i18n as CoreContext)
 
     await next()
 
