@@ -54,6 +54,6 @@ describe('e2e', () => {
     const stdout = await runCommand(
       `curl -H 'Accept-Language: ja,en-US;q=0.7,en;q=0.3' http://localhost:3000`
     )
-    expect(stdout).toContain(`こんにちは, h3`)
+    expect(stdout).toContain(`こんにちは, hono`)
   })
 })

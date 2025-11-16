@@ -5,6 +5,8 @@ export default defineConfig({
     globals: true,
     testTimeout: 60_000,
     include: ['**/*.spec.?(c|m)[jt]s?(x)'],
-    exclude: [...defaultExclude]
+    exclude: [...defaultExclude],
+    // Run e2e tests serially (not in parallel)
+    fileParallelism: false
   }
 })
