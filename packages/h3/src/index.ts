@@ -17,7 +17,7 @@ import {
   parseTranslateArgs
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
-import { definePlugin, onRequest, onResponse } from 'h3'
+import { definePlugin, getEventContext, onRequest, onResponse } from 'h3'
 import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
 
 export {
@@ -53,7 +53,7 @@ import type {
   SchemaParams,
   TranslateOptions
 } from '@intlify/core'
-import type { H3Event, Middleware } from 'h3'
+import type { H3Event, H3EventContext, Middleware } from 'h3'
 
 declare module 'h3' {
   interface H3EventContext {
@@ -198,14 +198,16 @@ export function defineI18nMiddleware<
 
   return {
     onRequest: onRequest(event => {
-      event.context[SYMBOL_I18N_LOCALE] = getLocaleDetector(event, i18n as CoreContext)
-      i18n.locale = event.context[SYMBOL_I18N_LOCALE]
-      event.context[SYMBOL_I18N] = i18n as CoreContext
+      const context = getEventContext<H3EventContext>(event)
+      context[SYMBOL_I18N_LOCALE] = getLocaleDetector(event, i18n as CoreContext)
+      i18n.locale = context[SYMBOL_I18N_LOCALE]
+      context[SYMBOL_I18N] = i18n as CoreContext
     }),
     onResponse: onResponse((_, event) => {
       i18n.locale = orgLocale
-      delete event.context[SYMBOL_I18N]
-      delete event.context[SYMBOL_I18N_LOCALE]
+      const context = getEventContext<H3EventContext>(event)
+      delete context[SYMBOL_I18N]
+      delete context[SYMBOL_I18N_LOCALE]
     })
   }
 }
