@@ -45,8 +45,8 @@ importers:
         specifier: ^7.5.1
         version: 7.5.1
       '@kazupon/eslint-config':
-        specifier: ^0.37.2
-        version: 0.37.2(e1d6acaefcc5f3929e0242b1e3fdc288)
+        specifier: ^0.38.0
+        version: 0.38.0(e1d6acaefcc5f3929e0242b1e3fdc288)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -543,8 +543,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kazupon/eslint-config@0.37.2':
-    resolution: {integrity: sha512-JGjzfJ6AZjofUctFbqCGGjxbLRz8pyJS+ZzNaNdsXgaB0IoHL0At2+EdI2HijLUh0/6AooyRmLffGzbDNWBhXQ==}
+  '@kazupon/eslint-config@0.38.0':
+    resolution: {integrity: sha512-8iVUGPxugce76TWoVHLZisgf5pwSf2Vd6tweSyCXO7iLjS+Usf2SlgdDz3hAo3LulJWGV3d6AtPeIDgohNPzIg==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@eslint/css': '>=0.13.0'
@@ -3860,7 +3860,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kazupon/eslint-config@0.37.2(e1d6acaefcc5f3929e0242b1e3fdc288)':
+  '@kazupon/eslint-config@0.38.0(e1d6acaefcc5f3929e0242b1e3fdc288)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.5.0(eslint@9.39.1(jiti@2.6.1))
       '@eslint/js': 9.39.1
