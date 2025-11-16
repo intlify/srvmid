@@ -404,24 +404,25 @@ export async function useTranslation<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
-  if (event.context[SYMBOL_I18N] == null) {
+  const context = getEventContext<H3EventContext>(event)
+  if (context[SYMBOL_I18N] == null) {
     throw new Error(
       'middleware not initialized, please setup `onRequest` and `onResponse` options of `H3` with the middleware obtained with `defineI18nMiddleware`'
     )
   }
 
-  const localeDetector = event.context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
+  const localeDetector = context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
   // Always await detector call - works for both sync and async detectors
   // (awaiting a non-promise value returns it immediately)
   const locale = await localeDetector(event)
-  event.context[SYMBOL_I18N].locale = locale
+  context[SYMBOL_I18N].locale = locale
 
   function translate(key: string, ...args: unknown[]): string {
     const [_, options] = parseTranslateArgs(key, ...args)
     const [arg2] = args
 
     const result = Reflect.apply(_translate, null, [
-      event.context[SYMBOL_I18N]!,
+      context[SYMBOL_I18N]!,
       key,
       arg2,
       {
