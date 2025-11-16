@@ -389,10 +389,10 @@ interface TranslationFunction<
  * ```js
  * app.get(
  *   '/',
- *   eventHandler(async (event) => {
+ *   async (event) => {
  *     const t = await useTranslation(event)
  *     return t('hello', { name: 'H3' })
- *   }),
+ *   },
  * )
  * ```
  *
