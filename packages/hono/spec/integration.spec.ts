@@ -116,15 +116,15 @@ describe('custom locale detection', () => {
     app.use('*', i18nMiddleware)
     app.get('/', async c => {
       const t = await useTranslation(c)
-      return c.json({ message: t('hello', { name: 'h3' }) })
+      return c.json({ message: t('hello', { name: 'hono' }) })
     })
 
     const translated: Record<string, { message: string }> = {
       en: {
-        message: 'hello, h3'
+        message: 'hello, hono'
       },
       ja: {
-        message: 'こんにちは, h3'
+        message: 'こんにちは, hono'
       }
     }
 
@@ -170,15 +170,15 @@ describe('custom locale detection', () => {
       await sleep(100)
       const t = await useTranslation(c)
       await sleep(100)
-      return c.json({ message: t('hello', { name: 'h3' }) })
+      return c.json({ message: t('hello', { name: 'hono' }) })
     })
 
     const translated: Record<string, { message: string }> = {
       en: {
-        message: 'hello, h3'
+        message: 'hello, hono'
       },
       ja: {
-        message: 'こんにちは, h3'
+        message: 'こんにちは, hono'
       }
     }
     // request in parallel
