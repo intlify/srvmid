@@ -367,9 +367,11 @@ export async function useTranslation<
   i18n.locale = locale
 
   function translate(key: string, ...args: unknown[]): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
     const [arg2] = args
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): generic type
     const result = Reflect.apply(_translate, null, [
       i18n,
       key,

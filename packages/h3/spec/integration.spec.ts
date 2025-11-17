@@ -1,5 +1,6 @@
 import { eventHandler, H3 } from 'h3'
 import { afterEach, describe, expect, test, vi } from 'vitest'
+import { delay as sleep } from '../../shared/helper.ts'
 
 import {
   detectLocaleFromAcceptLanguageHeader,
@@ -88,15 +89,15 @@ describe('custom locale detection', () => {
     expect(body).toEqual({ message: 'こんにちは, h3' })
   })
 
+  const messages: Record<
+    string,
+    () => Promise<typeof import('./fixtures/en.json') | typeof import('./fixtures/ja.json')>
+  > = {
+    en: () => import('./fixtures/en.json', { with: { type: 'json' } }).then(m => m.default),
+    ja: () => import('./fixtures/ja.json', { with: { type: 'json' } }).then(m => m.default)
+  }
+
   test('detect with async loading', async () => {
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
-    const loader = (path: string) => import(path).then(m => m.default || m)
-    const messages: Record<string, () => ReturnType<typeof loader>> = {
-      en: () => loader('./fixtures/en.json'),
-      ja: () => loader('./fixtures/ja.json')
-    }
-
     // async locale detector
     const localeDetector = async (
       event: H3Event,
@@ -152,14 +153,6 @@ describe('custom locale detection', () => {
   })
 
   test('detect with async parallel loading', async () => {
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
-    const loader = (path: string) => import(path).then(m => m.default || m)
-    const messages: Record<string, () => ReturnType<typeof loader>> = {
-      en: () => loader('./fixtures/en.json'),
-      ja: () => loader('./fixtures/ja.json')
-    }
-
     // async locale detector
     const localeDetector = async (
       event: H3Event,
@@ -206,14 +199,13 @@ describe('custom locale detection', () => {
         message: 'こんにちは, h3'
       }
     }
+
     // request in parallel
-    const resList = await Promise.all(
-      ['en', 'ja'].map(locale =>
-        app
-          .fetch(new Request(`http://localhost/?locale=${locale}`))
-          // @ts-ignore
-          .then(res => res.json())
-      )
+    const resList: { message: string }[] = await Promise.all(
+      ['en', 'ja'].map(async (locale): Promise<{ message: string }> => {
+        const res: Response = await app.request(`/?locale=${locale}`)
+        return (await res.json()) as { message: string }
+      })
     )
     expect(resList).toEqual([translated['en'], translated['ja']])
   })

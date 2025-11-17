@@ -1,30 +1,11 @@
-import { exec, spawn } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import path from 'node:path'
 import { afterEach, describe, expect, test } from 'vitest'
-
-import type { ExecOptions } from 'node:child_process'
-
-export function runCommand(command: string, options?: ExecOptions): Promise<string> {
-  return new Promise((resolve, reject) => {
-    exec(
-      command,
-      { timeout: 30_000, ...options, env: { ...process.env, ...options?.env } },
-      (error, stdout, stderr) => {
-        if (error) {
-          reject(new Error(`Command failed: ${command}\n${stderr}\n${error.message}`))
-        } else {
-          resolve(stdout.toString())
-        }
-      }
-    )
-  })
-}
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+import { delay, runCommand } from '../../shared/helper.ts'
 
 let serve: ReturnType<typeof spawn> | null = null
 
-afterEach(async () => {
+afterEach(() => {
   serve?.kill()
 })
 

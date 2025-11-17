@@ -30,6 +30,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
     kazupon: {
       ignores: [
         './**/playground/**',
+        './packages/shared/**',
         './scripts/**',
         './**/test/**',
         './**/src/**/*.test.ts',
@@ -42,7 +43,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
   }),
   jsdoc({
     typescript: 'syntax',
-    ignores: ['./**/playground/**', './**/spec/**']
+    ignores: ['./**/playground/**', './**/spec/**', './packages/shared/**']
   }),
   imports({
     typescript: true,
@@ -65,7 +66,8 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
   }),
   typescript({
     parserOptions: {
-      tsconfigRootDir: import.meta.dirname
+      tsconfigRootDir: import.meta.dirname,
+      project: true
     },
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
