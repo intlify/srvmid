@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { delay as sleep } from '../../shared/helper.ts'
+import { delay as sleep } from '../../shared/src/index.ts'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,

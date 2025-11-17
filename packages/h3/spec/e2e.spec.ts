@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process'
 import path from 'node:path'
 import { afterEach, describe, expect, test } from 'vitest'
-import { delay, runCommand } from '../../shared/helper.ts'
+import { delay, runCommand } from '../../shared/src/index.ts'
 
 let serve: ReturnType<typeof spawn> | null = null
 

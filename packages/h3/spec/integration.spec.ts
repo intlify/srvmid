@@ -1,6 +1,6 @@
 import { eventHandler, H3 } from 'h3'
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { delay as sleep } from '../../shared/helper.ts'
+import { delay as sleep } from '../../shared/src/index.ts'
 
 import {
   detectLocaleFromAcceptLanguageHeader,
