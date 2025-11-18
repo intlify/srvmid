@@ -1,4 +1,7 @@
-# srvmid
+<p align="center">
+	<img alt="logo" width="256" src="./assets/srvmid.svg">
+</p>
+<h1 align="center">srvmid</h1>
 
 [![CI][ci-src]][ci-href]
 
