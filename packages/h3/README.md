@@ -1,4 +1,7 @@
-# @intlify/h3
+<p align="center">
+	<img alt="logo" width="512" src="./assets/intlify-h3.svg">
+</p>
+<h1 align="center">@intlify/h3</h1>
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]

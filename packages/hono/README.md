@@ -1,4 +1,7 @@
-# @intlify/hono
+<p align="center">
+	<img alt="logo" width="512" src="./assets/intlify-hono.svg">
+</p>
+<h1 align="center">@intlify/hono</h1>
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -186,72 +189,6 @@ const middleware = defineI18nMiddleware({
   // ...
 })
 ```
-
-## 🧩 Type-safe resources
-
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
-> [!WARNING]
-> **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
-> We would like to get feedback from you 🙂.
-
-> [!NOTE]
-> The exeample code is [here](https://github.com/intlify/hono/tree/main/playground/typesafe-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
-You can support the type-safe resources with schema using TypeScript on `defineI18nMiddleware` options.
-
-Locale messages resource:
-
-```ts
-export default {
-  hello: 'hello, {name}!'
-}
-```
-
-your application code:
-
-```ts
-import { defineI18nMiddleware } from '@intlify/hono'
-import en from './locales/en.ts'
-
-// define resource schema, as 'en' is master resource schema
-type ResourceSchema = typeof en
-
-const i18nMiddleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
-  messages: {
-    en: { hello: 'Hello, {name}' }
-  }
-  // something options
-  // ...
-})
-
-// something your implementation code ...
-// ...
-```
-
-Result of type checking with `tsc`:
-
-```sh
-npx tsc --noEmit
-index.ts:13:3 - error TS2741: Property 'ja' is missing in type '{ en: { hello: string; }; }' but required in type '{ en: ResourceSchema; ja: ResourceSchema; }'.
-
-13   messages: {
-     ~~~~~~~~
-
-  ../../node_modules/@intlify/core/node_modules/@intlify/core-base/dist/core-base.d.ts:125:5
-    125     messages?: {
-            ~~~~~~~~
-    The expected type comes from property 'messages' which is declared here on type 'CoreOptions<string, { message: ResourceSchema; datetime: DateTimeFormat; number: NumberFormat; }, { messages: "en"; datetimeFormats: "en"; numberFormats: "en"; } | { ...; }, ... 8 more ..., NumberFormats<...>>'
-
-
-Found 1 error in index.ts:13
-```
-
-If you are using [Visual Studio Code](https://code.visualstudio.com/) as an editor, you can notice that there is a resource definition omission in the editor with the following error before you run the typescript compilation.
-
-![Type-safe resources](assets/typesafe-schema.png)
 
 ## 🖌️ Resource keys completion
 

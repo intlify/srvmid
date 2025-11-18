@@ -1,4 +1,7 @@
-# @intlify/elysia
+<p align="center">
+	<img alt="logo" width="512" src="./assets/intlify-elysia.svg">
+</p>
+<h1 align="center">@intlify/elysia</h1>
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
