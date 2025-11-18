@@ -1,10 +1,6 @@
-import { H3 } from 'h3'
+import { Elysia } from 'elysia'
 import { serve } from 'srvx'
-import {
-  detectLocaleFromAcceptLanguageHeader,
-  plugin as i18n,
-  useTranslation
-} from '../../src/index.ts' // in your project, `import { ... } from '@intlify/h3'`
+import { detectLocaleFromAcceptLanguageHeader, intlify } from '../../src/index.ts' // in your project, `import { ... } from '@intlify/elysia'`
 
 import en from './locales/en.ts'
 import ja from './locales/ja.ts'
@@ -14,26 +10,23 @@ type ResourceSchema = typeof en
 
 // you can put the type extending with `declare module` as global resource schema
 declare module '../../src/index.ts' {
-  // please use `declare module '@intlify/h3'`, if you want to use global resource schema in your project.
+  // please use `declare module '@intlify/elysia'`, if you want to use global resource schema in your project.
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
 
-const app = new H3({
-  plugins: [
-    i18n({
+const app = new Elysia()
+  .use(
+    intlify({
       locale: detectLocaleFromAcceptLanguageHeader,
       messages: {
         en,
         ja
       }
     })
-  ]
-})
-
-app.get('/', async event => {
-  const t = await useTranslation(event)
-  return t('hello', { name: 'h3' })
-})
+  )
+  .get('/', ctx => {
+    return ctx.translate('hello', { name: 'elysia' })
+  })
 
 const server = serve({
   port: 3000,
