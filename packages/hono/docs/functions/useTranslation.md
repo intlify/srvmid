@@ -7,7 +7,22 @@
 # Function: useTranslation()
 
 ```ts
-function useTranslation<Schema, HonoContext>(ctx): TranslationFunction<Schema, DefineLocaleMessage>;
+function useTranslation<Schema, HonoContext>(ctx): Promise<TranslationFunction<Schema, DefineLocaleMessage, ResolveResourceKeys<Schema, DefineLocaleMessage, RemoveIndexSignature<{
+[key: string]: LocaleMessageValue<string>;
+  hello: string;
+  nest: {
+     foo: {
+        bar: string;
+     };
+  };
+}>, IsEmptyObject<Schema> extends false ? ResourcePath<{ [K in string | number | symbol]: Schema[K] }> : never, _ResourcePath<{
+  hello: string;
+  nest: {
+     foo: {
+        bar: string;
+     };
+  };
+}>>>>;
 ```
 
 use translation function in event handler
@@ -27,13 +42,24 @@ use translation function in event handler
 
 ## Returns
 
-`TranslationFunction`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md)\>
+`Promise`\<`TranslationFunction`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `ResolveResourceKeys`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `RemoveIndexSignature`\<\{
+\[`key`: `string`\]: `LocaleMessageValue`\<`string`\>;
+  `hello`: `string`;
+  `nest`: \{
+     `foo`: \{
+        `bar`: `string`;
+     \};
+  \};
+\}\>, `IsEmptyObject`\<`Schema`\> *extends* `false` ? `ResourcePath`\<\{ \[K in string \| number \| symbol\]: Schema\[K\] \}\> : `never`, `_ResourcePath`\<\{
+  `hello`: `string`;
+  `nest`: \{
+     `foo`: \{
+        `bar`: `string`;
+     \};
+  \};
+\}\>\>\>\>
 
 Return a translation function, which can be translated with i18n resource messages
-
-## Description
-
-This function must be initialized with defineI18nMiddleware. See about the [defineI18nMiddleware](defineI18nMiddleware.md)
 
 ## Example
 
@@ -56,8 +82,8 @@ const app = new Hono()
 app.use('*', i18nMiddleware)
 // setup other middlewares ...
 
-app.get('/', (ctx) => {
-  const t = useTranslation(ctx)
+app.get('/', async (ctx) => {
+  const t = await useTranslation(ctx)
   return ctx.text(t('hello', { name: 'hono' }))
 })
 ```

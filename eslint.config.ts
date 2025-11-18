@@ -106,6 +106,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
     './**/playground/**',
     './packages/h3/docs/**',
     './packages/hono/docs/**',
+    './packages/elysia/docs/**',
     'design/**'
   ]) as Linter.Config
 )

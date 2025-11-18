@@ -53,7 +53,7 @@ const i18nMiddleware = defineI18nMiddleware({
     },
   },
   // your locale detection logic here
-  locale: (event) => {
+  locale: (c) => {
     // ...
   },
 })

@@ -10,7 +10,7 @@ Internationalization middleware & utilities for h3
 
 | Variable | Description |
 | ------ | ------ |
-| [plugin](variables/plugin.md) | Internationalization plugin for H3 |
+| [intlify](variables/intlify.md) | Internationalization plugin for H3 |
 
 ## Functions
 

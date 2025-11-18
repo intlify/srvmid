@@ -2,12 +2,12 @@
 
 ***
 
-[@intlify/h3](../index.md) / plugin
+[@intlify/h3](../index.md) / intlify
 
-# Variable: plugin()
+# Variable: intlify()
 
 ```ts
-const plugin: (options) => H3Plugin;
+const intlify: (options) => H3Plugin;
 ```
 
 Internationalization plugin for H3
