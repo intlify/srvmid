@@ -2,6 +2,9 @@ import type { KnipConfig } from 'knip'
 
 export default {
   workspaces: {
+    '.': {
+      entry: ['scripts/private.ts']
+    },
     'packages/h3': {
       ignore: ['**/playground/**'],
       ignoreDependencies: ['srvx']
