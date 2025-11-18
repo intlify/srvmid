@@ -4,7 +4,7 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![CI][ci-src]][ci-href]
 
-Internationalization middleware & utilities for h3 (and therefore also for Nitro, which is using H3)
+Internationalization for H3
 
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
@@ -377,6 +377,16 @@ See the [API References](https://github.com/intlify/srvmid/blob/main/packages/h3
 ## 🙌 Contributing guidelines
 
 If you are interested in contributing to `@intlify/h3`, I highly recommend checking out [the contributing guidelines](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md) here. You'll find all the relevant information such as [how to make a PR](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md#pull-request-guidelines), [how to setup development](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md#development-setup)) etc., there.
+
+## 🤝 Sponsors
+
+The development of `srvmid` is supported by my OSS sponsors!
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/kazupon/sponsors/sponsors.svg">
+    <img alt="sponsor" src='https://cdn.jsdelivr.net/gh/kazupon/sponsors/sponsors.svg'/>
+  </a>
+</p>
 
 ## ©️ License
 

@@ -268,6 +268,16 @@ See the [API References](https://github.com/intlify/srvmid/blob/main/packages/el
 
 If you are interested in contributing to `@intlify/elysia`, I highly recommend checking out [the contributing guidelines](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md) here. You'll find all the relevant information such as [how to make a PR](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md#pull-request-guidelines), [how to setup development](https://github.com/intlify/srvmid/blob/main/CONTRIBUTING.md#development-setup) etc., there.
 
+## 🤝 Sponsors
+
+The development of `srvmid` is supported by my OSS sponsors!
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/kazupon/sponsors/sponsors.svg">
+    <img alt="sponsor" src='https://cdn.jsdelivr.net/gh/kazupon/sponsors/sponsors.svg'/>
+  </a>
+</p>
+
 ## ©️ License
 
 [MIT](http://opensource.org/licenses/MIT)

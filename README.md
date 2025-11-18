@@ -8,10 +8,11 @@ Internationalization server middleware & utilities
 
 This repository is monorepo for the below packages:
 
-| Package                          | Description                                                               | NPM                                                           |
-| -------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [`@intlify/h3`](packages/h3)     | Internationalization middleware & utilities for [H3](https://h3.dev/)     | [![npm version][npm-version-h3-src]][npm-version-h3-href]     |
-| [`@intlify/hono`](packages/hono) | Internationalization middleware & utilities for [Hono](https://hono.dev/) | [![npm version][npm-version-hono-src]][npm-version-hono-href] |
+| Package                              | Description                                              | NPM                                                               |
+| ------------------------------------ | -------------------------------------------------------- | ----------------------------------------------------------------- |
+| [`@intlify/h3`](packages/h3)         | Internationalization for [H3](https://h3.dev/)           | [![npm version][npm-version-h3-src]][npm-version-h3-href]         |
+| [`@intlify/hono`](packages/hono)     | Internationalization for [Hono](https://hono.dev/)       | [![npm version][npm-version-hono-src]][npm-version-hono-href]     |
+| [`@intlify/elysia`](packages/elysia) | Internationalization for [Elysia](https://elysiajs.com/) | [![npm version][npm-version-elysia-src]][npm-version-elysia-href] |
 
 ## 🙌 Contributing guidelines
 
@@ -37,5 +38,7 @@ The development of `srvmid` is supported by my OSS sponsors!
 [npm-version-h3-href]: https://npmjs.com/package/@intlify/h3
 [npm-version-hono-src]: https://img.shields.io/npm/v/@intlify/hono?style=flat&colorA=18181B&colorB=FFAD33
 [npm-version-hono-href]: https://npmjs.com/package/@intlify/hono
+[npm-version-elysia-src]: https://img.shields.io/npm/v/@intlify/elysia?style=flat&colorA=18181B&colorB=FFAD33
+[npm-version-elysia-href]: https://npmjs.com/package/@intlify/elysia
 [ci-src]: https://github.com/intlify/srvmid/actions/workflows/ci.yml/badge.svg
 [ci-href]: https://github.com/intlify/srvmid/actions/workflows/ci.yml
