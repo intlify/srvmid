@@ -1,14 +1,10 @@
 import { H3 } from 'h3'
 import { serve } from 'srvx'
-import {
-  detectLocaleFromAcceptLanguageHeader,
-  plugin as i18n,
-  useTranslation
-} from '../../src/index.ts' // `@intlify/h3`
+import { detectLocaleFromAcceptLanguageHeader, intlify, useTranslation } from '../../src/index.ts' // `@intlify/h3`
 
 const app = new H3({
   plugins: [
-    i18n({
+    intlify({
       locale: detectLocaleFromAcceptLanguageHeader,
       messages: {
         en: {

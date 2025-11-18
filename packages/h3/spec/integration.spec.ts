@@ -5,7 +5,7 @@ import { delay as sleep } from '../../shared/src/index.ts'
 import {
   detectLocaleFromAcceptLanguageHeader,
   getQueryLocale,
-  plugin as i18n,
+  intlify,
   useTranslation
 } from '../src/index.ts'
 
@@ -22,7 +22,7 @@ afterEach(() => {
 test('translation', async () => {
   app = new H3({
     plugins: [
-      i18n({
+      intlify({
         locale: detectLocaleFromAcceptLanguageHeader,
         messages: {
           en: {
@@ -62,7 +62,7 @@ describe('custom locale detection', () => {
 
     app = new H3({
       plugins: [
-        i18n({
+        intlify({
           locale: localeDetector,
           messages: {
             en: {
@@ -115,7 +115,7 @@ describe('custom locale detection', () => {
 
     app = new H3({
       plugins: [
-        i18n({
+        intlify({
           locale: localeDetector,
           messages: {
             en: {
@@ -156,21 +156,21 @@ describe('custom locale detection', () => {
     // async locale detector
     const localeDetector = async (
       event: H3Event,
-      i18n: CoreContext<string, DefineLocaleMessage>
+      intlify: CoreContext<string, DefineLocaleMessage>
     ) => {
       const locale = getQueryLocale(event.req).toString()
       await sleep(100)
       const loader = messages[locale]
-      if (loader && !i18n.messages[locale]) {
+      if (loader && !intlify.messages[locale]) {
         const message = await loader()
-        i18n.messages[locale] = message
+        intlify.messages[locale] = message
       }
       return locale
     }
 
     app = new H3({
       plugins: [
-        i18n({
+        intlify({
           locale: localeDetector,
           messages: {
             en: {

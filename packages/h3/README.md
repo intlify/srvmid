@@ -76,18 +76,18 @@ app.get('/', event => {
 
 ### Translation
 
-If you want to use translation, you need to install plugin. As a result, you can use `useTranslation` within the handler:
+If you want to use translation, you need to install `intlify` plugin. As a result, you can use `useTranslation` within the handler:
 
 ```ts
 import { createServer } from 'node:http'
 import { H3, toNodeListener } from 'h3'
-import { plugin as i18n, detectLocaleFromAcceptLanguageHeader, useTranslation } from '@intlify/h3'
+import { intlify, detectLocaleFromAcceptLanguageHeader, useTranslation } from '@intlify/h3'
 
-// install plugin with `H3` constructor
+// install `intlify` plugin with `H3` constructor
 const app = new H3({
   plugins: [
     // configure plugin options
-    i18n({
+    intlify({
       // detect locale with `accept-language` header
       locale: detectLocaleFromAcceptLanguageHeader,
       // resource messages
@@ -150,7 +150,7 @@ example for detecting locale from url query:
 
 ```ts
 import { H3 } from 'h3'
-import { plugin as i18n, getQueryLocale } from '@intlify/h3'
+import { intlify, getQueryLocale } from '@intlify/h3'
 
 import type { H3Event } from 'h3'
 
@@ -161,7 +161,7 @@ const localeDetector = (event: H3Event): string => {
 
 const app = new H3({
   plugins: [
-    i18n({
+    intlify({
       // set your custom locale detector
       locale: localeDetector
       // something options
@@ -182,7 +182,7 @@ You can make that function asynchronous. This is useful when loading resources a
 
 ```ts
 import { H3 } from 'h3'
-import { plugin as i18n, getCookieLocale } from '@intlify/h3'
+import { intlify, getCookieLocale } from '@intlify/h3'
 
 import type { H3Event } from 'h3'
 import type { DefineLocaleMessage, CoreContext } from '@intlify/h3'
@@ -213,7 +213,7 @@ const localeDetector = async (
 
 const app = new H3({
   plugins: [
-    i18n({
+    intlify({
       // set your custom locale detector
       locale: localeDetector
       // something options
@@ -222,77 +222,6 @@ const app = new H3({
   ]
 })
 ```
-
-## 🧩 Type-safe resources
-
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
-> [!WARNING]
-> **This is experimental feature (inspired from [vue-i18n](https://vue-i18n.intlify.dev/guide/advanced/typescript.html#typescript-support)).**
-> We would like to get feedback from you 🙂.
-
-> [!NOTE]
-> The example code is [here](https://github.com/intlify/h3/tree/main/playground/typesafe-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
-You can support the type-safe resources with schema using TypeScript on `defineI18nMiddleware` options.
-
-Locale messages resource:
-
-```ts
-export default {
-  hello: 'hello, {name}!'
-}
-```
-
-your application code:
-
-```ts
-import { defineI18nMiddleware } from '@intlify/h3'
-import { H3 } from 'h3'
-import en from './locales/en.ts'
-
-// define resource schema, as 'en' is master resource schema
-type ResourceSchema = typeof en
-
-const i18nMiddleware = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
-  messages: {
-    en: { hello: 'Hello, {name}' }
-  }
-  // something options
-  // ...
-})
-
-const app = new H3()
-app.use(i18nMiddleware.onRequest)
-app.use(i18nMiddleware.onResponse)
-
-// something your implementation code ...
-// ...
-```
-
-Result of type checking with `tsc`:
-
-```sh
-npx tsc --noEmit
-index.ts:13:3 - error TS2741: Property 'ja' is missing in type '{ en: { hello: string; }; }' but required in type '{ en: ResourceSchema; ja: ResourceSchema; }'.
-
-13   messages: {
-     ~~~~~~~~
-
-  ../../node_modules/@intlify/core/node_modules/@intlify/core-base/dist/core-base.d.ts:125:5
-    125     messages?: {
-            ~~~~~~~~
-    The expected type comes from property 'messages' which is declared here on type 'CoreOptions<string, { message: ResourceSchema; datetime: DateTimeFormat; number: NumberFormat; }, { messages: "en"; datetimeFormats: "en"; numberFormats: "en"; } | { ...; }, ... 8 more ..., NumberFormats<...>>'
-
-
-Found 1 error in index.ts:13
-```
-
-If you are using [Visual Studio Code](https://code.visualstudio.com/) as an editor, you can notice that there is a resource definition omission in the editor with the following error before you run the typescript compilation.
-
-![Type-safe resources](assets/typesafe-schema.png)
 
 ## 🖌️ Resource keys completion
 

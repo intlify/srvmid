@@ -119,7 +119,7 @@ export type I18nPluginOptions<
  *   ]
  * })
  */
-export const plugin = definePlugin<I18nPluginOptions>((h3, options) => {
+export const intlify = definePlugin<I18nPluginOptions>((h3, options) => {
   const { onRequest, onResponse } = defineI18nMiddleware(options)
   h3.use(onRequest)
   h3.use(onResponse)
