@@ -65,7 +65,7 @@ new Elysia().get('/', ctx => {
 
 ### Translation
 
-If you want to use translation, you need to install plugin. As a result, `locale` property and `traslation` function will be extended in Elysia Context:
++If you want to use translation, you need to install plugin. As a result, `locale` property and `translation` function will be extended in Elysia Context:
 
 ```ts
 import { Elysia } from 'elysia'
@@ -92,8 +92,8 @@ const app = new Elysia()
   )
   .get('/', ctx => {
     // use `locale` property in handler
-    consle.log('current locale', ctx.locale)
-    // use `translation` fucntion in handler
+    console.log('current locale', ctx.locale)
+    // use `translation` function in handler
     return ctx.translate('hello', { name: 'elysia' })
   })
 
@@ -193,7 +193,7 @@ resource keys completion has twe ways.
 <!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 > [!NOTE]
-> The exeample code is [here](https://github.com/intlify/elysia/tree/main/playground/local-schema)
+> The example code is [here](https://github.com/intlify/elysia/tree/main/playground/local-schema)
 
 <!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 

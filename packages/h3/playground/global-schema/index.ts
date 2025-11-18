@@ -14,7 +14,7 @@ type ResourceSchema = typeof en
 
 // you can put the type extending with `declare module` as global resource schema
 declare module '../../src/index.ts' {
-  // please use `declare module '@intlifly/h3'`, if you want to use global resource schema in your project.
+  // please use `declare module '@intlify/h3'`, if you want to use global resource schema in your project.
   export interface DefineLocaleMessage extends ResourceSchema {}
 }
 
