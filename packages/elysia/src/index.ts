@@ -85,7 +85,7 @@ export interface DefineLocaleMessage extends LocaleMessage<string> {}
  * This plugin uses Elysia's Context and extends it to export the following from the Context:
  *
  * - `locale`: A locale of Request, this locale is detected by Elysia's {@link https://elysiajs.com/patterns/extends-context.html#resolve | resolve} using the locale detector specified in the plugin's `locale` option.
- * - `translate`: A {@link TranslationFunction | translate fucntion}, that translates based on the `messages` options specified in the plugin options and the detected locale.
+ * - `translate`: A {@link TranslationFunction | translate function}, that translates based on the `messages` options specified in the plugin options and the detected locale.
  * - `translate`: A {@link TranslationFunction | translate function}, that translates based on the `messages` options specified in the plugin options and the detected locale.
  *
  * @param options - An internationalization options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
