@@ -1,0 +1,76 @@
+{
+  "name": "@intlify/elysia",
+  "description": "Internationalization for Elysia",
+  "version": "2.0.0-alpha.3",
+  "author": {
+    "name": "kazuya kawaguchi",
+    "email": "kawakazu80@gmail.com"
+  },
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/kazupon",
+  "bugs": {
+    "url": "https://github.com/intlify/srvmid/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intlify/srvmid.git",
+    "directory": "packages/elysia"
+  },
+  "keywords": [
+    "i18n",
+    "elysia",
+    "internationalization",
+    "intlify",
+    "utilities"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 20"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "build:docs": "typedoc --excludeInternal",
+    "play:basic": "node ./playground/basic/index.ts",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@intlify/core": "catalog:",
+    "@intlify/utils": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "elysia": "^1.4.16",
+    "publint": "catalog:",
+    "srvx": "catalog:",
+    "tsdown": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}

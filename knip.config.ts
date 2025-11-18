@@ -8,6 +8,9 @@ export default {
     },
     'packages/hono': {
       ignore: ['**/playground/**']
+    },
+    'packages/elysia': {
+      ignore: ['**/playground/**']
     }
   },
   ignore: ['**/src/**.test-d.ts'],
