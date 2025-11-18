@@ -20,7 +20,7 @@ type ResolveResourceKeys<
 > = SchemaPaths | DefineMessagesPaths
 
 /**
- * The translation function, which will be defined by {@link useTranslation}.
+ * The translation function, which will be defined by translation
  */
 export interface TranslationFunction<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
