@@ -16,9 +16,6 @@
     "url": "git+https://github.com/intlify/srvmid.git",
     "directory": "packages/shared"
   },
-  "publishConfig": {
-    "provenance": false
-  },
   "engines": {
     "node": ">= 20"
   },
