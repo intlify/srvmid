@@ -273,7 +273,6 @@ async function getLocaleAndEventContext(event: H3Event): Promise<[string, H3Even
   // Always await detector call - works for both sync and async detectors
   // (awaiting a non-promise value returns it immediately)
   const locale = await localeDetector(event)
-  context[SYMBOL_I18N].locale = locale
   return [locale, context]
 }
 
@@ -300,6 +299,7 @@ export async function useTranslation<
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, context] = await getLocaleAndEventContext(event)
+  context[SYMBOL_I18N]!.locale = locale
   function translate(key: string, ...args: unknown[]): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
@@ -339,7 +339,7 @@ export async function useTranslation<
  * ```
  * @param event - A H3 event
  *
- * @returns Return a {@link Intl.Locale | locale}
+ * @returns Return an {@linkcode Intl.Locale} instance representing the detected locale
  */
 export async function getDetectorLocale(event: H3Event): Promise<Intl.Locale> {
   const result = await getLocaleAndEventContext(event)

@@ -211,7 +211,6 @@ async function getLocaleAndIntlifyContext(ctx: Context): Promise<[string, CoreCo
   // Always await detector call - works for both sync and async detectors
   // (awaiting a non-promise value returns it immediately)
   const locale = await localeDetector(ctx)
-  intlify.locale = locale
 
   return [locale, intlify]
 }
@@ -253,6 +252,7 @@ export async function useTranslation<
   HonoContext extends Context = Context
 >(ctx: HonoContext): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, intlify] = await getLocaleAndIntlifyContext(ctx)
+  intlify.locale = locale
   function translate(key: string, ...args: unknown[]): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
@@ -293,7 +293,7 @@ export async function useTranslation<
  *
  * @param ctx - A Hono context
  *
- * @returns Return a {@link Intl.Locale | locale}
+ * @returns Return an {@linkcode Intl.Locale} instance representing the detected locale
  */
 export async function getDetectorLocale(ctx: Context): Promise<Intl.Locale> {
   const [locale] = await getLocaleAndIntlifyContext(ctx)

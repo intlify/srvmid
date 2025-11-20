@@ -22,7 +22,7 @@ get a locale which is detected with locale detector.
 
 `Promise`\<`Locale`\>
 
-Return a Intl.Locale \| locale
+Return an `Intl.Locale` instance representing the detected locale
 
 ## Description
 
