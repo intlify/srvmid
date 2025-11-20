@@ -6,20 +6,13 @@ catalog:
   '@intlify/core': ^11.1.12
   '@types/node': ^24.10.1
   publint: ^0.3.15
-  tsdown: ^0.16.6
+  tsdown: ^0.16.5
   typedoc: ^0.28.14
   typedoc-plugin-markdown: ^4.9.0
   typescript: ^5.9.3
   srvx: ^0.9.6
 
 minimumReleaseAge: 1440
-
-minimumReleaseAgeExclude:
-  - eslint-plugin-jsdoc
-  - tsdown
-  - knip
-  - lint-staged
-  - vitest
 
 onlyBuiltDependencies:
   - deno
