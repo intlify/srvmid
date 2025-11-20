@@ -5,6 +5,7 @@ import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
+  getDetectorLocale,
   useTranslation
 } from './index.ts'
 
@@ -87,4 +88,28 @@ describe('useTranslation', () => {
 
     await expect(() => useTranslation(eventMock)).rejects.toThrowError()
   })
+})
+
+test('getDetectorLocale', async () => {
+  const context = createCoreContext({
+    locale: detectLocaleFromAcceptLanguageHeader
+  })
+  const eventMock = {
+    req: {
+      headers: {
+        get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+      }
+    },
+    context: {
+      [SYMBOL_I18N]: context as CoreContext
+    }
+  } as H3Event
+  const _locale = context.locale as unknown
+  const bindLocaleDetector = (_locale as LocaleDetector).bind(null, eventMock)
+  // @ts-ignore ignore type error because this is test
+  context.locale = bindLocaleDetector
+  eventMock.context[SYMBOL_I18N_LOCALE] = bindLocaleDetector
+
+  const locale = await getDetectorLocale(eventMock)
+  expect(locale.language).toEqual('ja')
 })

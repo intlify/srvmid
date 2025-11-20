@@ -261,6 +261,22 @@ export const detectLocaleFromAcceptLanguageHeader = (event: H3Event): Locale =>
  */
 export interface DefineLocaleMessage extends LocaleMessage<string> {}
 
+async function getLocaleAndEventContext(event: H3Event): Promise<[string, H3EventContext]> {
+  const context = getEventContext<H3EventContext>(event)
+  if (context[SYMBOL_I18N] == null) {
+    throw new Error(
+      'plugin has not been initialized. Please check that the `intlify` plugin is installed correctly.'
+    )
+  }
+
+  const localeDetector = context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
+  // Always await detector call - works for both sync and async detectors
+  // (awaiting a non-promise value returns it immediately)
+  const locale = await localeDetector(event)
+  context[SYMBOL_I18N].locale = locale
+  return [locale, context]
+}
+
 /**
  * Use translation function in event handler
  *
@@ -283,19 +299,7 @@ export async function useTranslation<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
-  const context = getEventContext<H3EventContext>(event)
-  if (context[SYMBOL_I18N] == null) {
-    throw new Error(
-      'middleware not initialized, please setup `onRequest` and `onResponse` options of `H3` with the middleware obtained with `defineI18nMiddleware`'
-    )
-  }
-
-  const localeDetector = context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
-  // Always await detector call - works for both sync and async detectors
-  // (awaiting a non-promise value returns it immediately)
-  const locale = await localeDetector(event)
-  context[SYMBOL_I18N].locale = locale
-
+  const [locale, context] = await getLocaleAndEventContext(event)
   function translate(key: string, ...args: unknown[]): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
@@ -316,4 +320,28 @@ export async function useTranslation<
   }
 
   return translate as TranslationFunction<Schema, DefineLocaleMessage>
+}
+
+/**
+ * get a locale which is detected with locale detector.
+ *
+ * @description The locale obtainable via this function comes from the locale detector specified in the `locale` option of the {@link intlify} plugin.
+ *
+ * @example
+ * ```js
+ * app.get(
+ *   '/',
+ *   async (event) => {
+ *     const locale = await getDetectorLocale(event)
+ *     return `Current Locale: ${locale.language}`
+ *   },
+ * )
+ * ```
+ * @param event - A H3 event
+ *
+ * @returns Return a {@link Intl.Locale | locale}
+ */
+export async function getDetectorLocale(event: H3Event): Promise<Intl.Locale> {
+  const result = await getLocaleAndEventContext(event)
+  return new Intl.Locale(result[0])
 }

@@ -117,10 +117,11 @@ export default app
 
 You can detect locale with your custom logic from current `Context`.
 
-example for detecting locale from url query:
+example for detecting locale from url query, and get locale with `getDetectorLocale` util:
 
 ```ts
-import { defineI18nMiddleware, getQueryLocale } from '@intlify/hono'
+import { Hono } from 'hono'
+import { defineI18nMiddleware, getQueryLocale, getDetectorLocale } from '@intlify/hono'
 import type { Context } from 'hono'
 
 const DEFAULT_LOCALE = 'en'
@@ -134,11 +135,18 @@ const localeDetector = (ctx: Context): string => {
   }
 }
 
-const middleware = defineI18nMiddleware({
+const i18nMiddleware = defineI18nMiddleware({
   // set your custom locale detector
   locale: localeDetector
   // something options
   // ...
+})
+
+const app = new Hono()
+app.use('*', i18nMiddleware)
+app.get('/', async ctx => {
+  const locale = await getDetectorLocale(ctx)
+  return ctx.text(`Current Locale: ${locale.language}`)
 })
 ```
 
