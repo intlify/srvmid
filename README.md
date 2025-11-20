@@ -11,11 +11,11 @@ Internationalization server middleware & utilities
 
 This repository is monorepo for the below packages:
 
-| Package                              | Description                                              | NPM                                                               |
-| ------------------------------------ | -------------------------------------------------------- | ----------------------------------------------------------------- |
-| [`@intlify/h3`](packages/h3)         | Internationalization for [H3](https://h3.dev/)           | [![npm version][npm-version-h3-src]][npm-version-h3-href]         |
-| [`@intlify/hono`](packages/hono)     | Internationalization for [Hono](https://hono.dev/)       | [![npm version][npm-version-hono-src]][npm-version-hono-href]     |
-| [`@intlify/elysia`](packages/elysia) | Internationalization for [Elysia](https://elysiajs.com/) | [![npm version][npm-version-elysia-src]][npm-version-elysia-href] |
+| Package                                        | Description                                              | NPM                                                               |
+| ---------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------- |
+| [`@intlify/h3`](packages/h3/README.md)         | Internationalization for [H3](https://h3.dev/)           | [![npm version][npm-version-h3-src]][npm-version-h3-href]         |
+| [`@intlify/hono`](packages/hono/README.md)     | Internationalization for [Hono](https://hono.dev/)       | [![npm version][npm-version-hono-src]][npm-version-hono-href]     |
+| [`@intlify/elysia`](packages/elysia/README.md) | Internationalization for [Elysia](https://elysiajs.com/) | [![npm version][npm-version-elysia-src]][npm-version-elysia-href] |
 
 ## 🙌 Contributing guidelines
 
