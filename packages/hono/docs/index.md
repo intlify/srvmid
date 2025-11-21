@@ -10,7 +10,7 @@ Internationalization middleware & utilities for Hono
 
 | Function | Description |
 | ------ | ------ |
-| [defineI18nMiddleware](functions/defineI18nMiddleware.md) | define i18n middleware for Hono |
+| [defineIntlifyMiddleware](functions/defineIntlifyMiddleware.md) | define intlify middleware for Hono |
 | [detectLocaleFromAcceptLanguageHeader](functions/detectLocaleFromAcceptLanguageHeader.md) | locale detection with `Accept-Language` header |
 | [getCookieLocale](functions/getCookieLocale.md) | get locale from cookie |
 | [getDetectorLocale](functions/getDetectorLocale.md) | get a locale which is detected with locale detector. |

@@ -51,8 +51,8 @@ import type { TranslationFunction } from '../../shared/src/types.ts'
 
 declare module 'hono' {
   interface ContextVariableMap {
-    i18n?: CoreContext
-    i18nLocaleDetector?: LocaleDetector
+    intlify?: CoreContext
+    intlifyLocaleDetector?: LocaleDetector
   }
 }
 
@@ -86,22 +86,22 @@ type DefaultLocaleMessageSchema<
 export interface DefineLocaleMessage extends LocaleMessage<string> {}
 
 /**
- * define i18n middleware for Hono
+ * define intlify middleware for Hono
  *
  * @description
  * Define the middleware to be specified for Hono [`app.use`]({@link https://hono.dev/guides/middleware})
  *
- * @param options - An i18n options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
+ * @param options - An intlify options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
  *
- * @returns A defined i18n middleware
+ * @returns A defined intlify middleware
  *
  * @example
  *
  * ```js
  * import { Hono } from 'hono'
- * import { defineI18nMiddleware } from '@intlify/hono'
+ * import { defineIntlifyMiddleware } from '@intlify/hono'
  *
- * const i18nMiddleware = defineI18nMiddleware({
+ * const intlify = defineIntlifyMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -117,10 +117,10 @@ export interface DefineLocaleMessage extends LocaleMessage<string> {}
  * })
  *
  * const app = new Hono()
- * app.use('*', i18nMiddleware)
+ * app.use('*', intlify)
  * ```
  */
-export function defineI18nMiddleware<
+export function defineIntlifyMiddleware<
   Schema = DefaultLocaleMessageSchema,
   Locales = string,
   Message = string,
@@ -130,51 +130,51 @@ export function defineI18nMiddleware<
     LocaleParams<Locales>
   > = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
 >(options: Options): MiddlewareHandler {
-  const i18n = createCoreContext(options as unknown as CoreOptions)
-  const orgLocale = i18n.locale
+  const intlify = createCoreContext(options as unknown as CoreOptions)
+  const orgLocale = intlify.locale
 
   let staticLocaleDetector: LocaleDetector | null = null
   if (typeof orgLocale === 'string') {
     console.warn(
-      `defineI18nMiddleware 'locale' option is static ${orgLocale} locale! you should specify dynamic locale detector function.`
+      `defineIntlifyMiddleware 'locale' option is static ${orgLocale} locale! you should specify dynamic locale detector function.`
     )
     staticLocaleDetector = () => orgLocale
   }
 
-  const getLocaleDetector = (ctx: Context, i18n: CoreContext): LocaleDetector => {
+  const getLocaleDetector = (ctx: Context, intlify: CoreContext): LocaleDetector => {
     return typeof orgLocale === 'function'
-      ? orgLocale.bind(null, ctx, i18n)
+      ? orgLocale.bind(null, ctx, intlify)
       : staticLocaleDetector == null
         ? detectLocaleFromAcceptLanguageHeader.bind(null, ctx)
-        : staticLocaleDetector.bind(null, ctx, i18n)
+        : staticLocaleDetector.bind(null, ctx, intlify)
   }
 
   return async (ctx: Context, next: Next) => {
-    const detector = getLocaleDetector(ctx, i18n as CoreContext)
-    i18n.locale = detector
-    ctx.set('i18nLocaleDetector', detector)
-    ctx.set('i18n', i18n as CoreContext)
+    const detector = getLocaleDetector(ctx, intlify as CoreContext)
+    intlify.locale = detector
+    ctx.set('intlifyLocaleDetector', detector)
+    ctx.set('intlify', intlify as CoreContext)
 
     await next()
 
-    i18n.locale = orgLocale
-    ctx.set('i18n', undefined)
-    ctx.set('i18nLocaleDetector', undefined)
+    intlify.locale = orgLocale
+    ctx.set('intlify', undefined)
+    ctx.set('intlifyLocaleDetector', undefined)
   }
 }
 
 /**
  * locale detection with `Accept-Language` header
  *
- * @param ctx - A Hono context
+ * @param c - A Hono context
  * @returns A locale string, which will be detected of **first** from `Accept-Language` header
  *
  * @example
  * ```js
  * import { Hono } from 'hono'
- * import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/hono'
+ * import { defineIntlifyMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/hono'
  *
- * const i18nMiddleware = defineI18nMiddleware({
+ * const intlify = defineIntlifyMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -187,24 +187,24 @@ export function defineI18nMiddleware<
  * })
  *
  * const app = new Hono()
- * app.use('*', i18nMiddleware)
+ * app.use('*', intlify)
  * ```
  */
-export const detectLocaleFromAcceptLanguageHeader = (ctx: Context): Locale =>
-  getHeaderLocale(ctx.req.raw).toString()
+export const detectLocaleFromAcceptLanguageHeader = (c: Context): Locale =>
+  getHeaderLocale(c.req.raw).toString()
 
 async function getLocaleAndIntlifyContext(ctx: Context): Promise<[string, CoreContext]> {
-  const intlify = ctx.get('i18n')
+  const intlify = ctx.get('intlify')
   if (intlify == null) {
     throw new Error(
-      'middleware not initialized, please setup `app.use` with the middleware obtained with `defineI18nMiddleware`'
+      'middleware not initialized, please setup `app.use` with the middleware obtained with `defineIntlifyMiddleware`'
     )
   }
 
-  const localeDetector = ctx.get('i18nLocaleDetector')
+  const localeDetector = ctx.get('intlifyLocaleDetector')
   if (localeDetector == null) {
     throw new Error(
-      'locale detector not found in context, please make sure that the i18n middleware is correctly set up'
+      'locale detector not found in context, please make sure that the intlify middleware is correctly set up'
     )
   }
 
@@ -218,15 +218,15 @@ async function getLocaleAndIntlifyContext(ctx: Context): Promise<[string, CoreCo
 /**
  * use translation function in handler
  *
- * @param ctx - A Hono context
- * @returns Return a translation function, which can be translated with i18n resource messages
+ * @param c - A Hono context
+ * @returns Return a translation function, which can be translated with intlify resource messages
  *
  * @example
  * ```js
  * import { Hono } from 'hono'
- * import { defineI18nMiddleware } from '@intlify/hono'
+ * import { defineIntlifyMiddleware } from '@intlify/hono'
  *
- * const i18nMiddleware = defineI18nMiddleware({
+ * const intlify = defineIntlifyMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -238,20 +238,20 @@ async function getLocaleAndIntlifyContext(ctx: Context): Promise<[string, CoreCo
  * })
  *
  * const app = new Hono()
- * app.use('*', i18nMiddleware)
+ * app.use('*', intlify)
  * // setup other middlewares ...
  *
- * app.get('/', async (ctx) => {
- *   const t = await useTranslation(ctx)
- *   return ctx.text(t('hello', { name: 'hono' }))
+ * app.get('/', async (c) => {
+ *   const t = await useTranslation(c)
+ *   return c.text(t('hello', { name: 'hono' }))
  * })
  * ```
  */
 export async function useTranslation<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   HonoContext extends Context = Context
->(ctx: HonoContext): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
-  const [locale, intlify] = await getLocaleAndIntlifyContext(ctx)
+>(c: HonoContext): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
+  const [locale, intlify] = await getLocaleAndIntlifyContext(c)
   intlify.locale = locale
   function translate(key: string, ...args: unknown[]): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
@@ -278,24 +278,24 @@ export async function useTranslation<
 /**
  * get a locale which is detected with locale detector.
  *
- * @description The locale obtainable via this function comes from the locale detector specified in the `locale` option of the {@link defineI18nMiddleware}.
+ * @description The locale obtainable via this function comes from the locale detector specified in the `locale` option of the {@link defineIntlifyMiddleware}.
  *
  * @example
  * ```js
  * app.get(
  *   '/',
- *   async ctx => {
- *     const locale = await getDetectorLocale(ctx)
- *     return ctx.text(`Current Locale: ${locale.language}`)
+ *   async c => {
+ *     const locale = await getDetectorLocale(c)
+ *     return c.text(`Current Locale: ${locale.language}`)
  *   },
  * )
  * ```
  *
- * @param ctx - A Hono context
+ * @param c - A Hono context
  *
  * @returns Return an {@linkcode Intl.Locale} instance representing the detected locale
  */
-export async function getDetectorLocale(ctx: Context): Promise<Intl.Locale> {
-  const [locale] = await getLocaleAndIntlifyContext(ctx)
+export async function getDetectorLocale(c: Context): Promise<Intl.Locale> {
+  const [locale] = await getLocaleAndIntlifyContext(c)
   return new Intl.Locale(locale)
 }

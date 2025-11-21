@@ -5,7 +5,7 @@ import type { LocaleDetector } from '@intlify/core'
 import type { Context } from 'hono'
 
 import {
-  defineI18nMiddleware,
+  defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   getDetectorLocale,
   useTranslation
@@ -25,8 +25,8 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   expect(detectLocaleFromAcceptLanguageHeader(mockContext)).toBe('en-US')
 })
 
-test('defineI18nMiddleware', () => {
-  const middleware = defineI18nMiddleware({
+test('defineIntlifyMiddleware', () => {
+  const intlify = defineIntlifyMiddleware({
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
@@ -37,13 +37,13 @@ test('defineI18nMiddleware', () => {
       }
     }
   })
-  expect(typeof middleware).toBe('function')
+  expect(typeof intlify).toBe('function')
 })
 
 describe('useTranslation', () => {
   test('basic', async () => {
     /**
-     * setup `defineI18nMiddleware` emulates
+     * setup `defineIntlifyMiddleware` emulates
      */
     const context = createCoreContext({
       locale: detectLocaleFromAcceptLanguageHeader,
@@ -65,9 +65,9 @@ describe('useTranslation', () => {
         }
       },
       get: (key: string) => {
-        if (key === 'i18n') {
+        if (key === 'intlify') {
           return context
-        } else if (key === 'i18nLocaleDetector') {
+        } else if (key === 'intlifyLocaleDetector') {
           const locale = context.locale as unknown
           return (locale as LocaleDetector).bind(null, mockContext)
         }
@@ -97,7 +97,7 @@ describe('useTranslation', () => {
 
 test('getDetectorLocale', async () => {
   /**
-   * setup `defineI18nMiddleware` emulates
+   * setup `defineIntlifyMiddleware` emulates
    */
   const context = createCoreContext({
     locale: detectLocaleFromAcceptLanguageHeader
@@ -111,9 +111,9 @@ test('getDetectorLocale', async () => {
       }
     },
     get: (key: string) => {
-      if (key === 'i18n') {
+      if (key === 'intlify') {
         return context
-      } else if (key === 'i18nLocaleDetector') {
+      } else if (key === 'intlifyLocaleDetector') {
         const locale = context.locale as unknown
         return (locale as LocaleDetector).bind(null, mockContext)
       }

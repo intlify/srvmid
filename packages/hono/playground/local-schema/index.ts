@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import {
-  defineI18nMiddleware,
+  defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   useTranslation
 } from '../../src/index.ts' // in your project, `import { ... } from '@inlify/hono'`
@@ -8,7 +8,7 @@ import {
 import en from './locales/en.ts'
 import ja from './locales/ja.ts'
 
-const i18n = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   locale: detectLocaleFromAcceptLanguageHeader,
   messages: {
     en,
@@ -17,7 +17,7 @@ const i18n = defineI18nMiddleware({
 })
 
 const app: Hono = new Hono()
-app.use('*', i18n)
+app.use('*', intlify)
 app.get('/', async c => {
   type ResourceSchema = {
     hello: string

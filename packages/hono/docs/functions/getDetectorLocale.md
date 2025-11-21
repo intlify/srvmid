@@ -7,7 +7,7 @@
 # Function: getDetectorLocale()
 
 ```ts
-function getDetectorLocale(ctx): Promise<Intl.Locale>;
+function getDetectorLocale(c): Promise<Locale>;
 ```
 
 get a locale which is detected with locale detector.
@@ -16,26 +16,26 @@ get a locale which is detected with locale detector.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `ctx` | `Context` | A Hono context |
+| `c` | `Context` | A Hono context |
 
 ## Returns
 
-`Promise`\<`Intl.Locale`\>
+`Promise`\<`Locale`\>
 
 Return an `Intl.Locale` instance representing the detected locale
 
 ## Description
 
-The locale obtainable via this function comes from the locale detector specified in the `locale` option of the [defineI18nMiddleware](defineI18nMiddleware.md).
+The locale obtainable via this function comes from the locale detector specified in the `locale` option of the [defineIntlifyMiddleware](defineIntlifyMiddleware.md).
 
 ## Example
 
 ```js
 app.get(
   '/',
-  async ctx => {
-    const locale = await getDetectorLocale(ctx)
-    return ctx.text(`Current Locale: ${locale.language}`)
+  async c => {
+    const locale = await getDetectorLocale(c)
+    return c.text(`Current Locale: ${locale.language}`)
   },
 )
 ```
