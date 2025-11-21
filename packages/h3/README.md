@@ -149,11 +149,11 @@ export default defineNitroPlugin(nitroApp => {
 
 You can detect locale with your custom logic from current `H3Event`.
 
-example for detecting locale from url query:
+example for detecting locale from url query, and get locale with `getDetectorLocale` util:
 
 ```ts
 import { H3 } from 'h3'
-import { intlify, getQueryLocale } from '@intlify/h3'
+import { intlify, getQueryLocale, getDetectorLocale } from '@intlify/h3'
 
 import type { H3Event } from 'h3'
 
@@ -171,6 +171,11 @@ const app = new H3({
       // ...
     })
   ]
+})
+
+app.get('/', async event => {
+  const locale = await getDetectorLocale(event)
+  console.log(`Current Locale: ${locale.language}`)
 })
 ```
 

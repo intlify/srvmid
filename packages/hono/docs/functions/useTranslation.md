@@ -25,7 +25,7 @@ function useTranslation<Schema, HonoContext>(ctx): Promise<TranslationFunction<S
 }>>>>;
 ```
 
-use translation function in event handler
+use translation function in handler
 
 ## Type Parameters
 

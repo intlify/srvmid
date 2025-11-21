@@ -13,6 +13,7 @@ Internationalization middleware & utilities for Hono
 | [defineI18nMiddleware](functions/defineI18nMiddleware.md) | define i18n middleware for Hono |
 | [detectLocaleFromAcceptLanguageHeader](functions/detectLocaleFromAcceptLanguageHeader.md) | locale detection with `Accept-Language` header |
 | [getCookieLocale](functions/getCookieLocale.md) | get locale from cookie |
+| [getDetectorLocale](functions/getDetectorLocale.md) | get a locale which is detected with locale detector. |
 | [getHeaderLanguage](functions/getHeaderLanguage.md) | get language from header |
 | [getHeaderLanguages](functions/getHeaderLanguages.md) | get languages from header |
 | [getHeaderLocale](functions/getHeaderLocale.md) | get locale from header |
@@ -25,7 +26,7 @@ Internationalization middleware & utilities for Hono
 | [tryHeaderLocales](functions/tryHeaderLocales.md) | try to get locales from header |
 | [tryPathLocale](functions/tryPathLocale.md) | try to get the locale from the path |
 | [tryQueryLocale](functions/tryQueryLocale.md) | try to get the locale from the query |
-| [useTranslation](functions/useTranslation.md) | use translation function in event handler |
+| [useTranslation](functions/useTranslation.md) | use translation function in handler |
 
 ## Interfaces
 

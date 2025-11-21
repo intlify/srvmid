@@ -7,6 +7,7 @@ import type { Context } from 'hono'
 import {
   defineI18nMiddleware,
   detectLocaleFromAcceptLanguageHeader,
+  getDetectorLocale,
   useTranslation
 } from './index.ts'
 
@@ -92,4 +93,34 @@ describe('useTranslation', () => {
 
     await expect(() => useTranslation(mockContext)).rejects.toThrowError()
   })
+})
+
+test('getDetectorLocale', async () => {
+  /**
+   * setup `defineI18nMiddleware` emulates
+   */
+  const context = createCoreContext({
+    locale: detectLocaleFromAcceptLanguageHeader
+  })
+  const mockContext = {
+    req: {
+      raw: {
+        headers: {
+          get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+        }
+      }
+    },
+    get: (key: string) => {
+      if (key === 'i18n') {
+        return context
+      } else if (key === 'i18nLocaleDetector') {
+        const locale = context.locale as unknown
+        return (locale as LocaleDetector).bind(null, mockContext)
+      }
+    }
+  } as Context
+
+  // test `getDetectorLocale`
+  const locale = await getDetectorLocale(mockContext)
+  expect(locale.language).toEqual('ja')
 })
