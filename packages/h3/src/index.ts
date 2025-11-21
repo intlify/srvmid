@@ -18,7 +18,7 @@ import {
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
 import { definePlugin, getEventContext, onRequest, onResponse } from 'h3'
-import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
+import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from './symbols.ts'
 
 export {
   getCookieLocale,
@@ -54,8 +54,8 @@ import type { TranslationFunction } from '../../shared/src/types.ts'
 
 declare module 'h3' {
   interface H3EventContext {
-    [SYMBOL_I18N]?: CoreContext
-    [SYMBOL_I18N_LOCALE]?: LocaleDetector
+    [SYMBOL_INTLIFY]?: CoreContext
+    [SYMBOL_INTLIFY_LOCALE]?: LocaleDetector
   }
 }
 
@@ -68,7 +68,7 @@ type DefaultLocaleMessageSchema<
 /**
  * Internationalization middleware for H3
  */
-export interface I18nMiddleware {
+export interface IntlifyMiddleware {
   /**
    * Request middleware which is defined with [`onRequest`](https://h3.dev/utils/more#onrequesthook)
    */
@@ -86,7 +86,7 @@ export interface I18nMiddleware {
  * @typeParam Locales - Locale type, default is `string`
  * @typeParam Message - Message type, default is `string`
  */
-export type I18nPluginOptions<
+export type IntlifyPluginOptions<
   Schema = DefaultLocaleMessageSchema,
   Locales = string,
   Message = string
@@ -98,11 +98,11 @@ export type I18nPluginOptions<
  * @example
  * ```ts
  * import { H3 } from 'h3'
- * import { plugin as i18n } from '@intlify/h3'
+ * import { intlify } from '@intlify/h3'
  *
  * const app = new H3({
  *   plugins: [
- *     i18n({
+ *     intlify({
  *       messages: {
  *         en: {
  *           hello: 'Hello {name}!',
@@ -119,8 +119,8 @@ export type I18nPluginOptions<
  *   ]
  * })
  */
-export const intlify = definePlugin<I18nPluginOptions>((h3, options) => {
-  const { onRequest, onResponse } = defineI18nMiddleware(options)
+export const intlify = definePlugin<IntlifyPluginOptions>((h3, options) => {
+  const { onRequest, onResponse } = defineIntlifyMiddleware(options)
   h3.use(onRequest)
   h3.use(onResponse)
 })
@@ -136,9 +136,9 @@ export const intlify = definePlugin<I18nPluginOptions>((h3, options) => {
  *
  * ```js
  * import { H3 } from 'h3'
- * import { defineI18nMiddleware } from '@intlify/h3'
+ * import { defineIntlifyMiddleware } from '@intlify/h3'
  *
- * const i18nMiddleware = defineI18nMiddleware({
+ * const intlifyMiddleware = defineIntlifyMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -154,8 +154,8 @@ export const intlify = definePlugin<I18nPluginOptions>((h3, options) => {
  * })
  *
  * const app = new H3()
- *   .use(i18nMiddleware.onRequest) // register `onRequest` hook before your application middlewares
- *   .use(i18nMiddleware.onResponse) // register `onResponse` hook before your application middlewares
+ *   .use(intlifyMiddleware.onRequest) // register `onRequest` hook before your application middlewares
+ *   .use(intlifyMiddleware.onResponse) // register `onResponse` hook before your application middlewares
  * ```
  *
  * @param options - An `i18n` options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
@@ -164,7 +164,7 @@ export const intlify = definePlugin<I18nPluginOptions>((h3, options) => {
  *
  * @internal
  */
-export function defineI18nMiddleware<
+export function defineIntlifyMiddleware<
   Schema = DefaultLocaleMessageSchema,
   Locales = string,
   Message = string,
@@ -173,9 +173,9 @@ export function defineI18nMiddleware<
     SchemaParams<Schema, Message>,
     LocaleParams<Locales>
   > = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
->(options: Options): I18nMiddleware {
-  const i18n = createCoreContext(options as unknown as CoreOptions)
-  const orgLocale = i18n.locale
+>(options: Options): IntlifyMiddleware {
+  const intlify = createCoreContext(options as unknown as CoreOptions)
+  const orgLocale = intlify.locale
 
   let staticLocaleDetector: LocaleDetector | null = null
   if (typeof orgLocale === 'string') {
@@ -185,26 +185,26 @@ export function defineI18nMiddleware<
     staticLocaleDetector = () => orgLocale
   }
 
-  const getLocaleDetector = (event: H3Event, i18n: CoreContext): LocaleDetector => {
+  const getLocaleDetector = (event: H3Event, intlify: CoreContext): LocaleDetector => {
     return typeof orgLocale === 'function'
-      ? orgLocale.bind(null, event, i18n)
+      ? orgLocale.bind(null, event, intlify)
       : staticLocaleDetector == null
         ? detectLocaleFromAcceptLanguageHeader.bind(null, event)
-        : staticLocaleDetector.bind(null, event, i18n)
+        : staticLocaleDetector.bind(null, event, intlify)
   }
 
   return {
     onRequest: onRequest(event => {
       const context = getEventContext<H3EventContext>(event)
-      context[SYMBOL_I18N_LOCALE] = getLocaleDetector(event, i18n as CoreContext)
-      i18n.locale = context[SYMBOL_I18N_LOCALE]
-      context[SYMBOL_I18N] = i18n as CoreContext
+      context[SYMBOL_INTLIFY_LOCALE] = getLocaleDetector(event, intlify as CoreContext)
+      intlify.locale = context[SYMBOL_INTLIFY_LOCALE]
+      context[SYMBOL_INTLIFY] = intlify as CoreContext
     }),
     onResponse: onResponse((_, event) => {
-      i18n.locale = orgLocale
+      intlify.locale = orgLocale
       const context = getEventContext<H3EventContext>(event)
-      delete context[SYMBOL_I18N]
-      delete context[SYMBOL_I18N_LOCALE]
+      delete context[SYMBOL_INTLIFY]
+      delete context[SYMBOL_INTLIFY_LOCALE]
     })
   }
 }
@@ -215,9 +215,9 @@ export function defineI18nMiddleware<
  * @example
  * ```js
  * import { H3 } from 'h3'
- * import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
+ * import { defineIntlifyMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
  *
- * const i18nMiddleware = defineI18nMiddleware({
+ * const intlifyMiddleware = defineIntlifyMiddleware({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -230,8 +230,8 @@ export function defineI18nMiddleware<
  * })
  *
  * const app = new H3()
- *   .use(i18nMiddleware.onRequest)
- *   .use(i18nMiddleware.onResponse)
+ *   .use(intlifyMiddleware.onRequest)
+ *   .use(intlifyMiddleware.onResponse)
  * ```
  *
  * @param event - A H3 event
@@ -263,13 +263,13 @@ export interface DefineLocaleMessage extends LocaleMessage<string> {}
 
 async function getLocaleAndEventContext(event: H3Event): Promise<[string, H3EventContext]> {
   const context = getEventContext<H3EventContext>(event)
-  if (context[SYMBOL_I18N] == null) {
+  if (context[SYMBOL_INTLIFY] == null) {
     throw new Error(
       'plugin has not been initialized. Please check that the `intlify` plugin is installed correctly.'
     )
   }
 
-  const localeDetector = context[SYMBOL_I18N_LOCALE] as unknown as LocaleDetector
+  const localeDetector = context[SYMBOL_INTLIFY_LOCALE] as LocaleDetector
   // Always await detector call - works for both sync and async detectors
   // (awaiting a non-promise value returns it immediately)
   const locale = await localeDetector(event)
@@ -299,7 +299,7 @@ export async function useTranslation<
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, context] = await getLocaleAndEventContext(event)
-  context[SYMBOL_I18N]!.locale = locale
+  context[SYMBOL_INTLIFY]!.locale = locale
   function translate(key: string, ...args: unknown[]): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
@@ -307,7 +307,7 @@ export async function useTranslation<
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): generic type
     const result = Reflect.apply(_translate, null, [
-      context[SYMBOL_I18N]!,
+      context[SYMBOL_INTLIFY]!,
       key,
       arg2,
       {

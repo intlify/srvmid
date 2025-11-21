@@ -16,7 +16,7 @@ Internationalization plugin for H3
 
 | Parameter | Type |
 | ------ | ------ |
-| `options` | [`I18nPluginOptions`](../type-aliases/I18nPluginOptions.md) |
+| `options` | [`IntlifyPluginOptions`](../type-aliases/IntlifyPluginOptions.md) |
 
 ## Returns
 
@@ -26,11 +26,11 @@ Internationalization plugin for H3
 
 ```ts
 import { H3 } from 'h3'
-import { plugin as i18n } from '@intlify/h3'
+import { intlify } from '@intlify/h3'
 
 const app = new H3({
   plugins: [
-    i18n({
+    intlify({
       messages: {
         en: {
           hello: 'Hello {name}!',

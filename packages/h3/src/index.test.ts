@@ -1,9 +1,9 @@
 import { createCoreContext } from '@intlify/core'
 import { describe, expect, test } from 'vitest'
-import { SYMBOL_I18N, SYMBOL_I18N_LOCALE } from './symbols.ts'
+import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from './symbols.ts'
 
 import {
-  defineI18nMiddleware,
+  defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   getDetectorLocale,
   useTranslation
@@ -23,8 +23,8 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
 
-test('defineI18nMiddleware', () => {
-  const middleware = defineI18nMiddleware({
+test('defineIntlifyMiddleware', () => {
+  const middleware = defineIntlifyMiddleware({
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
@@ -62,14 +62,14 @@ describe('useTranslation', () => {
         }
       },
       context: {
-        [SYMBOL_I18N]: context as CoreContext
+        [SYMBOL_INTLIFY]: context as CoreContext
       }
     } as H3Event
     const locale = context.locale as unknown
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
     // @ts-ignore ignore type error because this is test
     context.locale = bindLocaleDetector
-    eventMock.context[SYMBOL_I18N_LOCALE] = bindLocaleDetector
+    eventMock.context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
 
     // test `useTranslation`
     const t = await useTranslation(eventMock)
@@ -101,14 +101,14 @@ test('getDetectorLocale', async () => {
       }
     },
     context: {
-      [SYMBOL_I18N]: context as CoreContext
+      [SYMBOL_INTLIFY]: context as CoreContext
     }
   } as H3Event
   const _locale = context.locale as unknown
   const bindLocaleDetector = (_locale as LocaleDetector).bind(null, eventMock)
   // @ts-ignore ignore type error because this is test
   context.locale = bindLocaleDetector
-  eventMock.context[SYMBOL_I18N_LOCALE] = bindLocaleDetector
+  eventMock.context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
 
   const locale = await getDetectorLocale(eventMock)
   expect(locale.language).toEqual('ja')

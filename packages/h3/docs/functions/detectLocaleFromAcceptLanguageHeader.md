@@ -28,9 +28,9 @@ A locale string, which will be detected of **first** from `Accept-Language` head
 
 ```js
 import { H3 } from 'h3'
-import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
+import { defineIntlifyMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
 
-const i18nMiddleware = defineI18nMiddleware({
+const intlifyMiddleware = defineIntlifyMiddleware({
   messages: {
     en: {
       hello: 'Hello {name}!',
@@ -43,6 +43,6 @@ const i18nMiddleware = defineI18nMiddleware({
 })
 
 const app = new H3()
-  .use(i18nMiddleware.onRequest)
-  .use(i18nMiddleware.onResponse)
+  .use(intlifyMiddleware.onRequest)
+  .use(intlifyMiddleware.onResponse)
 ```

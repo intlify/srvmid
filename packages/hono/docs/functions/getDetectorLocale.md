@@ -7,7 +7,7 @@
 # Function: getDetectorLocale()
 
 ```ts
-function getDetectorLocale(c): Promise<Intl.Locale>;
+function getDetectorLocale(c): Promise<Locale>;
 ```
 
 get a locale which is detected with locale detector.
@@ -20,7 +20,7 @@ get a locale which is detected with locale detector.
 
 ## Returns
 
-`Promise`\<`Intl.Locale`\>
+`Promise`\<`Locale`\>
 
 Return an `Intl.Locale` instance representing the detected locale
 

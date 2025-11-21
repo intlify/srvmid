@@ -117,34 +117,6 @@ app.get('/', async event => {
 createServer(toNodeListener(app)).listen(3000)
 ```
 
-## 🚀 Usage (Nitro)
-
-For usage with [Nitro](https://nitro.build/) you need to create a plugin instead, create file `plugins/i18n.ts`:
-
-```ts
-import { defineNitroPlugin } from 'nitropack/runtime'
-import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
-
-export default defineNitroPlugin(nitroApp => {
-  const { onRequest, onAfterResponse } = defineI18nMiddleware({
-    // detect locale with `accept-language` header
-    locale: detectLocaleFromAcceptLanguageHeader,
-    // resource messages
-    messages: {
-      en: {
-        hello: 'Hello {name}!'
-      },
-      ja: {
-        hello: 'こんにちは、{name}！'
-      }
-    }
-  })
-
-  nitroApp.hooks.hook('request', onRequest)
-  nitroApp.hooks.hook('afterResponse', onAfterResponse)
-})
-```
-
 ## 🛠️ Custom locale detection
 
 You can detect locale with your custom logic from current `H3Event`.
@@ -204,16 +176,16 @@ const messages: Record<string, () => ReturnType<typeof loader>> = {
 // define custom locale detector and lazy loading
 const localeDetector = async (
   event: H3Event,
-  i18n: CoreContext<string, DefineLocaleMessage>
+  intlify: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
   // detect locale
   const locale = getCookieLocale(event.req).toString()
 
   // resource lazy loading
   const loader = messages[locale]
-  if (loader && !i18n.messages[locale]) {
+  if (loader && !intlify.messages[locale]) {
     const message = await loader()
-    i18n.messages[locale] = message
+    intlify.messages[locale] = message
   }
 
   return locale

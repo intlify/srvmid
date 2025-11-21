@@ -38,11 +38,11 @@ Internationalization middleware & utilities for h3
 | Interface | Description |
 | ------ | ------ |
 | [DefineLocaleMessage](interfaces/DefineLocaleMessage.md) | The type definition of Locale Message for `@intlify/h3` package |
-| [I18nMiddleware](interfaces/I18nMiddleware.md) | Internationalization middleware for H3 |
+| [IntlifyMiddleware](interfaces/IntlifyMiddleware.md) | Internationalization middleware for H3 |
 
 ## Type Aliases
 
 | Type Alias | Description |
 | ------ | ------ |
 | [CoreContext](type-aliases/CoreContext.md) | - |
-| [I18nPluginOptions](type-aliases/I18nPluginOptions.md) | Internationalization plugin options for H3 |
+| [IntlifyPluginOptions](type-aliases/IntlifyPluginOptions.md) | Internationalization plugin options for H3 |

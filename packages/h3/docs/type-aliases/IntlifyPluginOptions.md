@@ -2,12 +2,12 @@
 
 ***
 
-[@intlify/h3](../index.md) / I18nPluginOptions
+[@intlify/h3](../index.md) / IntlifyPluginOptions
 
-# Type Alias: I18nPluginOptions\<Schema, Locales, Message\>
+# Type Alias: IntlifyPluginOptions\<Schema, Locales, Message\>
 
 ```ts
-type I18nPluginOptions<Schema, Locales, Message> = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>;
+type IntlifyPluginOptions<Schema, Locales, Message> = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>;
 ```
 
 Internationalization plugin options for H3

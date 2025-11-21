@@ -1,5 +1,5 @@
 import { expectTypeOf, test } from 'vitest'
-import { defineI18nMiddleware, useTranslation } from './index.ts'
+import { defineIntlifyMiddleware, useTranslation } from './index.ts'
 
 import type { H3Event } from 'h3'
 
@@ -18,12 +18,12 @@ declare module './index.ts' {
   }
 }
 
-test('defineI18nMiddleware', () => {
+test('defineIntlifyMiddleware', () => {
   const _en = {
     hello: 'worked'
   }
   type ResourceSchema = typeof _en
-  defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
+  defineIntlifyMiddleware<[ResourceSchema], 'en' | 'ja'>({
     messages: {
       en: { hello: 'world' },
       ja: { hello: '世界' }

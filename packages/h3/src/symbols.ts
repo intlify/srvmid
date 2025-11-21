@@ -7,5 +7,5 @@
  * @license MIT
  */
 
-export const SYMBOL_I18N = Symbol('__INTLIFY_H3_I18N__')
-export const SYMBOL_I18N_LOCALE = Symbol('__INTLIFY_H3_I18N_LOCALE__')
+export const SYMBOL_INTLIFY = Symbol('__INTLIFY_H3__')
+export const SYMBOL_INTLIFY_LOCALE = Symbol('__INTLIFY_H3_LOCALE__')

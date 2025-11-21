@@ -2,9 +2,9 @@
 
 ***
 
-[@intlify/h3](../index.md) / I18nMiddleware
+[@intlify/h3](../index.md) / IntlifyMiddleware
 
-# Interface: I18nMiddleware
+# Interface: IntlifyMiddleware
 
 Internationalization middleware for H3
 
