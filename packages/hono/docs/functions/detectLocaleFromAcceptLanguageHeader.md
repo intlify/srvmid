@@ -7,7 +7,7 @@
 # Function: detectLocaleFromAcceptLanguageHeader()
 
 ```ts
-function detectLocaleFromAcceptLanguageHeader(ctx): string;
+function detectLocaleFromAcceptLanguageHeader(c): string;
 ```
 
 locale detection with `Accept-Language` header
@@ -16,7 +16,7 @@ locale detection with `Accept-Language` header
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `ctx` | `Context` | A Hono context |
+| `c` | `Context` | A Hono context |
 
 ## Returns
 
@@ -28,9 +28,9 @@ A locale string, which will be detected of **first** from `Accept-Language` head
 
 ```js
 import { Hono } from 'hono'
-import { defineI18nMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/hono'
+import { defineIntlifyMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/hono'
 
-const i18nMiddleware = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   messages: {
     en: {
       hello: 'Hello {name}!',
@@ -43,5 +43,5 @@ const i18nMiddleware = defineI18nMiddleware({
 })
 
 const app = new Hono()
-app.use('*', i18nMiddleware)
+app.use('*', intlify)
 ```

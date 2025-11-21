@@ -1,6 +1,6 @@
 // in your project, `import { ... } from '@inlify/hono'`
 import { Hono } from 'hono'
-import { defineI18nMiddleware } from '../../src/index.ts'
+import { defineIntlifyMiddleware } from '../../src/index.ts'
 
 // define resource schema
 type ResourceSchema = {
@@ -10,7 +10,7 @@ type ResourceSchema = {
 // you can specify resource schema and locales to type parameter.
 // - first type parameter: resource schema
 // - second type parameter: locales
-const i18n = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
+const intlify = defineIntlifyMiddleware<[ResourceSchema], 'en' | 'ja'>({
   messages: {
     en: { hello: 'Hello, {name}' },
     // you can see the type error, when you will comment out the below `ja` resource
@@ -21,7 +21,7 @@ const i18n = defineI18nMiddleware<[ResourceSchema], 'en' | 'ja'>({
 })
 
 const app: Hono = new Hono()
-app.use('*', i18n)
+app.use('*', intlify)
 // something your implementation code ...
 // ...
 

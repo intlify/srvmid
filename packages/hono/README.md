@@ -72,18 +72,18 @@ app.get('/', c => {
 
 ### Translation
 
-If you want to use translation, you need to install middleware. As a result, you can use `useTranslation` within the handler:
+If you want to use translation, you need to install `intlify` middleware. As a result, you can use `useTranslation` within the handler:
 
 ```ts
 import { Hono } from 'hono'
 import {
-  defineI18nMiddleware,
+  defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   useTranslation
 } from '@intlify/hono'
 
 // define middleware with vue-i18n like options
-const i18nMiddleware = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   // detect locale with `accept-language` header
   locale: detectLocaleFromAcceptLanguageHeader,
   // resource messages
@@ -101,8 +101,8 @@ const i18nMiddleware = defineI18nMiddleware({
 
 const app = new Hono()
 
-// install middleware with `app.use`
-app.use('*', i18nMiddleware)
+// install intlify middleware with `app.use`
+app.use('*', intlify)
 
 app.get('/', async c => {
   // use `useTranslation` in handler
@@ -121,21 +121,21 @@ example for detecting locale from url query, and get locale with `getDetectorLoc
 
 ```ts
 import { Hono } from 'hono'
-import { defineI18nMiddleware, getQueryLocale, getDetectorLocale } from '@intlify/hono'
+import { defineIntlifyMiddleware, getQueryLocale, getDetectorLocale } from '@intlify/hono'
 import type { Context } from 'hono'
 
 const DEFAULT_LOCALE = 'en'
 
 // define custom locale detector
-const localeDetector = (ctx: Context): string => {
+const localeDetector = (c: Context): string => {
   try {
-    return getQueryLocale(ctx.req.raw).toString()
+    return getQueryLocale(c.req.raw).toString()
   } catch {
     return DEFAULT_LOCALE
   }
 }
 
-const i18nMiddleware = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   // set your custom locale detector
   locale: localeDetector
   // something options
@@ -143,10 +143,10 @@ const i18nMiddleware = defineI18nMiddleware({
 })
 
 const app = new Hono()
-app.use('*', i18nMiddleware)
-app.get('/', async ctx => {
-  const locale = await getDetectorLocale(ctx)
-  return ctx.text(`Current Locale: ${locale.language}`)
+app.use('*', intlify)
+app.get('/', async c => {
+  const locale = await getDetectorLocale(c)
+  return c.text(`Current Locale: ${locale.language}`)
 })
 ```
 
@@ -161,7 +161,7 @@ You can make that function asynchronous. This is useful when loading resources a
 
 ```ts
 import { Hono } from 'hono'
-import { defineI18nMiddleware, getCookieLocale } from '@intlify/hono'
+import { defineIntlifyMiddleware, getCookieLocale } from '@intlify/hono'
 
 import type { Context } from 'hono'
 import type { DefineLocaleMessage, CoreContext } from '@intlify/h3'
@@ -174,23 +174,23 @@ const messages: Record<string, () => ReturnType<typeof loader>> = {
 
 // define custom locale detector and lazy loading
 const localeDetector = async (
-  ctx: Context,
-  i18n: CoreContext<string, DefineLocaleMessage>
+  c: Context,
+  intlify: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
   // detect locale
-  const locale = getCookieLocale(ctx.req.raw).toString()
+  const locale = getCookieLocale(c.req.raw).toString()
 
   // resource lazy loading
   const loader = messages[locale]
-  if (loader && !i18n.messages[locale]) {
+  if (loader && !intlify.messages[locale]) {
     const message = await loader()
-    i18n.messages[locale] = message
+    intlify.messages[locale] = message
   }
 
   return locale
 }
 
-const middleware = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   // set your custom locale detector
   locale: localeDetector
   // something options

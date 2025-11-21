@@ -2,15 +2,15 @@
 
 ***
 
-[@intlify/hono](../index.md) / defineI18nMiddleware
+[@intlify/hono](../index.md) / defineIntlifyMiddleware
 
-# Function: defineI18nMiddleware()
+# Function: defineIntlifyMiddleware()
 
 ```ts
-function defineI18nMiddleware<Schema, Locales, Message, Options>(options): MiddlewareHandler;
+function defineIntlifyMiddleware<Schema, Locales, Message, Options>(options): MiddlewareHandler;
 ```
 
-define i18n middleware for Hono
+define intlify middleware for Hono
 
 ## Type Parameters
 
@@ -25,13 +25,13 @@ define i18n middleware for Hono
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `options` | `Options` | An i18n options like vue-i18n [`createI18n`]([https://vue-i18n.intlify.dev/guide/#javascript](https://vue-i18n.intlify.dev/guide/#javascript)), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216) |
+| `options` | `Options` | An intlify options like vue-i18n [`createI18n`]([https://vue-i18n.intlify.dev/guide/#javascript](https://vue-i18n.intlify.dev/guide/#javascript)), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216) |
 
 ## Returns
 
 `MiddlewareHandler`
 
-A defined i18n middleware
+A defined intlify middleware
 
 ## Description
 
@@ -41,9 +41,9 @@ Define the middleware to be specified for Hono [`app.use`]([https://hono.dev/gui
 
 ```js
 import { Hono } from 'hono'
-import { defineI18nMiddleware } from '@intlify/hono'
+import { defineIntlifyMiddleware } from '@intlify/hono'
 
-const i18nMiddleware = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   messages: {
     en: {
       hello: 'Hello {name}!',
@@ -59,5 +59,5 @@ const i18nMiddleware = defineI18nMiddleware({
 })
 
 const app = new Hono()
-app.use('*', i18nMiddleware)
+app.use('*', intlify)
 ```

@@ -7,7 +7,7 @@
 # Function: useTranslation()
 
 ```ts
-function useTranslation<Schema, HonoContext>(ctx): Promise<TranslationFunction<Schema, DefineLocaleMessage, ResolveResourceKeys<Schema, DefineLocaleMessage, RemoveIndexSignature<{
+function useTranslation<Schema, HonoContext>(c): Promise<TranslationFunction<Schema, DefineLocaleMessage, ResolveResourceKeys<Schema, DefineLocaleMessage, RemoveIndexSignature<{
 [key: string]: LocaleMessageValue<string>;
   hello: string;
   nest: {
@@ -38,7 +38,7 @@ use translation function in handler
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `ctx` | `HonoContext` | A Hono context |
+| `c` | `HonoContext` | A Hono context |
 
 ## Returns
 
@@ -59,15 +59,15 @@ use translation function in handler
   \};
 \}\>\>\>\>
 
-Return a translation function, which can be translated with i18n resource messages
+Return a translation function, which can be translated with intlify resource messages
 
 ## Example
 
 ```js
 import { Hono } from 'hono'
-import { defineI18nMiddleware } from '@intlify/hono'
+import { defineIntlifyMiddleware } from '@intlify/hono'
 
-const i18nMiddleware = defineI18nMiddleware({
+const intlify = defineIntlifyMiddleware({
   messages: {
     en: {
       hello: 'Hello {name}!',
@@ -79,11 +79,11 @@ const i18nMiddleware = defineI18nMiddleware({
 })
 
 const app = new Hono()
-app.use('*', i18nMiddleware)
+app.use('*', intlify)
 // setup other middlewares ...
 
-app.get('/', async (ctx) => {
-  const t = await useTranslation(ctx)
-  return ctx.text(t('hello', { name: 'hono' }))
+app.get('/', async (c) => {
+  const t = await useTranslation(c)
+  return c.text(t('hello', { name: 'hono' }))
 })
 ```

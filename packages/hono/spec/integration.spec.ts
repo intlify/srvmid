@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 import { delay as sleep } from '../../shared/src/index.ts'
 import {
-  defineI18nMiddleware,
+  defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   getQueryLocale,
   useTranslation
@@ -19,7 +19,7 @@ afterEach(() => {
 })
 
 test('translation', async () => {
-  const i18nMiddleware = defineI18nMiddleware({
+  const intlify = defineIntlifyMiddleware({
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
@@ -31,7 +31,7 @@ test('translation', async () => {
     }
   })
   app = new Hono()
-  app.use('*', i18nMiddleware)
+  app.use('*', intlify)
   app.get('/', async c => {
     const t = await useTranslation(c)
     return c.json({ message: t('hello', { name: 'hono' }) })
@@ -58,7 +58,7 @@ describe('custom locale detection', () => {
       }
     }
 
-    const i18nMiddleware = defineI18nMiddleware({
+    const intlify = defineIntlifyMiddleware({
       locale: localeDetector,
       messages: {
         en: {
@@ -70,7 +70,7 @@ describe('custom locale detection', () => {
       }
     })
     app = new Hono()
-    app.use('*', i18nMiddleware)
+    app.use('*', intlify)
     app.get('/', async c => {
       const t = await useTranslation(c)
       return c.json({ message: t('hello', { name: 'hono' }) })
@@ -101,7 +101,7 @@ describe('custom locale detection', () => {
       return locale
     }
 
-    const i18nMiddleware = defineI18nMiddleware({
+    const intlify = defineIntlifyMiddleware({
       locale: localeDetector,
       messages: {
         en: {
@@ -114,7 +114,7 @@ describe('custom locale detection', () => {
     })
 
     app = new Hono()
-    app.use('*', i18nMiddleware)
+    app.use('*', intlify)
     app.get('/', async c => {
       const t = await useTranslation(c)
       return c.json({ message: t('hello', { name: 'hono' }) })
@@ -137,8 +137,8 @@ describe('custom locale detection', () => {
 
   test('detect with async parallel loading', async () => {
     // async locale detector
-    const localeDetector = async (ctx: Context, i18n: CoreContext<string, DefineLocaleMessage>) => {
-      const locale = getQueryLocale(ctx.req.raw).toString()
+    const localeDetector = async (c: Context, i18n: CoreContext<string, DefineLocaleMessage>) => {
+      const locale = getQueryLocale(c.req.raw).toString()
       await sleep(100)
       const loader = messages[locale]
       if (loader && !i18n.messages[locale]) {
@@ -148,7 +148,7 @@ describe('custom locale detection', () => {
       return locale
     }
 
-    const i18nMiddleware = defineI18nMiddleware({
+    const intlify = defineIntlifyMiddleware({
       locale: localeDetector,
       messages: {
         en: {
@@ -158,7 +158,7 @@ describe('custom locale detection', () => {
     })
 
     app = new Hono()
-    app.use('*', i18nMiddleware)
+    app.use('*', intlify)
     app.use('/', async c => {
       await sleep(100)
       const t = await useTranslation(c)
