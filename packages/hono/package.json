@@ -1,7 +1,7 @@
 {
   "name": "@intlify/hono",
   "description": "Internationalization for Hono",
-  "version": "2.0.0-alpha.7",
+  "version": "2.0.0-beta.1",
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"
