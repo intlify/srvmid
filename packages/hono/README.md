@@ -44,7 +44,7 @@ Detect locale from `accept-language` header:
 
 ```ts
 import { Hono } from 'hono'
-import { getHeaderLocale } from '@intlify/h3'
+import { getHeaderLocale } from '@intlify/hono'
 
 const app = new Hono()
 
@@ -59,7 +59,7 @@ Detect locale from URL query:
 
 ```ts
 import { Hono } from 'hono'
-import { getQueryLocale } from '@intlify/h3'
+import { getQueryLocale } from '@intlify/hono'
 
 const app = new Hono()
 
@@ -164,7 +164,7 @@ import { Hono } from 'hono'
 import { defineIntlifyMiddleware, getCookieLocale } from '@intlify/hono'
 
 import type { Context } from 'hono'
-import type { DefineLocaleMessage, CoreContext } from '@intlify/h3'
+import type { DefineLocaleMessage, CoreContext } from '@intlify/hono'
 
 const loader = (path: string) => import(path).then(m => m.default)
 const messages: Record<string, () => ReturnType<typeof loader>> = {
