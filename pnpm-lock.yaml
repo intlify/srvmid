@@ -45,8 +45,8 @@ importers:
         specifier: ^7.5.1
         version: 7.5.1
       '@kazupon/eslint-config':
-        specifier: ^0.38.0
-        version: 0.38.0(740956f0bce11964e74464f5db2f3f6b)
+        specifier: ^0.39.0
+        version: 0.39.1(740956f0bce11964e74464f5db2f3f6b)
       '@kazupon/prettier-config':
         specifier: ^0.1.1
         version: 0.1.1
@@ -559,8 +559,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kazupon/eslint-config@0.38.0':
-    resolution: {integrity: sha512-8iVUGPxugce76TWoVHLZisgf5pwSf2Vd6tweSyCXO7iLjS+Usf2SlgdDz3hAo3LulJWGV3d6AtPeIDgohNPzIg==}
+  '@kazupon/eslint-config@0.39.1':
+    resolution: {integrity: sha512-MMelU6P15NPGSEN6uf7tPVt9YKZLDKTVgUJvkGAVyIosusrJHlzCuz7bHAJWT9WmCVZ9/v9uiuR5aVjLRuZLEw==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@eslint/css': '>=0.13.0'
@@ -577,6 +577,7 @@ packages:
       eslint-plugin-jsonc: '>=2.21.0'
       eslint-plugin-markdown-preferences: '>=0.36.2'
       eslint-plugin-module-interop: '>=0.3.0'
+      eslint-plugin-oxlint: '>=1.30.0'
       eslint-plugin-promise: '>=7.2.0'
       eslint-plugin-react: '>=7.37.0'
       eslint-plugin-react-hooks: '>=7.0.0'
@@ -620,6 +621,8 @@ packages:
       eslint-plugin-markdown-preferences:
         optional: true
       eslint-plugin-module-interop:
+        optional: true
+      eslint-plugin-oxlint:
         optional: true
       eslint-plugin-promise:
         optional: true
@@ -3595,7 +3598,7 @@ snapshots:
   '@es-joy/jsdoccomment@0.60.0':
     dependencies:
       '@types/estree': 1.0.8
-      '@typescript-eslint/types': 8.46.4
+      '@typescript-eslint/types': 8.47.0
       comment-parser: 1.4.1
       esquery: 1.6.0
       jsdoc-type-pratt-parser: 5.4.0
@@ -3820,7 +3823,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kazupon/eslint-config@0.38.0(740956f0bce11964e74464f5db2f3f6b)':
+  '@kazupon/eslint-config@0.39.1(740956f0bce11964e74464f5db2f3f6b)':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.5.0(eslint@9.39.1(jiti@2.6.1))
       '@eslint/js': 9.39.1
@@ -4174,7 +4177,7 @@ snapshots:
 
   '@stylistic/eslint-plugin@4.4.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/utils': 8.46.4(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.1(jiti@2.6.1)
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
@@ -4266,7 +4269,7 @@ snapshots:
   '@typescript-eslint/project-service@8.46.4(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.46.4(typescript@5.9.3)
-      '@typescript-eslint/types': 8.46.4
+      '@typescript-eslint/types': 8.47.0
       debug: 4.4.3
       typescript: 5.9.3
     transitivePeerDependencies:
