@@ -50,7 +50,7 @@
     "@kazupon/eslint-config": "^0.44.0",
     "@kazupon/prettier-config": "^0.2.0",
     "@types/node": "^24.10.1",
-    "@typescript/native-preview": "7.0.0-dev.20260201.1",
+    "@typescript/native-preview": "7.0.0-dev.20260202.1",
     "@vitest/coverage-v8": "^4.0.10",
     "@vitest/eslint-plugin": "^1.4.3",
     "bumpp": "^10.3.1",
