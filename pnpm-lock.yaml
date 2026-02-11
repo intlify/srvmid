@@ -19,8 +19,8 @@ catalogs:
       specifier: ^0.3.15
       version: 0.3.15
     srvx:
-      specifier: ^0.10.0
-      version: 0.10.0
+      specifier: ^0.11.0
+      version: 0.11.3
     tsdown:
       specifier: ^0.19.0
       version: 0.19.0
@@ -143,7 +143,7 @@ importers:
         version: 0.3.15
       srvx:
         specifier: 'catalog:'
-        version: 0.10.0
+        version: 0.11.3
       tsdown:
         specifier: 'catalog:'
         version: 0.19.0(@typescript/native-preview@7.0.0-dev.20260204.1)(oxc-resolver@11.13.2)(publint@0.3.15)(synckit@0.11.11)(typescript@5.9.3)
@@ -177,7 +177,7 @@ importers:
         version: 0.3.15
       srvx:
         specifier: 'catalog:'
-        version: 0.10.0
+        version: 0.11.3
       tsdown:
         specifier: 'catalog:'
         version: 0.19.0(@typescript/native-preview@7.0.0-dev.20260204.1)(oxc-resolver@11.13.2)(publint@0.3.15)(synckit@0.11.11)(typescript@5.9.3)
@@ -211,7 +211,7 @@ importers:
         version: 0.3.15
       srvx:
         specifier: 'catalog:'
-        version: 0.10.0
+        version: 0.11.3
       tsdown:
         specifier: 'catalog:'
         version: 0.19.0(@typescript/native-preview@7.0.0-dev.20260204.1)(oxc-resolver@11.13.2)(publint@0.3.15)(synckit@0.11.11)(typescript@5.9.3)
@@ -3258,8 +3258,8 @@ packages:
   spdx-license-ids@3.0.22:
     resolution: {integrity: sha512-4PRT4nh1EImPbt2jASOKHX7PB7I+e4IWNLvkKFDxNhJlfjbYlleYQh285Z/3mPTHSAK/AvdMmw5BNNuYH8ShgQ==}
 
-  srvx@0.10.0:
-    resolution: {integrity: sha512-NqIsR+wQCfkvvwczBh8J8uM4wTZx41K2lLSEp/3oMp917ODVVMtW5Me4epCmQ3gH8D+0b+/t4xxkUKutyhimTA==}
+  srvx@0.11.3:
+    resolution: {integrity: sha512-QnQwqpNcu+nVkpRv/CI+mtHNcYNc6SR/A0J7EB22KINixRf2sbjFFu7U3rNrBPWmVhjicEuH9+1rEIDHw8CDeA==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -6841,7 +6841,7 @@ snapshots:
 
   spdx-license-ids@3.0.22: {}
 
-  srvx@0.10.0: {}
+  srvx@0.11.3: {}
 
   srvx@0.9.6: {}
 
