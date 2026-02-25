@@ -13,6 +13,9 @@ import {
   translate as _translate,
   createCoreContext,
   NOT_REOSLVED,
+  resolveValue,
+  compile,
+  fallbackWithLocaleChain,
   // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
 } from '@intlify/core'
@@ -198,6 +201,13 @@ export function defineIntlifyMiddleware<
       const context = getEventContext<H3EventContext>(event)
       context[SYMBOL_INTLIFY_LOCALE] = getLocaleDetector(event, intlify as CoreContext)
       intlify.locale = context[SYMBOL_INTLIFY_LOCALE]
+
+      // @intlify/core has `sideEffects: false`. Some bundlers (like esbuild, used by cloudflare), may tree-shake the `register` calls in `core/src/index.ts`
+      // To get around this, we can explicitly set the compiler, messageResolver, and localeFallbacker here
+      intlify.messageCompiler = compile
+      intlify.messageResolver = resolveValue
+      intlify.localeFallbacker = fallbackWithLocaleChain
+
       context[SYMBOL_INTLIFY] = intlify as CoreContext
     }),
     onResponse: onResponse((_, event) => {
