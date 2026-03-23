@@ -53,7 +53,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260314.1",
     "@vitest/coverage-v8": "^4.0.10",
     "@vitest/eslint-plugin": "^1.4.3",
-    "bumpp": "^10.3.1",
+    "bumpp": "^11.0.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
