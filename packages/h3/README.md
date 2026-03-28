@@ -117,6 +117,45 @@ app.get('/', async event => {
 createServer(toNodeListener(app)).listen(3000)
 ```
 
+## Usage with Nitro
+
+For usage with Nitro you need to create a plugin, e.g. `plugins/i18n.ts`:
+
+```ts
+import { definePlugin } from 'nitro';
+import { defineIntlifyMiddleware } from '@intlify/h3';
+import { i18nConfig } from '~/i18n/i18n.config';
+
+export default definePlugin((nitroApp) => {
+  const { onRequest, onResponse } = defineIntlifyMiddleware({
+    locale: (event) => event.context.locale, // Grab locale from event context, always set by middleware
+    // You config,
+  });
+
+  nitroApp.hooks.hook('request', onRequest);
+  nitroApp.hooks.hook('response', onResponse);
+});
+```
+
+In this example we detect the locale in a middleware so it is available in every event context, `middleware/detect-locale.ts`:
+
+```ts
+import { defineHandler, getValidatedQuery } from 'nitro/h3';
+import * as z from 'zod';
+
+declare module 'nitro/h3' {
+  interface H3EventContext {
+    locale: Locale;
+  }
+}
+
+export default defineHandler(async (event) => {
+  const { locale } = await getValidatedQuery(event, z.object({ locale: z.enum(['en', 'fr', 'de', 'es', 'nl']).optional().default('en') }));
+  event.context.locale = locale;
+});
+```
+
+
 ## 🛠️ Custom locale detection
 
 You can detect locale with your custom logic from current `H3Event`.
