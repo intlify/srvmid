@@ -128,7 +128,7 @@ import { i18nConfig } from '~/i18n/i18n.config';
 
 export default definePlugin((nitroApp) => {
   const { onRequest, onResponse } = defineIntlifyMiddleware({
-    locale: (event) => event.context.locale,
+    locale: (event) => event.context.locale, // Grab locale from event context, always set by middleware
     // You config,
   });
 
