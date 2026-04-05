@@ -20,3 +20,5 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
   - workerd
+  - '@oxfmt/**'
+  - oxfmt
