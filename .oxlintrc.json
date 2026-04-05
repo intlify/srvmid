@@ -1,0 +1,47 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import", "promise", "unicorn", "node"],
+  "extends": ["./node_modules/@kazupon/eslint-plugin/oxlint/recommended.json"],
+  "rules": {
+    "curly": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.{test,spec}.{ts,tsx}"],
+      "plugins": ["vitest"]
+    },
+    {
+      "files": [
+        "**/*.md",
+        "**/*.md/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+        "**/*.config.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+        "**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+        "**/*.e2e-{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+        "**/*.{test,spec}-d.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+        "scripts/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
+      ],
+      "rules": {
+        "@kazupon/enforce-header-comment": "off"
+      }
+    },
+    {
+      "files": ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+      "rules": {
+        "@kazupon/no-tag-comments": [
+          "warn",
+          {
+            "tags": ["TODO", "FIXME", "BUG"]
+          }
+        ]
+      }
+    }
+  ],
+  "ignorePatterns": [
+    ".vscode/**/*.json",
+    ".claude/**/*.md",
+    "**/dist",
+    "**/tsconfig*.json",
+    "packages/**/docs/**",
+    "**/playground/**"
+  ]
+}

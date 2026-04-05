@@ -1,3 +1,8 @@
+/**
+ * @author kazuya kawaguchi (a.k.a. kazupon)
+ * @license MIT
+ */
+
 import type {
   IsEmptyObject,
   NamedValue,
@@ -7,8 +12,8 @@ import type {
 } from '@intlify/core'
 
 type ResolveResourceKeys<
-  Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
-  DefineLocaleMessageSchema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
+  Schema extends Record<string, any> = {},
+  DefineLocaleMessageSchema extends Record<string, any> = {},
   DefinedLocaleMessage extends RemovedIndexResources<DefineLocaleMessageSchema> =
     RemovedIndexResources<DefineLocaleMessageSchema>,
   SchemaPaths = IsEmptyObject<Schema> extends false
@@ -23,8 +28,8 @@ type ResolveResourceKeys<
  * The translation function, which will be defined by translation
  */
 export interface TranslationFunction<
-  Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
-  DefineLocaleMessageSchema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
+  Schema extends Record<string, any> = {},
+  DefineLocaleMessageSchema extends Record<string, any> = {},
   ResourceKeys = ResolveResourceKeys<Schema, DefineLocaleMessageSchema>
 > {
   /**

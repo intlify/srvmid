@@ -1,3 +1,5 @@
 packages/h3/docs/**
 packages/hono/docs/**
 **/package.json
+pnpm-lock.yaml
+pnpm-workspace.yaml

@@ -16,5 +16,5 @@ export default {
       ignore: ['**/playground/**']
     }
   },
-  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8']
+  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8', '@kazupon/eslint-plugin']
 } satisfies KnipConfig

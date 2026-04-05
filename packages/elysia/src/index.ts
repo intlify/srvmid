@@ -124,7 +124,7 @@ export interface DefineLocaleMessage extends LocaleMessage<string> {}
  * ```
  */
 export function intlify<
-  Schema extends Record<string, any> = DefaultLocaleMessageSchema, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
+  Schema extends Record<string, any> = DefaultLocaleMessageSchema,
   Locales = string,
   Message = string,
   Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =

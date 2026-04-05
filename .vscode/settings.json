@@ -1,19 +1,16 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "always",
+    "source.fixAll.oxc": "always",
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.useFlatConfig": true,
-  "eslint.validate": ["javascript", "typescript"],
+  "eslint.validate": ["javascript", "typescript", "json", "jsonc", "json5", "yaml", "toml"],
   "files.associations": {
     "*.json": "jsonc"
   },
-  "typescript.referencesCodeLens.enabled": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "deno.enable": false,
-  "typescript.experimental.useTsgo": false
+  "js/ts.referencesCodeLens.enabled": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.experimental.useTsgo": false
 }

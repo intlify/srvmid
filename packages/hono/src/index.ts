@@ -245,7 +245,7 @@ async function getLocaleAndIntlifyContext(ctx: Context): Promise<[string, CoreCo
  * ```
  */
 export async function useTranslation<
-  Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
+  Schema extends Record<string, any> = {},
   HonoContext extends Context = Context
 >(c: HonoContext): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, intlify] = await getLocaleAndIntlifyContext(c)

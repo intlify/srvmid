@@ -292,7 +292,7 @@ async function getLocaleAndEventContext(event: H3Event): Promise<[string, H3Even
  * @returns Return a translation function, which can be translated with internationalization resource messages
  */
 export async function useTranslation<
-  Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
+  Schema extends Record<string, any> = {},
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, context] = await getLocaleAndEventContext(event)

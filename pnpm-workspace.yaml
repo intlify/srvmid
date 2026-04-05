@@ -2,9 +2,9 @@ packages:
   - packages/*
 
 catalog:
-  '@intlify/utils': ^1.0.1
-  '@intlify/core': ^11.3.0
-  '@types/node': ^25.5.2
+  "@intlify/utils": ^1.0.1
+  "@intlify/core": ^11.3.0
+  "@types/node": ^25.5.2
   publint: ^0.3.18
   tsdown: ^0.21.7
   typedoc: ^0.28.18
@@ -20,5 +20,5 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
   - workerd
-  - '@oxfmt/**'
+  - "@oxfmt/**"
   - oxfmt

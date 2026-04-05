@@ -1,3 +1,8 @@
+/**
+ * @author kazuya kawaguchi (a.k.a. kazupon)
+ * @license MIT
+ */
+
 import { exec } from 'node:child_process'
 
 import type { ExecOptions } from 'node:child_process'

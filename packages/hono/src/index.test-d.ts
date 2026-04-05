@@ -8,7 +8,7 @@ test('defineIntlifyMiddleware', () => {
     hello: 'worked'
   }
   // @ts-expect-error -- FIXME
-  type ResourceSchema = typeof _en // eslint-disable-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars -- NOTE: for type testing
+  type ResourceSchema = typeof _en
   const intlify = defineIntlifyMiddleware({
     messages: {
       en: { hello: 'world' },
