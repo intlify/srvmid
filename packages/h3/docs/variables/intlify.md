@@ -4,7 +4,7 @@
 
 [@intlify/h3](../index.md) / intlify
 
-# Variable: intlify()
+# Variable: intlify
 
 ```ts
 const intlify: (options) => H3Plugin;

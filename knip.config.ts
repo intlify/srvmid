@@ -14,7 +14,10 @@ export default {
     },
     'packages/elysia': {
       ignore: ['**/playground/**']
+    },
+    'packages/nitro': {
+      ignore: ['**/playground/**']
     }
   },
-  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8', '@kazupon/eslint-plugin']
+  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8', '@kazupon/eslint-plugin', 'h3']
 } satisfies KnipConfig

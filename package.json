@@ -41,6 +41,7 @@
     "lint:oxlint": "oxlint --type-aware --config .oxlintrc.json",
     "play:h3": "pnpm --filter @intlify/h3 run play:basic",
     "play:hono": "pnpm --filter @intlify/hono run play:basic",
+    "play:nitro": "pnpm --filter @intlify/nitro run play:basic",
     "prepare": "git config --local core.hooksPath .githooks",
     "release": "bumpp \"package.json\" \"packages/**/package.json\" --commit \"release: v\" --all --push --tag",
     "test": "vitest run --typecheck",

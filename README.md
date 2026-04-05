@@ -16,6 +16,7 @@ This repository is monorepo for the below packages:
 | [`@intlify/h3`](packages/h3/README.md)         | Internationalization for [H3](https://h3.dev/)           | [![npm version][npm-version-h3-src]][npm-version-h3-href]         |
 | [`@intlify/hono`](packages/hono/README.md)     | Internationalization for [Hono](https://hono.dev/)       | [![npm version][npm-version-hono-src]][npm-version-hono-href]     |
 | [`@intlify/elysia`](packages/elysia/README.md) | Internationalization for [Elysia](https://elysiajs.com/) | [![npm version][npm-version-elysia-src]][npm-version-elysia-href] |
+| [`@intlify/nitro`](packages/nitro/README.md)   | Internationalization for [Nitro](https://nitro.build/)   | [![npm version][npm-version-nitro-src]][npm-version-nitro-href]   |
 
 ## 🙌 Contributing guidelines
 
@@ -43,5 +44,7 @@ The development of `srvmid` is supported by my OSS sponsors!
 [npm-version-hono-href]: https://npmjs.com/package/@intlify/hono
 [npm-version-elysia-src]: https://img.shields.io/npm/v/@intlify/elysia?style=flat&colorA=18181B&colorB=FFAD33
 [npm-version-elysia-href]: https://npmjs.com/package/@intlify/elysia
+[npm-version-nitro-src]: https://img.shields.io/npm/v/@intlify/nitro?style=flat&colorA=18181B&colorB=FFAD33
+[npm-version-nitro-href]: https://npmjs.com/package/@intlify/nitro
 [ci-src]: https://github.com/intlify/srvmid/actions/workflows/ci.yml/badge.svg
 [ci-href]: https://github.com/intlify/srvmid/actions/workflows/ci.yml

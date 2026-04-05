@@ -44,7 +44,9 @@
     }
   },
   "dependencies": {
-    "@intlify/core": "catalog:"
+    "@intlify/core": "catalog:",
+    "@intlify/utils": "catalog:",
+    "h3": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:"

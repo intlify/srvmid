@@ -1,6 +1,6 @@
 {
-  "name": "@intlify/h3",
-  "description": "Internationalization for H3",
+  "name": "@intlify/nitro",
+  "description": "Internationalization for Nitro",
   "version": "2.0.0",
   "author": {
     "name": "kazuya kawaguchi",
@@ -14,17 +14,17 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/intlify/srvmid.git",
-    "directory": "packages/h3"
+    "directory": "packages/nitro"
   },
   "keywords": [
     "i18n",
-    "h3",
+    "nitro",
     "internationalization",
     "intlify",
     "utilities",
     "middleware"
   ],
-  "homepage": "https://github.com/intlify/srvmid/packages/h3#readme",
+  "homepage": "https://github.com/intlify/srvmid/packages/nitro#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -59,7 +59,7 @@
   "scripts": {
     "build": "tsdown",
     "build:docs": "typedoc --excludeInternal",
-    "play:basic": "pnpx tsx ./playground/basic/index.ts",
+    "play:basic": "nitro dev ./playground/basic",
     "prepack": "pnpm build"
   },
   "dependencies": {
@@ -69,8 +69,8 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "h3": "catalog:",
+    "nitro": "catalog:",
     "publint": "catalog:",
-    "srvx": "catalog:",
     "tsdown": "catalog:",
     "typedoc": "catalog:",
     "typedoc-plugin-markdown": "catalog:",
