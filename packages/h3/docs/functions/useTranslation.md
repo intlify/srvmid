@@ -9,22 +9,8 @@
 ```ts
 function useTranslation<Schema, Event>(event): Promise<TranslationFunction<Schema, DefineLocaleMessage, ResolveResourceKeys<Schema, DefineLocaleMessage, RemoveIndexSignature<{
 [key: string]: LocaleMessageValue<string>;
-  hello: string;
-  nest: {
-     foo: {
-        bar: string;
-     };
-  };
   test: string;
-}>, IsEmptyObject<Schema> extends false ? ResourcePath<{ [K in string | number | symbol]: Schema[K] }> : never, _ResourcePath<{
-  hello: string;
-  nest: {
-     foo: {
-        bar: string;
-     };
-  };
-  test: string;
-}>>>>;
+}>, IsEmptyObject<Schema> extends false ? ResourcePath<{ [K in string | number | symbol]: Schema[K] }> : never, "test">>>;
 ```
 
 Use translation function in event handler
@@ -46,22 +32,8 @@ Use translation function in event handler
 
 `Promise`\<`TranslationFunction`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `ResolveResourceKeys`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `RemoveIndexSignature`\<\{
 \[`key`: `string`\]: `LocaleMessageValue`\<`string`\>;
-  `hello`: `string`;
-  `nest`: \{
-     `foo`: \{
-        `bar`: `string`;
-     \};
-  \};
   `test`: `string`;
-\}\>, `IsEmptyObject`\<`Schema`\> *extends* `false` ? `ResourcePath`\<\{ \[K in string \| number \| symbol\]: Schema\[K\] \}\> : `never`, `_ResourcePath`\<\{
-  `hello`: `string`;
-  `nest`: \{
-     `foo`: \{
-        `bar`: `string`;
-     \};
-  \};
-  `test`: `string`;
-\}\>\>\>\>
+\}\>, `IsEmptyObject`\<`Schema`\> *extends* `false` ? `ResourcePath`\<\{ \[K in string \| number \| symbol\]: Schema\[K\] \}\> : `never`, `"test"`\>\>\>
 
 Return a translation function, which can be translated with internationalization resource messages
 

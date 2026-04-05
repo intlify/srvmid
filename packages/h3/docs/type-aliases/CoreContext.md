@@ -15,7 +15,7 @@ type CoreContext<Message, Messages, DateTimeFormats, NumberFormats, LocaleType, 
 ### fallbackContext?
 
 ```ts
-optional fallbackContext: CoreContext<Message, Messages, DateTimeFormats, NumberFormats, LocaleType, ResourceLocales, Locales>;
+optional fallbackContext?: CoreContext<Message, Messages, DateTimeFormats, NumberFormats, LocaleType, ResourceLocales, Locales>;
 ```
 
 ## Type Parameters

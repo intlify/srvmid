@@ -14,6 +14,9 @@ export default {
     },
     'packages/elysia': {
       ignore: ['**/playground/**']
+    },
+    'packages/nitro': {
+      ignore: ['**/playground/**']
     }
   },
   ignoreDependencies: ['lint-staged', '@vitest/coverage-v8', '@kazupon/eslint-plugin']

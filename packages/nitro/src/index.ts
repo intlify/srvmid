@@ -1,5 +1,5 @@
 /**
- * Internationalization middleware & utilities for h3
+ * Internationalization middleware & utilities for Nitro
  *
  * @module
  */
@@ -17,7 +17,8 @@ import {
   parseTranslateArgs
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
-import { definePlugin, getEventContext, onRequest, onResponse } from 'h3'
+import { getEventContext } from 'nitro/h3'
+import { definePlugin } from 'nitro'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 
 export {
@@ -47,7 +48,7 @@ import type {
   LocaleParams,
   SchemaParams
 } from '@intlify/core'
-import type { H3Event, H3EventContext, Middleware } from 'h3'
+import type { H3EventContext, HTTPEvent } from 'nitro/h3'
 import type {
   DefaultLocaleMessageSchema as _DefaultLocaleMessageSchema,
   TranslationFunction
@@ -62,22 +63,13 @@ declare module 'h3' {
 
 type DefaultLocaleMessageSchema = _DefaultLocaleMessageSchema<DefineLocaleMessage>
 
-/**
- * Internationalization middleware for H3
- */
-export interface IntlifyMiddleware {
-  /**
-   * Request middleware which is defined with [`onRequest`](https://h3.dev/utils/more#onrequesthook)
-   */
-  onRequest: Middleware
-  /**
-   * Response middleware which is defined with [`onResponse`](https://h3.dev/utils/more#onresponsehook)
-   */
-  onResponse: Middleware
+interface IntlifyHooks {
+  onRequest: (event: HTTPEvent) => void | Promise<void>
+  onResponse: (res: Response, event: HTTPEvent) => void | Promise<void>
 }
 
 /**
- * Internationalization plugin options for H3
+ * Internationalization plugin options for Nitro
  *
  * @typeParam Schema - Locale message schema type, default is {@linkcode DefaultLocaleMessageSchema}
  * @typeParam Locales - Locale type, default is `string`
@@ -90,52 +82,18 @@ export type IntlifyPluginOptions<
 > = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
 
 /**
- * Internationalization plugin for H3
+ * Internationalization plugin for Nitro
+ *
+ * @param options - An `i18n` options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`
+ *
+ * @returns A Nitro plugin that registers internationalization hooks
  *
  * @example
  * ```ts
- * import { H3 } from 'h3'
- * import { intlify } from '@intlify/h3'
+ * // server/plugins/i18n.ts
+ * import { intlify } from '@intlify/nitro'
  *
- * const app = new H3({
- *   plugins: [
- *     intlify({
- *       messages: {
- *         en: {
- *           hello: 'Hello {name}!',
- *         },
- *         ja: {
- *           hello: 'こんにちは、{name}！',
- *         },
- *       },
- *       // your locale detection logic here
- *       locale: (event) => {
- *         // ...
- *       },
- *     })
- *   ]
- * })
- */
-export const intlify = definePlugin<IntlifyPluginOptions>((h3, options) => {
-  const { onRequest, onResponse } = defineIntlifyMiddleware(options)
-  h3.use(onRequest)
-  h3.use(onResponse)
-})
-
-/**
- * Define internationalization middleware for H3
- *
- * Define the middleware to be specified the bellows:
- *
- * - [`H3.use`]({@link https://h3.dev/guide/api/h3#h3use})
- *
- * @example
- *
- * ```js
- * import { H3 } from 'h3'
- * import { defineIntlifyMiddleware } from '@intlify/h3'
- *
- * const intlifyMiddleware = defineIntlifyMiddleware({
+ * export default intlify({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -144,30 +102,42 @@ export const intlify = definePlugin<IntlifyPluginOptions>((h3, options) => {
  *       hello: 'こんにちは、{name}！',
  *     },
  *   },
- *   // your locale detection logic here
  *   locale: (event) => {
- *     // ...
+ *     // your locale detection logic here
  *   },
  * })
- *
- * const app = new H3()
- *   .use(intlifyMiddleware.onRequest) // register `onRequest` hook before your application middlewares
- *   .use(intlifyMiddleware.onResponse) // register `onResponse` hook before your application middlewares
  * ```
- *
- * @param options - An `i18n` options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
- *
- * @returns A defined internationalization middleware, which is included `onRequest` and `onResponse` options of `H3`
- *
- * @internal
  */
-export function defineIntlifyMiddleware<
+export function intlify<
   Schema = DefaultLocaleMessageSchema,
   Locales = string,
   Message = string,
   Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =
     CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
->(options: Options): IntlifyMiddleware {
+>(options: Options) {
+  return definePlugin(nitroApp => {
+    const { onRequest, onResponse } = createIntlifyHooks<Schema, Locales, Message, Options>(options)
+    nitroApp.hooks.hook('request', onRequest)
+    nitroApp.hooks.hook('response', onResponse)
+  })
+}
+
+/**
+ * Create intlify hooks for Nitro
+ *
+ * @param options - An `i18n` options passed to `createCoreContext` of `@intlify/core`
+ *
+ * @returns An object containing `onRequest` and `onResponse` hooks
+ *
+ * @internal
+ */
+function createIntlifyHooks<
+  Schema = DefaultLocaleMessageSchema,
+  Locales = string,
+  Message = string,
+  Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =
+    CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
+>(options: Options): IntlifyHooks {
   const intlify = createCoreContext(options as unknown as CoreOptions)
   const orgLocale = intlify.locale
 
@@ -179,7 +149,7 @@ export function defineIntlifyMiddleware<
     staticLocaleDetector = () => orgLocale
   }
 
-  const getLocaleDetector = (event: H3Event, intlify: CoreContext): LocaleDetector => {
+  const getLocaleDetector = (event: HTTPEvent, intlify: CoreContext): LocaleDetector => {
     return typeof orgLocale === 'function'
       ? orgLocale.bind(null, event, intlify)
       : staticLocaleDetector == null
@@ -188,18 +158,18 @@ export function defineIntlifyMiddleware<
   }
 
   return {
-    onRequest: onRequest(event => {
+    onRequest: event => {
       const context = getEventContext<H3EventContext>(event)
       context[SYMBOL_INTLIFY_LOCALE] = getLocaleDetector(event, intlify as CoreContext)
       intlify.locale = context[SYMBOL_INTLIFY_LOCALE]
       context[SYMBOL_INTLIFY] = intlify as CoreContext
-    }),
-    onResponse: onResponse((_, event) => {
+    },
+    onResponse: (_res, event) => {
       intlify.locale = orgLocale
       const context = getEventContext<H3EventContext>(event)
       delete context[SYMBOL_INTLIFY]
       delete context[SYMBOL_INTLIFY_LOCALE]
-    })
+    }
   }
 }
 
@@ -207,11 +177,11 @@ export function defineIntlifyMiddleware<
  * Locale detection with `Accept-Language` header
  *
  * @example
- * ```js
- * import { H3 } from 'h3'
- * import { defineIntlifyMiddleware, detectLocaleFromAcceptLanguageHeader } from '@intlify/h3'
+ * ```ts
+ * // server/plugins/i18n.ts
+ * import { intlify, detectLocaleFromAcceptLanguageHeader } from '@intlify/nitro'
  *
- * const intlifyMiddleware = defineIntlifyMiddleware({
+ * export default intlify({
  *   messages: {
  *     en: {
  *       hello: 'Hello {name}!',
@@ -222,28 +192,24 @@ export function defineIntlifyMiddleware<
  *   },
  *   locale: detectLocaleFromAcceptLanguageHeader
  * })
- *
- * const app = new H3()
- *   .use(intlifyMiddleware.onRequest)
- *   .use(intlifyMiddleware.onResponse)
  * ```
  *
- * @param event - A H3 event
+ * @param event - A Nitro HTTP event
  *
  * @returns A locale string, which will be detected of **first** from `Accept-Language` header
  */
-export const detectLocaleFromAcceptLanguageHeader = (event: H3Event): Locale =>
+export const detectLocaleFromAcceptLanguageHeader = (event: HTTPEvent): Locale =>
   getHeaderLocale(event.req).toString()
 
 /**
- * The type definition of Locale Message for `@intlify/h3` package
+ * The type definition of Locale Message for `@intlify/nitro` package
  *
  * @example
  * ```ts
  * // type.d.ts (`.d.ts` file at your app)
- * import { DefineLocaleMessage } from '@intlify/h3'
+ * import { DefineLocaleMessage } from '@intlify/nitro'
  *
- * declare module '@intlify/h3' {
+ * declare module '@intlify/nitro' {
  *   export interface DefineLocaleMessage {
  *     title: string
  *     menu: {
@@ -261,23 +227,23 @@ import { getLocaleAndEventContext } from '../../shared/src/context.ts'
  * Use translation function in event handler
  *
  * @example
- * ```js
- * app.get(
- *   '/',
- *   async (event) => {
- *     const t = await useTranslation(event)
- *     return t('hello', { name: 'H3' })
- *   },
- * )
+ * ```ts
+ * import { defineHandler } from 'nitro/h3'
+ * import { useTranslation } from '@intlify/nitro'
+ *
+ * export default defineHandler(async (event) => {
+ *   const t = await useTranslation(event)
+ *   return t('hello', { name: 'Nitro' })
+ * })
  * ```
  *
- * @param event - A H3 event
+ * @param event - A Nitro HTTP event
  *
  * @returns Return a translation function, which can be translated with internationalization resource messages
  */
 export async function useTranslation<
   Schema extends Record<string, any> = {},
-  Event extends H3Event = H3Event
+  Event extends HTTPEvent = HTTPEvent
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, context] = await getLocaleAndEventContext(event)
   context[SYMBOL_INTLIFY]!.locale = locale
@@ -292,7 +258,6 @@ export async function useTranslation<
       key,
       arg2,
       {
-        // bind to request locale
         locale,
         ...options
       }

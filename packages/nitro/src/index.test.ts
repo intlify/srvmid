@@ -3,28 +3,33 @@ import { describe, expect, test } from 'vitest'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 
 import {
-  defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   getDetectorLocale,
+  intlify,
   useTranslation
 } from './index.ts'
 
 import type { CoreContext, LocaleDetector } from '@intlify/core'
-import type { H3Event } from 'h3'
+import type { HTTPEvent } from 'nitro/h3'
 
-test('detectLocaleFromAcceptLanguageHeader', () => {
-  const eventMock = {
+function createEventMock(acceptLanguage: string, context: Record<symbol, unknown> = {}) {
+  return {
     req: {
       headers: {
-        get: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
+        get: (_name: string) => (_name === 'accept-language' ? acceptLanguage : '')
       }
-    }
-  } as H3Event
+    },
+    context
+  } as unknown as HTTPEvent
+}
+
+test('detectLocaleFromAcceptLanguageHeader', () => {
+  const eventMock = createEventMock('en-US,en;q=0.9,ja;q=0.8')
   expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
 
-test('defineIntlifyMiddleware', () => {
-  const middleware = defineIntlifyMiddleware({
+test('intlify plugin', () => {
+  const plugin = intlify({
     locale: detectLocaleFromAcceptLanguageHeader,
     messages: {
       en: {
@@ -35,15 +40,11 @@ test('defineIntlifyMiddleware', () => {
       }
     }
   })
-  expect(middleware.onRequest).toBeDefined()
-  expect(middleware.onResponse).toBeDefined()
+  expect(plugin).toBeTypeOf('function')
 })
 
 describe('useTranslation', () => {
   test('basic', async () => {
-    /**
-     * setup `defineI18nMiddleware` emulates
-     */
     const context = createCoreContext({
       locale: detectLocaleFromAcceptLanguageHeader,
       messages: {
@@ -55,36 +56,25 @@ describe('useTranslation', () => {
         }
       }
     })
-    const eventMock = {
-      req: {
-        headers: {
-          get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
-        }
-      },
-      context: {
-        [SYMBOL_INTLIFY]: context as CoreContext
-      }
-    } as H3Event
+    const eventMock = createEventMock('ja;q=0.9,en;q=0.8', {
+      [SYMBOL_INTLIFY]: context as CoreContext
+    })
     const locale = context.locale as unknown
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
     // @ts-ignore ignore type error because this is test
     context.locale = bindLocaleDetector
-    eventMock.context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
+    ;(eventMock as any).context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
 
-    // test `useTranslation`
     const t = await useTranslation(eventMock)
-    expect(t('hello', { name: 'h3' })).toEqual('こんにちは, h3')
+    expect(t('hello', { name: 'nitro' })).toEqual('こんにちは, nitro')
   })
 
   test('not initialize context', async () => {
-    const eventMock = {
-      req: {
-        headers: {
-          get: _name => (_name === 'accept-language' ? 'ja,en' : '')
-        }
-      },
-      context: {}
-    } as H3Event
+    const eventMock = createEventMock('ja,en')
+    // set empty context for the mock
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
+    ;(eventMock as any).context = {}
 
     await expect(() => useTranslation(eventMock)).rejects.toThrowError()
   })
@@ -94,21 +84,15 @@ test('getDetectorLocale', async () => {
   const context = createCoreContext({
     locale: detectLocaleFromAcceptLanguageHeader
   })
-  const eventMock = {
-    req: {
-      headers: {
-        get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
-      }
-    },
-    context: {
-      [SYMBOL_INTLIFY]: context as CoreContext
-    }
-  } as H3Event
+  const eventMock = createEventMock('ja;q=0.9,en;q=0.8', {
+    [SYMBOL_INTLIFY]: context as CoreContext
+  })
   const _locale = context.locale as unknown
   const bindLocaleDetector = (_locale as LocaleDetector).bind(null, eventMock)
   // @ts-ignore ignore type error because this is test
   context.locale = bindLocaleDetector
-  eventMock.context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
+  ;(eventMock as any).context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
 
   const locale = await getDetectorLocale(eventMock)
   expect(locale.language).toEqual('ja')

@@ -18,7 +18,7 @@ Internationalization middleware & utilities for h3
 | ------ | ------ |
 | [detectLocaleFromAcceptLanguageHeader](functions/detectLocaleFromAcceptLanguageHeader.md) | Locale detection with `Accept-Language` header |
 | [getCookieLocale](functions/getCookieLocale.md) | get locale from cookie |
-| [getDetectorLocale](functions/getDetectorLocale.md) | get a locale which is detected with locale detector. |
+| [getDetectorLocale](functions/getDetectorLocale.md) | - |
 | [getHeaderLanguage](functions/getHeaderLanguage.md) | get language from header |
 | [getHeaderLanguages](functions/getHeaderLanguages.md) | get languages from header |
 | [getHeaderLocale](functions/getHeaderLocale.md) | get locale from header |

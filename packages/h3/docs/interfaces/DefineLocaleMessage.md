@@ -26,7 +26,7 @@ declare module '@intlify/h3' {
 
 ## Extends
 
-- `LocaleMessage`\<`string`\>.`ResourceSchema`
+- `LocaleMessage`\<`string`\>
 
 ## Indexable
 
@@ -36,10 +36,6 @@ declare module '@intlify/h3' {
 
 ## Properties
 
-| Property | Type | Default value | Description |
-| ------ | ------ | ------ | ------ |
-| <a id="hello"></a> `hello` | `string` | `'hello, {name}'` | - |
-| <a id="nest"></a> `nest` | `object` | `undefined` | - |
-| `nest.foo` | `object` | `undefined` | - |
-| `nest.foo.bar` | `string` | `'bar'` | - |
-| <a id="test"></a> `test` | `string` | `undefined` | Define your locale message schema here |
+| Property | Type | Description |
+| ------ | ------ | ------ |
+| <a id="property-test"></a> `test` | `string` | Define your locale message schema here |

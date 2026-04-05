@@ -5,11 +5,20 @@
 
 import type {
   IsEmptyObject,
+  LocaleMessage,
   NamedValue,
   PickupPaths,
+  RemoveIndexSignature,
   RemovedIndexResources,
   TranslateOptions
 } from '@intlify/core'
+
+export type DefaultLocaleMessageSchema<
+  DefineLocaleMessage extends Record<string, any> = Record<string, never>,
+  Schema = RemoveIndexSignature<{
+    [K in keyof DefineLocaleMessage]: DefineLocaleMessage[K]
+  }>
+> = IsEmptyObject<Schema> extends true ? LocaleMessage<string> : Schema
 
 type ResolveResourceKeys<
   Schema extends Record<string, any> = {},
