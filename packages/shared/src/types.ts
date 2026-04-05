@@ -9,8 +9,8 @@ import type {
 type ResolveResourceKeys<
   Schema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   DefineLocaleMessageSchema extends Record<string, any> = {}, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
-  DefinedLocaleMessage extends
-    RemovedIndexResources<DefineLocaleMessageSchema> = RemovedIndexResources<DefineLocaleMessageSchema>,
+  DefinedLocaleMessage extends RemovedIndexResources<DefineLocaleMessageSchema> =
+    RemovedIndexResources<DefineLocaleMessageSchema>,
   SchemaPaths = IsEmptyObject<Schema> extends false
     ? PickupPaths<{ [K in keyof Schema]: Schema[K] }>
     : never,

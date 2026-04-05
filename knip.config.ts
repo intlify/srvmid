@@ -16,6 +16,5 @@ export default {
       ignore: ['**/playground/**']
     }
   },
-  ignore: ['**/src/**.test-d.ts'],
   ignoreDependencies: ['lint-staged', '@vitest/coverage-v8']
 } satisfies KnipConfig

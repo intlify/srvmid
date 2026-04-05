@@ -127,11 +127,8 @@ export function intlify<
   Schema extends Record<string, any> = DefaultLocaleMessageSchema, // eslint-disable-line @typescript-eslint/no-explicit-any -- NOTE(kazupon): generic type
   Locales = string,
   Message = string,
-  Options extends CoreOptions<
-    Message,
-    SchemaParams<Schema, Message>,
-    LocaleParams<Locales>
-  > = CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
+  Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =
+    CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
 >(options: Options) {
   const intlify = createCoreContext(options as unknown as CoreOptions)
   const orgLocale = intlify.locale
