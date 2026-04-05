@@ -54,7 +54,7 @@ import type {
   TranslationFunction
 } from '../../shared/src/types.ts'
 
-declare module 'h3' {
+declare module 'nitro/h3' {
   interface H3EventContext {
     [SYMBOL_INTLIFY]?: CoreContext
     [SYMBOL_INTLIFY_LOCALE]?: LocaleDetector
