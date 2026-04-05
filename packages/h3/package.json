@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "h3": "^2.0.1-rc.5",
+    "h3": "catalog:",
     "publint": "catalog:",
     "srvx": "catalog:",
     "tsdown": "catalog:",

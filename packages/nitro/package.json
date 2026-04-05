@@ -68,7 +68,8 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "nitro": "3.0.260311-beta",
+    "h3": "catalog:",
+    "nitro": "catalog:",
     "publint": "catalog:",
     "tsdown": "catalog:",
     "typedoc": "catalog:",

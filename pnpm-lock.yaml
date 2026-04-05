@@ -15,6 +15,12 @@ catalogs:
     '@types/node':
       specifier: ^25.5.2
       version: 25.5.2
+    h3:
+      specifier: 2.0.1-rc.5
+      version: 2.0.1-rc.5
+    nitro:
+      specifier: 3.0.260311-beta
+      version: 3.0.260311-beta
     publint:
       specifier: ^0.3.18
       version: 0.3.18
@@ -155,7 +161,7 @@ importers:
         specifier: 'catalog:'
         version: 25.5.2
       h3:
-        specifier: ^2.0.1-rc.5
+        specifier: 'catalog:'
         version: 2.0.1-rc.5(crossws@0.4.4(srvx@0.11.15))
       publint:
         specifier: 'catalog:'
@@ -222,8 +228,11 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.5.2
+      h3:
+        specifier: 'catalog:'
+        version: 2.0.1-rc.5(crossws@0.4.4(srvx@0.11.15))
       nitro:
-        specifier: 3.0.260311-beta
+        specifier: 'catalog:'
         version: 3.0.260311-beta(jiti@2.6.1)(vite@7.2.2(@types/node@25.5.2)(jiti@2.6.1)(yaml@2.8.3))
       publint:
         specifier: 'catalog:'
@@ -250,8 +259,8 @@ importers:
         specifier: 'catalog:'
         version: 1.0.1
       h3:
-        specifier: ^2.0.1-rc.5
-        version: 2.0.1-rc.20(crossws@0.4.4(srvx@0.11.15))
+        specifier: 'catalog:'
+        version: 2.0.1-rc.5(crossws@0.4.4(srvx@0.11.15))
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
