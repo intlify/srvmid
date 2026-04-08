@@ -3,7 +3,7 @@ packages:
 
 catalog:
   "@intlify/utils": ^1.0.1
-  "@intlify/core": ^11.3.0
+  "@intlify/core": ^11.3.2
   "@types/node": ^25.5.2
   publint: ^0.3.18
   tsdown: ^0.21.7
@@ -16,11 +16,14 @@ catalog:
 
 minimumReleaseAge: 1440
 
+minimumReleaseAgeExclude:
+  - "@intlify/*"
+
 onlyBuiltDependencies:
   - deno
   - esbuild
   - sharp
   - unrs-resolver
   - workerd
-  - "@oxfmt/**"
+  - "@oxfmt/*"
   - oxfmt
