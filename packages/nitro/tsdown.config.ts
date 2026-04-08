@@ -7,7 +7,7 @@ const config: UserConfig = defineConfig({
   outDir: 'dist',
   clean: true,
   publint: true,
-  external: ['nitro']
+  external: [/^nitro/, 'h3']
 })
 
 export default config

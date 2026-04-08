@@ -6,7 +6,8 @@ const config: UserConfig = defineConfig({
   entry: ['./src/index.ts'],
   outDir: 'dist',
   clean: true,
-  publint: true
+  publint: true,
+  external: ['h3']
 })
 
 export default config
