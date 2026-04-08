@@ -2,7 +2,7 @@
   "name": "srvmid",
   "description": "Monorepo for Internationalization server middleware & utilities",
   "private": true,
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"
