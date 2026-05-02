@@ -68,7 +68,7 @@
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.46.0",
     "oxlint": "^1.58.0",
-    "oxlint-tsgolint": "^0.21.0",
+    "oxlint-tsgolint": "^0.22.0",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.0",
     "vitest": "^4.1.2"
