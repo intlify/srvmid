@@ -16,8 +16,8 @@ catalogs:
       specifier: ^25.5.2
       version: 25.5.2
     h3:
-      specifier: 2.0.1-rc.20
-      version: 2.0.1-rc.20
+      specifier: 2.0.1-rc.21
+      version: 2.0.1-rc.21
     nitro:
       specifier: 3.0.260311-beta
       version: 3.0.260311-beta
@@ -162,7 +162,7 @@ importers:
         version: 25.5.2
       h3:
         specifier: 'catalog:'
-        version: 2.0.1-rc.20(crossws@0.4.4(srvx@0.11.15))
+        version: 2.0.1-rc.21(crossws@0.4.4(srvx@0.11.15))
       publint:
         specifier: 'catalog:'
         version: 0.3.18
@@ -230,7 +230,7 @@ importers:
         version: 25.5.2
       h3:
         specifier: 'catalog:'
-        version: 2.0.1-rc.20(crossws@0.4.4(srvx@0.11.15))
+        version: 2.0.1-rc.21(crossws@0.4.4(srvx@0.11.15))
       nitro:
         specifier: 'catalog:'
         version: 3.0.260311-beta(jiti@2.6.1)(vite@7.2.2(@types/node@25.5.2)(jiti@2.6.1)(yaml@2.8.3))
@@ -260,7 +260,7 @@ importers:
         version: 1.0.1
       h3:
         specifier: 'catalog:'
-        version: 2.0.1-rc.20(crossws@0.4.4(srvx@0.11.15))
+        version: 2.0.1-rc.21(crossws@0.4.4(srvx@0.11.15))
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -2618,8 +2618,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  h3@2.0.1-rc.20:
-    resolution: {integrity: sha512-28ljodXuUp0fZovdiSRq4G9OgrxCztrJe5VdYzXAB7ueRvI7pIUqLU14Xi3XqdYJ/khXjfpUOOD2EQa6CmBgsg==}
+  h3@2.0.1-rc.21:
+    resolution: {integrity: sha512-lDeqAgCQXWT7C+5Zs3ler2phZPeX5yTk9KqQuL8taSSngIhcPR0r83TZyYwTO/cLogm6a4+9slZcngrfdyZtrQ==}
     engines: {node: '>=20.11.1'}
     hasBin: true
     peerDependencies:
@@ -5979,7 +5979,7 @@ snapshots:
   graceful-fs@4.2.11:
     optional: true
 
-  h3@2.0.1-rc.20(crossws@0.4.4(srvx@0.11.15)):
+  h3@2.0.1-rc.21(crossws@0.4.4(srvx@0.11.15)):
     dependencies:
       rou3: 0.8.1
       srvx: 0.11.15
@@ -6708,7 +6708,7 @@ snapshots:
       crossws: 0.4.4(srvx@0.11.15)
       db0: 0.3.4
       env-runner: 0.1.7
-      h3: 2.0.1-rc.20(crossws@0.4.4(srvx@0.11.15))
+      h3: 2.0.1-rc.21(crossws@0.4.4(srvx@0.11.15))
       hookable: 6.1.0
       nf3: 0.3.16
       ocache: 0.1.4
