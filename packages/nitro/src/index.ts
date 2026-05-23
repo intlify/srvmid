@@ -265,7 +265,7 @@ export async function useTranslation<
     return NOT_REOSLVED === result ? key : (result as string)
   }
 
-  return translate as TranslationFunction<Schema, DefineLocaleMessage>
+  return translate
 }
 
 export { getDetectorLocale } from '../../shared/src/context.ts'

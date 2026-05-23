@@ -178,7 +178,7 @@ export function intlify<
         return NOT_REOSLVED === result ? key : (result as string)
       }
       return {
-        translate: t as TranslationFunction<Schema, DefineLocaleMessage>
+        translate: t
       }
     })
 }

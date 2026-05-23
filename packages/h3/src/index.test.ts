@@ -62,7 +62,7 @@ describe('useTranslation', () => {
         }
       },
       context: {
-        [SYMBOL_INTLIFY]: context as CoreContext
+        [SYMBOL_INTLIFY]: context
       }
     } as H3Event
     const locale = context.locale as unknown

@@ -3,13 +3,13 @@ packages:
 
 catalog:
   "@intlify/utils": ^1.0.1
-  "@intlify/core": ^11.3.2
-  "@types/node": ^25.5.2
-  publint: ^0.3.18
+  "@intlify/core": ^11.4.4
+  "@types/node": ^25.9.1
+  publint: ^0.3.21
   tsdown: ^0.22.0
-  typedoc: ^0.28.18
+  typedoc: ^0.28.19
   typedoc-plugin-markdown: ^4.11.0
-  typescript: ^6.0.2
+  typescript: ^6.0.3
   srvx: ^0.11.15
   h3: 2.0.1-rc.22
   nitro: 3.0.260311-beta

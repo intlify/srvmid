@@ -57,7 +57,7 @@ describe('useTranslation', () => {
       }
     })
     const eventMock = createEventMock('ja;q=0.9,en;q=0.8', {
-      [SYMBOL_INTLIFY]: context as CoreContext
+      [SYMBOL_INTLIFY]: context
     })
     const locale = context.locale as unknown
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
