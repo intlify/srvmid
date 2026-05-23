@@ -1,6 +1,9 @@
 packages:
   - packages/*
 
+allowBuilds:
+  esbuild: true
+
 catalog:
   "@intlify/utils": ^1.0.1
   "@intlify/core": ^11.4.4

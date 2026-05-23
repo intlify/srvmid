@@ -34,7 +34,11 @@ test('defineIntlifyMiddleware', () => {
 test('translation function', async () => {
   const eventMock = {
     context: {}
-  } as H3Event
+    // TODO: temporary workaround to unblock the release workflow refactor PR.
+    // `H3Event` became a `declare class` with many required properties in h3 v2,
+    // so partial mocks need an `unknown` cast. Replace with a proper mock
+    // factory in a follow-up PR.
+  } as unknown as H3Event
 
   const _resources = {
     foo: 'foo',
