@@ -12,14 +12,19 @@ import {
 import type { CoreContext, LocaleDetector } from '@intlify/core'
 import type { H3Event } from 'h3'
 
+// TODO: temporary workaround to unblock the release workflow refactor PR.
+// `H3Event` became a `declare class` with many required properties in h3 v2,
+// so partial mocks need an `unknown` cast. Replace these with a proper mock
+// factory (see `packages/nitro/src/index.test.ts`) in a follow-up PR.
+
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const eventMock = {
     req: {
       headers: {
-        get: _name => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
+        get: (_name: string) => (_name === 'accept-language' ? 'en-US,en;q=0.9,ja;q=0.8' : '')
       }
     }
-  } as H3Event
+  } as unknown as H3Event
   expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
 
@@ -58,13 +63,13 @@ describe('useTranslation', () => {
     const eventMock = {
       req: {
         headers: {
-          get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+          get: (_name: string) => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
         }
       },
       context: {
         [SYMBOL_INTLIFY]: context
       }
-    } as H3Event
+    } as unknown as H3Event
     const locale = context.locale as unknown
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
     // @ts-ignore ignore type error because this is test
@@ -80,11 +85,11 @@ describe('useTranslation', () => {
     const eventMock = {
       req: {
         headers: {
-          get: _name => (_name === 'accept-language' ? 'ja,en' : '')
+          get: (_name: string) => (_name === 'accept-language' ? 'ja,en' : '')
         }
       },
       context: {}
-    } as H3Event
+    } as unknown as H3Event
 
     await expect(() => useTranslation(eventMock)).rejects.toThrowError()
   })
@@ -97,13 +102,13 @@ test('getDetectorLocale', async () => {
   const eventMock = {
     req: {
       headers: {
-        get: _name => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
+        get: (_name: string) => (_name === 'accept-language' ? 'ja;q=0.9,en;q=0.8' : '')
       }
     },
     context: {
       [SYMBOL_INTLIFY]: context as CoreContext
     }
-  } as H3Event
+  } as unknown as H3Event
   const _locale = context.locale as unknown
   const bindLocaleDetector = (_locale as LocaleDetector).bind(null, eventMock)
   // @ts-ignore ignore type error because this is test
