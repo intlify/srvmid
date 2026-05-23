@@ -40,4 +40,4 @@ jobs:
       - name: Release with pkg-pr-new
         run: |
           pkgs=$(ls -d ./packages/*)
-          pnpx pkg-pr-new publish --compact --pnpm $pkgs
+          pnpm exec pkg-pr-new publish --compact --pnpm $pkgs
