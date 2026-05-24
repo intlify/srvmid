@@ -20,15 +20,6 @@
   "engines": {
     "node": ">= 22"
   },
-  "devEngines": {
-    "runtime": [
-      {
-        "name": "node",
-        "version": ">=22",
-        "onFail": "error"
-      }
-    ]
-  },
   "type": "module",
   "scripts": {
     "build": "pnpm -r build",
