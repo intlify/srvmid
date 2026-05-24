@@ -17,8 +17,12 @@ import {
   parseTranslateArgs
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
-import { getEventContext } from 'nitro/h3'
 import { definePlugin } from 'nitro'
+import { getEventContext } from 'nitro/h3'
+import {
+  createGetDetectorLocale,
+  createGetLocaleAndEventContext
+} from '../../shared/src/context.ts'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 
 export {
@@ -221,7 +225,7 @@ export const detectLocaleFromAcceptLanguageHeader = (event: HTTPEvent): Locale =
  */
 export interface DefineLocaleMessage extends LocaleMessage<string> {}
 
-import { getLocaleAndEventContext } from '../../shared/src/context.ts'
+const getLocaleAndEventContext = createGetLocaleAndEventContext(getEventContext)
 
 /**
  * Use translation function in event handler
@@ -268,4 +272,4 @@ export async function useTranslation<
   return translate
 }
 
-export { getDetectorLocale } from '../../shared/src/context.ts'
+export const getDetectorLocale = createGetDetectorLocale(getEventContext)
