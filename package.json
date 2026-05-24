@@ -18,7 +18,16 @@
   },
   "packageManager": "pnpm@11.1.2",
   "engines": {
-    "node": ">= 20"
+    "node": ">= 22"
+  },
+  "devEngines": {
+    "runtime": [
+      {
+        "name": "node",
+        "version": ">=22",
+        "onFail": "error"
+      }
+    ]
   },
   "type": "module",
   "scripts": {
