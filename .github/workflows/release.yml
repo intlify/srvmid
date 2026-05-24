@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # OIDC trusted publisher 認証 + provenance
+      id-token: write # OIDC trusted publisher auth + provenance
     steps:
       - name: Checkout tag
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -110,7 +110,7 @@ jobs:
       )
     runs-on: ubuntu-latest
     permissions:
-      contents: write # GitHub Release 作成 + CHANGELOG push
+      contents: write # GitHub Release creation + CHANGELOG push
     steps:
       - name: Checkout main
         # zizmor: ignore[artipacked] needs persisted credentials so that
