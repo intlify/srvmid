@@ -66,6 +66,9 @@
     "@intlify/core": "catalog:",
     "@intlify/utils": "catalog:"
   },
+  "peerDependencies": {
+    "h3": ">=2.0.0-0 <3.0.0"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "h3": "catalog:",
