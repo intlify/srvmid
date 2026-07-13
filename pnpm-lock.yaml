@@ -16,8 +16,8 @@ catalogs:
       specifier: ^25.9.1
       version: 25.9.1
     h3:
-      specifier: 2.0.1-rc.22
-      version: 2.0.1-rc.22
+      specifier: 2.0.1-rc.23
+      version: 2.0.1-rc.23
     nitro:
       specifier: 3.0.260311-beta
       version: 3.0.260311-beta
@@ -168,7 +168,7 @@ importers:
         version: 25.9.1
       h3:
         specifier: 'catalog:'
-        version: 2.0.1-rc.22(crossws@0.4.4(srvx@0.11.16))
+        version: 2.0.1-rc.23(crossws@0.4.4(srvx@0.11.15))
       publint:
         specifier: 'catalog:'
         version: 0.3.21
@@ -236,7 +236,7 @@ importers:
         version: 25.9.1
       h3:
         specifier: 'catalog:'
-        version: 2.0.1-rc.22(crossws@0.4.4(srvx@0.11.15))
+        version: 2.0.1-rc.23(crossws@0.4.4(srvx@0.11.15))
       nitro:
         specifier: 'catalog:'
         version: 3.0.260311-beta(jiti@2.7.0)(vite@7.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.9.0))
@@ -266,7 +266,7 @@ importers:
         version: 1.0.1
       h3:
         specifier: 'catalog:'
-        version: 2.0.1-rc.22(crossws@0.4.4(srvx@0.11.16))
+        version: 2.0.1-rc.23(crossws@0.4.4(srvx@0.11.15))
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -2355,6 +2355,16 @@ packages:
       crossws:
         optional: true
 
+  h3@2.0.1-rc.23:
+    resolution: {integrity: sha512-WeWSA0zoL9yWSffB0XMEf1v2zNvvRq4eevFX9xd8jZV5QSYTh6VcLTlR1cv/FusD4eRYHkHeXD9hksTmzgufsQ==}
+    engines: {node: '>=20.11.1'}
+    hasBin: true
+    peerDependencies:
+      crossws: ^0.4.9
+    peerDependenciesMeta:
+      crossws:
+        optional: true
+
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
@@ -2896,6 +2906,9 @@ packages:
   rou3@0.8.1:
     resolution: {integrity: sha512-ePa+XGk00/3HuCqrEnK3LxJW7I0SdNg6EFzKUJG73hMAdDcOUC/i/aSz7LSDwLrGr33kal/rqOGydzwl6U7zBA==}
 
+  rou3@0.9.1:
+    resolution: {integrity: sha512-z/sSmzvtwMDDnxsPVhfWMuG6F6mbmhFDXoVqLmMfbpDD9qfV3GDmSQpf0+W296/ZDIpW2wcMmBfpVFzcnOi/nA==}
+
   sade@1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
     engines: {node: '>=6'}
@@ -2952,6 +2965,11 @@ packages:
 
   srvx@0.11.16:
     resolution: {integrity: sha512-bp07zRuycfTY43IjAvvTFnmnJi8ikW0VFiHwOhhYcVW/L4xQ1XY4PAd4Nuum1rsA17C39zL7x+CDhrn5AL32Rw==}
+    engines: {node: '>=20.16.0'}
+    hasBin: true
+
+  srvx@0.11.22:
+    resolution: {integrity: sha512-LqZxxBDMKuMAZzFzJnDCkFOrs9MZQZr0LvHiO/SuSZVdQaXD7xQ5UWTUxheJrQPve1qk9MG2B/yttUvJxw8egQ==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -4582,7 +4600,6 @@ snapshots:
   crossws@0.4.4(srvx@0.11.16):
     optionalDependencies:
       srvx: 0.11.16
-    optional: true
 
   db0@0.3.4: {}
 
@@ -4634,10 +4651,10 @@ snapshots:
 
   env-runner@0.1.7:
     dependencies:
-      crossws: 0.4.4(srvx@0.11.15)
+      crossws: 0.4.4(srvx@0.11.16)
       exsolve: 1.0.8
       httpxy: 0.5.0
-      srvx: 0.11.15
+      srvx: 0.11.16
 
   environment@1.1.0: {}
 
@@ -4933,16 +4950,16 @@ snapshots:
   h3@2.0.1-rc.22(crossws@0.4.4(srvx@0.11.15)):
     dependencies:
       rou3: 0.8.1
-      srvx: 0.11.15
+      srvx: 0.11.16
     optionalDependencies:
       crossws: 0.4.4(srvx@0.11.15)
 
-  h3@2.0.1-rc.22(crossws@0.4.4(srvx@0.11.16)):
+  h3@2.0.1-rc.23(crossws@0.4.4(srvx@0.11.15)):
     dependencies:
-      rou3: 0.8.1
-      srvx: 0.11.15
+      rou3: 0.9.1
+      srvx: 0.11.22
     optionalDependencies:
-      crossws: 0.4.4(srvx@0.11.16)
+      crossws: 0.4.4(srvx@0.11.15)
 
   has-flag@4.0.0: {}
 
@@ -5811,6 +5828,8 @@ snapshots:
 
   rou3@0.8.1: {}
 
+  rou3@0.9.1: {}
+
   sade@1.8.1:
     dependencies:
       mri: 1.2.0
@@ -5853,6 +5872,8 @@ snapshots:
   srvx@0.11.15: {}
 
   srvx@0.11.16: {}
+
+  srvx@0.11.22: {}
 
   stackback@0.0.2: {}
 
