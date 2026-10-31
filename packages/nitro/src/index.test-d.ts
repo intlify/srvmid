@@ -1,4 +1,4 @@
-import { expectTypeOf, test } from 'vitest'
+import { expectTypeOf, test } from 'vite-plus/test'
 import { intlify, useTranslation } from './index.ts'
 
 import type { HTTPEvent } from 'nitro/h3'

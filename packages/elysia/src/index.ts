@@ -160,11 +160,11 @@ export function intlify<
       const localeDetector = getLocaleDetector(ctx as ElysiaContext, intlify)
       const locale = (ctx.locale = await localeDetector(ctx))
       function t(key: string, ...args: unknown[]): string {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
+        // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
         const [_, options] = parseTranslateArgs(key, ...args)
         const [arg2] = args
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): generic type
+        // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): generic type
         const result = Reflect.apply(_translate, null, [
           intlify,
           key,

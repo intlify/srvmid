@@ -16,3 +16,4 @@ coverage
 .todo.md
 .notes
 .plans
+.vitest/

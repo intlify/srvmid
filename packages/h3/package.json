@@ -57,7 +57,7 @@
     }
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "vp pack",
     "build:docs": "typedoc --excludeInternal",
     "play:basic": "pnpx tsx ./playground/basic/index.ts",
     "prepack": "pnpm build"
@@ -74,9 +74,9 @@
     "h3": "catalog:",
     "publint": "catalog:",
     "srvx": "catalog:",
-    "tsdown": "catalog:",
     "typedoc": "catalog:",
     "typedoc-plugin-markdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
   }
 }

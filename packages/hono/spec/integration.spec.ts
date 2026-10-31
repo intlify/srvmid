@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { afterEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vite-plus/test'
 import { delay as sleep } from '../../shared/src/index.ts'
 import {
   defineIntlifyMiddleware,

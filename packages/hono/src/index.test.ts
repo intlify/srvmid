@@ -1,5 +1,5 @@
 import { createCoreContext } from '@intlify/core'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 
 import type { LocaleDetector } from '@intlify/core'
 import type { Context } from 'hono'
