@@ -6,7 +6,7 @@ export default {
   vitest: true,
   workspaces: {
     '.': {
-      entry: ['scripts/private.ts', 'vitest.e2e.config.ts']
+      entry: ['vitest.e2e.config.ts']
     },
     'packages/h3': {
       ignore: ['**/playground/**'],
