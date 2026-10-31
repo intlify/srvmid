@@ -11,7 +11,7 @@ catalog:
   publint: ^0.3.21
   typedoc: ^0.28.19
   typedoc-plugin-markdown: ^4.11.0
-  typescript: ^6.0.3
+  typescript: ^7.0.0
   srvx: ^1.0.0
   h3: 2.0.8
   nitro: 3.0.260311-beta
