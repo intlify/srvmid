@@ -51,7 +51,7 @@ import type {
   LocaleParams,
   SchemaParams
 } from '@intlify/core'
-import type { H3Event, H3EventContext, Middleware } from 'h3'
+import type { H3Event, H3EventContext, H3Plugin, Middleware } from 'h3'
 import type {
   DefaultLocaleMessageSchema as _DefaultLocaleMessageSchema,
   TranslationFunction
@@ -120,11 +120,12 @@ export type IntlifyPluginOptions<
  *   ]
  * })
  */
-export const intlify = definePlugin<IntlifyPluginOptions>((h3, options) => {
-  const { onRequest, onResponse } = defineIntlifyMiddleware(options)
-  h3.use(onRequest)
-  h3.use(onResponse)
-})
+export const intlify: (options: IntlifyPluginOptions) => H3Plugin =
+  definePlugin<IntlifyPluginOptions>((h3, options) => {
+    const { onRequest, onResponse } = defineIntlifyMiddleware(options)
+    h3.use(onRequest)
+    h3.use(onResponse)
+  })
 
 /**
  * Define internationalization middleware for H3
