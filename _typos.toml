@@ -1,0 +1,7 @@
+# typos spell-checker configuration.
+#
+# https://github.com/crate-ci/typos
+
+[default.extend-identifiers]
+# `@intlify/core` exports the constant with this spelling, so the packages import it as is.
+NOT_REOSLVED = "NOT_REOSLVED"
