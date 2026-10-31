@@ -1,9 +1,6 @@
 packages:
   - packages/*
 
-allowBuilds:
-  esbuild: true
-
 catalog:
   "@intlify/utils": ^1.0.1
   "@intlify/core": ^11.4.4
@@ -24,14 +21,6 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - "@intlify/*"
 
-onlyBuiltDependencies:
-  - deno
-  - esbuild
-  - sharp
-  - unrs-resolver
-  - workerd
-  - "@oxfmt/*"
-  - oxfmt
 overrides:
   vite@*: 'catalog:'
   vitest@*: 'catalog:'
