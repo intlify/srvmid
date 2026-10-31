@@ -1,9 +1,12 @@
 import type { KnipConfig } from 'knip'
 
 export default {
+  // Vite+ runs Vitest and Vite, but knip enables these plugins only when `vitest` / `vite` are dependencies
+  vite: true,
+  vitest: true,
   workspaces: {
     '.': {
-      entry: ['scripts/private.ts']
+      entry: ['scripts/private.ts', 'vitest.e2e.config.ts']
     },
     'packages/h3': {
       ignore: ['**/playground/**'],
@@ -19,5 +22,8 @@ export default {
       ignore: ['**/playground/**']
     }
   },
-  ignoreDependencies: ['lint-staged', '@vitest/coverage-v8', '@kazupon/eslint-plugin', 'h3']
+  // `publint` is an optional peer dependency of Vite+ that `pack.publint` loads
+  ignoreDependencies: ['publint', 'h3'],
+  // `vite` / `vitest` catalog entries are referenced by `overrides` in pnpm-workspace.yaml
+  exclude: ['catalog']
 } satisfies KnipConfig

@@ -9,13 +9,15 @@ catalog:
   "@intlify/core": ^11.4.4
   "@types/node": ^25.9.1
   publint: ^0.3.21
-  tsdown: ^0.23.0
   typedoc: ^0.28.19
   typedoc-plugin-markdown: ^4.11.0
   typescript: ^6.0.3
   srvx: ^0.12.0
   h3: 2.0.8
   nitro: 3.0.260311-beta
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vitest: 5.0.5
+  vite-plus: 1.4.0
 
 minimumReleaseAge: 1440
 
@@ -30,3 +32,13 @@ onlyBuiltDependencies:
   - workerd
   - "@oxfmt/*"
   - oxfmt
+overrides:
+  vite@*: 'catalog:'
+  vitest@*: 'catalog:'
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: '*'
+    vitest: '*'

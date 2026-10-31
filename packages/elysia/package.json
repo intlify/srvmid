@@ -54,7 +54,7 @@
     }
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "vp pack",
     "build:docs": "typedoc --excludeInternal",
     "play:basic": "node ./playground/basic/index.ts",
     "prepack": "pnpm build"
@@ -68,9 +68,9 @@
     "elysia": "^1.4.16",
     "publint": "catalog:",
     "srvx": "catalog:",
-    "tsdown": "catalog:",
     "typedoc": "catalog:",
     "typedoc-plugin-markdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
   }
 }

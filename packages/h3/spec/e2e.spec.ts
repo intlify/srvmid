@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
 import path from 'node:path'
-import { afterEach, describe, expect, test } from 'vitest'
+import { afterEach, describe, expect, test } from 'vite-plus/test'
 import { delay, runCommand } from '../../shared/src/index.ts'
 
 let serve: ReturnType<typeof spawn> | null = null

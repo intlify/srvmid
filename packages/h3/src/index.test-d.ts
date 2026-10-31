@@ -1,4 +1,4 @@
-import { expectTypeOf, test } from 'vitest'
+import { expectTypeOf, test } from 'vite-plus/test'
 import { defineIntlifyMiddleware, useTranslation } from './index.ts'
 
 import type { H3Event } from 'h3'

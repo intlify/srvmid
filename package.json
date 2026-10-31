@@ -22,73 +22,29 @@
   },
   "type": "module",
   "scripts": {
-    "build": "pnpm -r build",
-    "build:docs": "pnpm -r build:docs",
+    "build": "vp run -r build",
+    "build:docs": "vp run -r build:docs",
     "changelog": "pnpx gh-changelogen --repo=intlify/srvmid",
     "clean": "git clean -df",
-    "dev": "pnpx @eslint/config-inspector --config eslint.config.ts",
-    "dev:eslint": "pnpx @eslint/config-inspector --config eslint.config.ts",
-    "e2e": "vitest --config vitest.e2e.config.ts run",
-    "fix": "pnpm run \"/^fix:/\"",
-    "fix:eslint": "eslint . --fix",
-    "fix:knip": "knip --fix --no-exit-code",
-    "fix:oxfmt": "oxfmt . --config ./node_modules/@kazupon/prettier-config/index.json --no-error-on-unmatched-pattern",
-    "fix:oxlint": "oxlint --config .oxlintrc.json --type-aware --fix",
-    "lint": "pnpm run \"/^lint:/\"",
-    "lint:eslint": "eslint . --cache",
-    "lint:knip": "knip",
-    "lint:oxfmt": "oxfmt . --check --config ./node_modules/@kazupon/prettier-config/index.json",
-    "lint:oxlint": "oxlint --type-aware --config .oxlintrc.json",
+    "e2e": "vp test run --config vitest.e2e.config.ts",
+    "fix": "vp check --fix && knip --fix --no-exit-code",
+    "lint": "vp check && knip",
     "play:h3": "pnpm --filter @intlify/h3 run play:basic",
     "play:hono": "pnpm --filter @intlify/hono run play:basic",
     "play:nitro": "pnpm --filter @intlify/nitro run play:basic",
-    "prepare": "git config --local core.hooksPath .githooks",
+    "prepare": "vp config",
     "release": "bumpp \"package.json\" \"packages/**/package.json\" --commit \"release: v\" --all --push --tag",
-    "test": "vitest run --typecheck",
-    "typecheck": "tsc --noEmit --diagnostics",
-    "typecheck:tsgo": "tsgo --noEmit --diagnostics"
+    "test": "vp test run --typecheck",
+    "typecheck": "tsc --noEmit --diagnostics"
   },
   "devDependencies": {
-    "@eslint/markdown": "^8.0.2",
-    "@kazupon/eslint-config": "^0.45.0",
-    "@kazupon/eslint-plugin": "^0.7.1",
-    "@kazupon/prettier-config": "^0.2.0",
+    "@kazupon/vp-config": "^1.0.0",
     "@types/node": "^25.9.1",
-    "@typescript/native-preview": "7.0.0-dev.20260707.2",
-    "@vitest/coverage-v8": "^4.1.7",
-    "@vitest/eslint-plugin": "^1.6.17",
     "bumpp": "^12.0.0",
-    "eslint": "^10.4.0",
-    "eslint-plugin-jsdoc": "^65.0.0",
-    "eslint-plugin-jsonc": "^3.1.2",
-    "eslint-plugin-markdown-preferences": "^0.42.0",
-    "eslint-plugin-oxlint": "^1.66.0",
-    "eslint-plugin-yml": "^3.3.2",
     "gh-changelogen": "^2.0.0",
     "knip": "^6.14.2",
-    "lint-staged": "^17.0.5",
-    "oxfmt": "^0.74.0",
-    "oxlint": "^1.66.0",
-    "oxlint-tsgolint": "^7.0.0",
     "pkg-pr-new": "^0.0.91",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4",
-    "vitest": "^4.1.7"
-  },
-  "lint-staged": {
-    "*.ts?(x)": [
-      "oxfmt --config ./node_modules/@kazupon/prettier-config/index.json --no-error-on-unmatched-pattern",
-      "eslint --fix",
-      "oxlint --config .oxlintrc.json --type-aware --fix"
-    ],
-    "*.{js,mjs,cjs}": [
-      "oxfmt --config ./node_modules/@kazupon/prettier-config/index.json --no-error-on-unmatched-pattern",
-      "eslint --fix",
-      "oxlint --config .oxlintrc.json --fix"
-    ],
-    "*.{json,jsonc,json5,md,yml,yaml}": [
-      "oxfmt --config ./node_modules/@kazupon/prettier-config/index.json --no-error-on-unmatched-pattern",
-      "eslint --fix"
-    ]
+    "vite-plus": "catalog:"
   }
 }

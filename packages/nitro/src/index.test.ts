@@ -1,5 +1,5 @@
 import { createCoreContext } from '@intlify/core'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vite-plus/test'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 
 import {
@@ -63,7 +63,7 @@ describe('useTranslation', () => {
     const bindLocaleDetector = (locale as LocaleDetector).bind(null, eventMock)
     // @ts-ignore ignore type error because this is test
     context.locale = bindLocaleDetector
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
+    // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
     ;(eventMock as any).context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
 
     const t = await useTranslation(eventMock)
@@ -73,7 +73,7 @@ describe('useTranslation', () => {
   test('not initialize context', async () => {
     const eventMock = createEventMock('ja,en')
     // set empty context for the mock
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
+    // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
     ;(eventMock as any).context = {}
 
     await expect(() => useTranslation(eventMock)).rejects.toThrowError()
@@ -91,7 +91,7 @@ test('getDetectorLocale', async () => {
   const bindLocaleDetector = (_locale as LocaleDetector).bind(null, eventMock)
   // @ts-ignore ignore type error because this is test
   context.locale = bindLocaleDetector
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
+  // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
   ;(eventMock as any).context[SYMBOL_INTLIFY_LOCALE] = bindLocaleDetector
 
   const locale = await getDetectorLocale(eventMock)

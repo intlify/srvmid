@@ -130,12 +130,8 @@ export default defineHandler(async event => {
 
 You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The case which a synchronous function returns a promise is not supported. you need to use `async function`.
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ```ts
 // server/plugins/i18n.ts
@@ -172,12 +168,8 @@ export default intlify({
 
 ## 🖌️ Resource keys completion
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can completion resources key on translation function with `useTranslation`.
 

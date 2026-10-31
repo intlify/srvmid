@@ -138,12 +138,8 @@ new Elysia().use(
 
 You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The case which a synchronous function returns a promise is not supported. you need to use `async function`.
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ```ts
 import { Elysia } from 'elysia'
@@ -193,12 +189,8 @@ resource keys completion has twe ways.
 
 ### Type parameter for `intlify` plugin
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The example code is [here](https://github.com/intlify/elysia/tree/main/playground/local-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can set the type parameter of `intlify` plugin to the resource schema you want to key completion of the `translation` function.
 
@@ -224,12 +216,8 @@ new Elysia()
 
 ### global resource schema with `declare module '@intlify/elysia'`
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/elysia/tree/main/playground/global-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can do resource key completion with the translation function using the typescript `declare module`.
 

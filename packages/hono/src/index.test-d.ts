@@ -1,4 +1,4 @@
-import { expectTypeOf, test } from 'vitest'
+import { expectTypeOf, test } from 'vite-plus/test'
 import { defineIntlifyMiddleware } from './index.ts'
 
 import type { MiddlewareHandler } from 'hono'

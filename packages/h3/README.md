@@ -9,12 +9,8 @@
 
 Internationalization for H3
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > You’re viewing the `srvmid` repository, which is developing for H3 v2. If you want to check H3 v1, please see the [`@intlify/h3` repository](https://github.com/intlify/h3/tree/main)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ## 🌟 Features
 
@@ -153,12 +149,8 @@ app.get('/', async event => {
 
 You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The case which a synchronous function returns a promise is not supported. you need to use `async function`.
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ```ts
 import { H3 } from 'h3'
@@ -205,12 +197,8 @@ const app = new H3({
 
 ## 🖌️ Resource keys completion
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can completion resources key on translation function with `useTranslation`.
 
@@ -220,12 +208,8 @@ resource keys completion has two ways.
 
 ### Type parameter for `useTranslation`
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/local-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can `useTranslation` set the type parameter to the resource schema you want to key completion of the translation function.
 
@@ -245,12 +229,8 @@ app.get('/', async event => {
 
 ### global resource schema with `declare module '@intlify/h3'`
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/h3/tree/main/playground/global-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can do resource key completion with the translation function using the typescript `declare module`.
 
