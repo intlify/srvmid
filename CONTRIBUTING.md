@@ -43,22 +43,45 @@
 
 ## Development Setup
 
+This project uses [Vite+](https://viteplus.dev) to format, lint, type-check, test, and build the code. The scripts run the `vp` command from the `vite-plus` package, so you do not need to install the Vite+ CLI globally.
+
+Requirements:
+
+- Node.js `^22.18.0 || ^24.11.0 || >=26.0.0` (`^22.22.1` or later on Node.js 22 to run the pre-commit hook)
+- Git `>=2.32.0`
+
 After cloning the repo, run:
 
 ```sh
 pnpm install
 ```
 
+`pnpm install` also sets up the pre-commit hook, which runs `vp check --fix` on the staged files.
+
+If you cloned the repo before it switched to Vite+, reset the Git hooks path once, and then install again:
+
+```sh
+git config --unset core.hooksPath
+pnpm install
+```
+
 ### Commonly used NPM scripts
 
 ```sh
-# lint source codes
+# check formatting, lint, and types, and find unused files and dependencies
 pnpm lint
 
-# code format and lint fix
+# fix formatting and lint issues
 pnpm fix
+
+# run the unit tests and the type tests
+pnpm test
+
+# build the packages, and then run the e2e tests
+pnpm build
+pnpm e2e
 ```
 
-There are some other scripts available in the `scripts` section of the `package.json` file.
+There are some other scripts available in the `scripts` section of the `package.json` file. If you have installed the [Vite+ CLI](https://viteplus.dev/guide/), you can also run them with `vpr <script>` (for example, `vpr lint`).
 
 **Please make sure to have this pass successfully before submitting a PR.** Although the lint will be run against your PR on the CI server, it is better to have it working locally beforehand.
