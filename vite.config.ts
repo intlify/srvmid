@@ -15,8 +15,7 @@ export default defineConfig({
     // keep the current Markdown wrapping (Prettier's default). `never` reflows 26 Markdown files
     proseWrap: 'preserve',
     ignorePatterns: [
-      'packages/h3/docs/**',
-      'packages/hono/docs/**',
+      'packages/*/docs/**',
       '**/package.json',
       'pnpm-lock.yaml',
       'pnpm-workspace.yaml'
