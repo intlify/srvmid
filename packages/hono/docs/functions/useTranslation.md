@@ -7,22 +7,7 @@
 # Function: useTranslation()
 
 ```ts
-function useTranslation<Schema, HonoContext>(c): Promise<TranslationFunction<Schema, DefineLocaleMessage, ResolveResourceKeys<Schema, DefineLocaleMessage, RemoveIndexSignature<{
-[key: string]: LocaleMessageValue<string>;
-  hello: string;
-  nest: {
-     foo: {
-        bar: string;
-     };
-  };
-}>, IsEmptyObject<Schema> extends false ? ResourcePath<{ [K in string | number | symbol]: Schema[K] }> : never, _ResourcePath<{
-  hello: string;
-  nest: {
-     foo: {
-        bar: string;
-     };
-  };
-}>>>>;
+function useTranslation<Schema, HonoContext>(c): Promise<TranslationFunction<Schema, DefineLocaleMessage, IsEmptyObject<Schema> extends false ? ResourcePath<{ [K in string | number | symbol]: Schema[K] }> : never>>;
 ```
 
 use translation function in handler
@@ -42,22 +27,7 @@ use translation function in handler
 
 ## Returns
 
-`Promise`\<`TranslationFunction`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `ResolveResourceKeys`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `RemoveIndexSignature`\<\{
-\[`key`: `string`\]: `LocaleMessageValue`\<`string`\>;
-  `hello`: `string`;
-  `nest`: \{
-     `foo`: \{
-        `bar`: `string`;
-     \};
-  \};
-\}\>, `IsEmptyObject`\<`Schema`\> *extends* `false` ? `ResourcePath`\<\{ \[K in string \| number \| symbol\]: Schema\[K\] \}\> : `never`, `_ResourcePath`\<\{
-  `hello`: `string`;
-  `nest`: \{
-     `foo`: \{
-        `bar`: `string`;
-     \};
-  \};
-\}\>\>\>\>
+`Promise`\<`TranslationFunction`\<`Schema`, [`DefineLocaleMessage`](../interfaces/DefineLocaleMessage.md), `IsEmptyObject`\<`Schema`\> *extends* `false` ? `ResourcePath`\<\{ \[K in string \| number \| symbol\]: Schema\[K\] \}\> : `never`\>\>
 
 Return a translation function, which can be translated with intlify resource messages
 

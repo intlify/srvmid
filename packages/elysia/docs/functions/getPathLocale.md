@@ -1,22 +1,22 @@
 [**@intlify/elysia**](../index.md)
 
----
+***
 
 [@intlify/elysia](../index.md) / getPathLocale
 
 # Function: getPathLocale()
 
 ```ts
-function getPathLocale(request, options?): Locale
+function getPathLocale(request, options?): Locale;
 ```
 
 get the locale from the path
 
 ## Parameters
 
-| Parameter  | Type          | Description                            |
-| ---------- | ------------- | -------------------------------------- |
-| `request`  | `Request`     | the Request \| request                 |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | the Request \| request |
 | `options?` | `PathOptions` | the PathOptions \| path options object |
 
 ## Returns

@@ -1,22 +1,22 @@
 [**@intlify/elysia**](../index.md)
 
----
+***
 
 [@intlify/elysia](../index.md) / getHeaderLocales
 
 # Function: getHeaderLocales()
 
 ```ts
-function getHeaderLocales(request, options?): Locale[]
+function getHeaderLocales(request, options?): Locale[];
 ```
 
 get locales from header
 
 ## Parameters
 
-| Parameter  | Type            | Description                                |
-| ---------- | --------------- | ------------------------------------------ |
-| `request`  | `Request`       | The Request \| request                     |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | The Request \| request |
 | `options?` | `HeaderOptions` | The HeaderOptions \| header options object |
 
 ## Returns
@@ -42,7 +42,7 @@ Bun.serve({
     const locales = getHeaderLocales(req)
     // ...
     return new Response(`accpected locales: ${locales.map(locale => locale.toString()).join(', ')}`)
-  }
+  },
 })
 ```
 

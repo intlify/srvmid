@@ -1,22 +1,22 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / detectLocaleFromAcceptLanguageHeader
 
 # Function: detectLocaleFromAcceptLanguageHeader()
 
 ```ts
-function detectLocaleFromAcceptLanguageHeader(event): string
+function detectLocaleFromAcceptLanguageHeader(event): string;
 ```
 
 Locale detection with `Accept-Language` header
 
 ## Parameters
 
-| Parameter | Type        | Description        |
-| --------- | ----------- | ------------------ |
-| `event`   | `HTTPEvent` | A Nitro HTTP event |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `event` | `HTTPEvent` | A Nitro HTTP event |
 
 ## Returns
 
@@ -33,11 +33,11 @@ import { intlify, detectLocaleFromAcceptLanguageHeader } from '@intlify/nitro'
 export default intlify({
   messages: {
     en: {
-      hello: 'Hello {name}!'
+      hello: 'Hello {name}!',
     },
     ja: {
-      hello: 'こんにちは、{name}！'
-    }
+      hello: 'こんにちは、{name}！',
+    },
   },
   locale: detectLocaleFromAcceptLanguageHeader
 })

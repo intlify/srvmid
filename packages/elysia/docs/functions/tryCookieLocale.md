@@ -1,22 +1,22 @@
 [**@intlify/elysia**](../index.md)
 
----
+***
 
 [@intlify/elysia](../index.md) / tryCookieLocale
 
 # Function: tryCookieLocale()
 
 ```ts
-function tryCookieLocale(request, options?): Locale | null
+function tryCookieLocale(request, options?): Locale | null;
 ```
 
 try to get locale from cookie
 
 ## Parameters
 
-| Parameter  | Type                  | Description                                      |
-| ---------- | --------------------- | ------------------------------------------------ |
-| `request`  | `Request`             | The Request \| request                           |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | The Request \| request |
 | `options?` | `CookieLocaleOptions` | The CookieLocaleOptions \| cookie locale options |
 
 ## Returns

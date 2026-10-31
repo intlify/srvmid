@@ -1,22 +1,22 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / getHeaderLanguage
 
 # Function: getHeaderLanguage()
 
 ```ts
-function getHeaderLanguage(request, options?): string
+function getHeaderLanguage(request, options?): string;
 ```
 
 get language from header
 
 ## Parameters
 
-| Parameter  | Type            | Description                                |
-| ---------- | --------------- | ------------------------------------------ |
-| `request`  | `Request`       | The Request \| request                     |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | The Request \| request |
 | `options?` | `HeaderOptions` | The HeaderOptions \| header options object |
 
 ## Returns

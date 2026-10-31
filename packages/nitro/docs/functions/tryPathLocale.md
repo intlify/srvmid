@@ -1,22 +1,22 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / tryPathLocale
 
 # Function: tryPathLocale()
 
 ```ts
-function tryPathLocale(request, options?): Locale | null
+function tryPathLocale(request, options?): Locale | null;
 ```
 
 try to get the locale from the path
 
 ## Parameters
 
-| Parameter  | Type          | Description                            |
-| ---------- | ------------- | -------------------------------------- |
-| `request`  | `Request`     | the Request \| request                 |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | the Request \| request |
 | `options?` | `PathOptions` | the PathOptions \| path options object |
 
 ## Returns

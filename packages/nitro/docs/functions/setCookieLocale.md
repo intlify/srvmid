@@ -1,24 +1,27 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / setCookieLocale
 
 # Function: setCookieLocale()
 
 ```ts
-function setCookieLocale(response, locale, options?): void
+function setCookieLocale(
+   response, 
+   locale, 
+   options?): void;
 ```
 
 set locale to the response `Set-Cookie` header.
 
 ## Parameters
 
-| Parameter  | Type                 | Description                                                                    |
-| ---------- | -------------------- | ------------------------------------------------------------------------------ |
-| `response` | `Response`           | The Response \| response                                                       |
-| `locale`   | `string` \| `Locale` | The locale value                                                               |
-| `options?` | `CookieOptions`      | The CookieOptions \| cookie options, `name` option is `i18n_locale` as default |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `response` | `Response` | The Response \| response |
+| `locale` | `string` \| `Locale` | The locale value |
+| `options?` | `CookieOptions` | The CookieOptions \| cookie options, `name` option is `i18n_locale` as default |
 
 ## Returns
 
@@ -38,7 +41,7 @@ Bun.serve({
     setCookieLocale(res, 'ja-JP')
     // ...
     return res
-  }
+  },
 })
 ```
 
