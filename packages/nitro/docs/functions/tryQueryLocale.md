@@ -1,22 +1,22 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / tryQueryLocale
 
 # Function: tryQueryLocale()
 
 ```ts
-function tryQueryLocale(request, options?): Locale | null
+function tryQueryLocale(request, options?): Locale | null;
 ```
 
 try to get the locale from the query
 
 ## Parameters
 
-| Parameter  | Type           | Description                                                                                                   |
-| ---------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `request`  | `Request`      | the Request \| request                                                                                        |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | the Request \| request |
 | `options?` | `QueryOptions` | The QueryOptions \| query options, `lang` option is `en-US` as default, `name` option is `locale` as default. |
 
 ## Returns

@@ -1,22 +1,22 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / getHeaderLocale
 
 # Function: getHeaderLocale()
 
 ```ts
-function getHeaderLocale(request, options?): Locale
+function getHeaderLocale(request, options?): Locale;
 ```
 
 get locale from header
 
 ## Parameters
 
-| Parameter  | Type                       | Description                                                                                                                                                                                                                                                                                                  |
-| ---------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`  | `Request`                  | The Request \| request                                                                                                                                                                                                                                                                                       |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | The Request \| request |
 | `options?` | `HeaderOptions` & `object` | The HeaderOptions \| header options object. `lang` option is `en-US` as default, you must specify the language tag with the [BCP 47 syntax](https://datatracker.ietf.org/doc/html/rfc4646#section-2.1). `name` option is `accept-language` as default, and `parser` option is parseDefaultHeader as default. |
 
 ## Returns

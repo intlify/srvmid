@@ -1,6 +1,6 @@
 [**@intlify/nitro**](../index.md)
 
----
+***
 
 [@intlify/nitro](../index.md) / DefineLocaleMessage
 
@@ -36,6 +36,6 @@ declare module '@intlify/nitro' {
 
 ## Properties
 
-| Property                          | Type     | Description                            |
-| --------------------------------- | -------- | -------------------------------------- |
+| Property | Type | Description |
+| ------ | ------ | ------ |
 | <a id="property-test"></a> `test` | `string` | Define your locale message schema here |

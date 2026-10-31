@@ -1,22 +1,22 @@
 [**@intlify/elysia**](../index.md)
 
----
+***
 
 [@intlify/elysia](../index.md) / tryHeaderLocale
 
 # Function: tryHeaderLocale()
 
 ```ts
-function tryHeaderLocale(request, options?): Locale | null
+function tryHeaderLocale(request, options?): Locale | null;
 ```
 
 try to get locale from header
 
 ## Parameters
 
-| Parameter  | Type                       | Description                                |
-| ---------- | -------------------------- | ------------------------------------------ |
-| `request`  | `Request`                  | The Request \| request                     |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | The Request \| request |
 | `options?` | `HeaderOptions` & `object` | The HeaderOptions \| header options object |
 
 ## Returns

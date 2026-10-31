@@ -4,10 +4,10 @@
 
 [@intlify/h3](../index.md) / getDetectorLocale
 
-# Function: getDetectorLocale()
+# Variable: getDetectorLocale
 
 ```ts
-function getDetectorLocale(event): Promise<Locale>;
+const getDetectorLocale: (event) => Promise<Locale>;
 ```
 
 ## Parameters

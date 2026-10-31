@@ -19,6 +19,12 @@
         "@vitest/*"
       ],
       "enabled": false
+    },
+    {
+      "description": "typedoc 0.28 supports TypeScript <= 6.0. Keep the pnpm catalog (the packages) on TypeScript 6 until typedoc supports 7",
+      "matchFileNames": ["pnpm-workspace.yaml"],
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7"
     }
   ]
 }

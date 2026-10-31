@@ -1,6 +1,6 @@
 [**@intlify/elysia**](../index.md)
 
----
+***
 
 [@intlify/elysia](../index.md) / DefineLocaleMessage
 
@@ -30,19 +30,10 @@ declare module '@intlify/elysia' {
 
 ## Extends
 
-- `LocaleMessage`\<`string`\>.`ResourceSchema`
+- `LocaleMessage`\<`string`\>
 
 ## Indexable
 
 ```ts
 [key: string]: LocaleMessageValue<string>
 ```
-
-## Properties
-
-| Property                   | Type     | Default value     |
-| -------------------------- | -------- | ----------------- |
-| <a id="hello"></a> `hello` | `string` | `'hello, {name}'` |
-| <a id="nest"></a> `nest`   | `object` | `undefined`       |
-| `nest.foo`                 | `object` | `undefined`       |
-| `nest.foo.bar`             | `string` | `'bar'`           |

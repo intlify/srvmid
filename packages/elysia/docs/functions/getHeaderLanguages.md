@@ -1,22 +1,22 @@
 [**@intlify/elysia**](../index.md)
 
----
+***
 
 [@intlify/elysia](../index.md) / getHeaderLanguages
 
 # Function: getHeaderLanguages()
 
 ```ts
-function getHeaderLanguages(request, options?): string[]
+function getHeaderLanguages(request, options?): string[];
 ```
 
 get languages from header
 
 ## Parameters
 
-| Parameter  | Type            | Description                                                                                |
-| ---------- | --------------- | ------------------------------------------------------------------------------------------ |
-| `request`  | `Request`       | The Request \| request                                                                     |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | `Request` | The Request \| request |
 | `options?` | `HeaderOptions` | The HeaderOptions \| header options object. `name` option is `accept-language` as default. |
 
 ## Returns
