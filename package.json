@@ -67,7 +67,7 @@
     "gh-changelogen": "^2.0.0",
     "knip": "^6.14.2",
     "lint-staged": "^17.0.5",
-    "oxfmt": "^0.71.0",
+    "oxfmt": "^0.74.0",
     "oxlint": "^1.66.0",
     "oxlint-tsgolint": "^7.0.0",
     "pkg-pr-new": "^0.0.91",
