@@ -8,7 +8,8 @@ catalog:
   publint: ^0.3.21
   typedoc: ^0.28.19
   typedoc-plugin-markdown: ^4.11.0
-  typescript: ^7.0.0
+  # typedoc 0.28 supports TypeScript <= 6.0, so the packages stay on 6. The root package.json uses TypeScript 7
+  typescript: ^6.0.3
   srvx: ^1.0.0
   h3: 2.0.8
   nitro: 3.0.260311-beta
