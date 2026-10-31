@@ -183,8 +183,8 @@ catalogs:
       specifier: ^0.3.21
       version: 0.3.21
     srvx:
-      specifier: ^0.12.0
-      version: 0.12.4
+      specifier: ^1.0.0
+      version: 1.0.8
     typedoc:
       specifier: ^0.28.19
       version: 0.28.19
@@ -251,7 +251,7 @@ importers:
         version: 0.3.21
       srvx:
         specifier: 'catalog:'
-        version: 0.12.4
+        version: 1.0.8
       typedoc:
         specifier: 'catalog:'
         version: 0.28.19(typescript@6.0.3)
@@ -285,7 +285,7 @@ importers:
         version: 0.3.21
       srvx:
         specifier: 'catalog:'
-        version: 0.12.4
+        version: 1.0.8
       typedoc:
         specifier: 'catalog:'
         version: 0.28.19(typescript@6.0.3)
@@ -319,7 +319,7 @@ importers:
         version: 0.3.21
       srvx:
         specifier: 'catalog:'
-        version: 0.12.4
+        version: 1.0.8
       typedoc:
         specifier: 'catalog:'
         version: 0.28.19(typescript@6.0.3)
@@ -2429,11 +2429,6 @@ packages:
     engines: {node: '>=20.16.0'}
     hasBin: true
 
-  srvx@0.12.4:
-    resolution: {integrity: sha512-RixzFlMn3dvzDTpKIAXhXrqL4cy6vScNCP0VVwgVbUBU94o+DiXLsFnAZetbyKAEnK6Ox3hzHXWGsyv/Iibv7g==}
-    engines: {node: '>=20.16.0'}
-    hasBin: true
-
   srvx@1.0.8:
     resolution: {integrity: sha512-ngFS/J6St4PJfHRHGjr78xkPPtbyXtdMOLNE4x/XZunEK3OhV7aGUWMHf9WTUEy6wm1U0W4okkd82ZFFWRVQTw==}
     engines: {node: '>=20.16.0'}
@@ -4048,7 +4043,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.29.12
       '@babel/types': 7.29.11
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
     optional: true
 
   markdown-it@14.1.1:
@@ -4442,8 +4437,6 @@ snapshots:
   spdx-license-ids@3.0.24: {}
 
   srvx@0.11.22: {}
-
-  srvx@0.12.4: {}
 
   srvx@1.0.8: {}
 
