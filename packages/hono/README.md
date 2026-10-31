@@ -152,12 +152,8 @@ app.get('/', async c => {
 
 You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The case which a synchronous function returns a promise is not supported. you need to use `async function`.
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 ```ts
 import { Hono } from 'hono'
@@ -200,12 +196,8 @@ const intlify = defineIntlifyMiddleware({
 
 ## 🖌️ Resource keys completion
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > Resource Keys completion can be used if you are using [Visual Studio Code](https://code.visualstudio.com/)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can completion resources key on translation function with `useTranslation`.
 
@@ -215,12 +207,8 @@ resource keys completion has twe ways.
 
 ### Type parameter for `useTranslation`
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/hono/tree/main/playground/local-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can `useTranslation` set the type parameter to the resource schema you want to key completion of the translation function.
 
@@ -240,12 +228,8 @@ app.get('/', async c => {
 
 ### global resource schema with `declare module '@intlify/hono'`
 
-<!-- eslint-disable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
-
 > [!NOTE]
 > The exeample code is [here](https://github.com/intlify/hono/tree/main/playground/global-schema)
-
-<!-- eslint-enable markdown/no-missing-label-refs -- NOTE(kazupon): ignore github alert -->
 
 You can do resource key completion with the translation function using the typescript `declare module`.
 
