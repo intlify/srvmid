@@ -7,7 +7,7 @@ allowBuilds:
 catalog:
   "@intlify/utils": ^1.0.1
   "@intlify/core": ^11.4.4
-  "@types/node": ^25.9.1
+  "@types/node": ^26.0.0
   publint: ^0.3.21
   typedoc: ^0.28.19
   typedoc-plugin-markdown: ^4.11.0
