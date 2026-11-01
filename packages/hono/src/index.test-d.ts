@@ -7,9 +7,8 @@ test('defineIntlifyMiddleware', () => {
   const _en = {
     hello: 'worked'
   }
-  // @ts-expect-error -- FIXME
   type ResourceSchema = typeof _en
-  const intlify = defineIntlifyMiddleware({
+  const intlify = defineIntlifyMiddleware<[ResourceSchema], 'en' | 'ja'>({
     messages: {
       en: { hello: 'world' },
       ja: { hello: '世界' }
