@@ -1,8 +1,14 @@
-import { expect, test } from 'vite-plus/test'
+import { Elysia } from 'elysia'
+import { afterEach, expect, test } from 'vite-plus/test'
+import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
 
 import type { Context as ElysiaContext } from 'elysia'
 
-import { detectLocaleFromAcceptLanguageHeader } from './index.ts'
+import { detectLocaleFromAcceptLanguageHeader, intlify } from './index.ts'
+
+afterEach(() => {
+  restoreCoreRegistration()
+})
 
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const mockContext = {
@@ -14,4 +20,28 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   } as ElysiaContext
 
   expect(detectLocaleFromAcceptLanguageHeader(mockContext)).toBe('en-US')
+})
+
+test('translation without the registration of @intlify/core', async () => {
+  dropCoreRegistration()
+  const app = new Elysia()
+    .use(
+      intlify({
+        locale: detectLocaleFromAcceptLanguageHeader,
+        messages: {
+          en: {
+            hello: 'hello, {name}'
+          },
+          ja: {
+            hello: 'こんにちは, {name}'
+          }
+        }
+      })
+    )
+    .get('/', ctx => ctx.translate('hello', { name: 'elysia' }))
+
+  const res = await app.handle(
+    new Request('http://localhost/', { headers: { 'accept-language': 'ja' } })
+  )
+  expect(await res.text()).toBe('こんにちは, elysia')
 })

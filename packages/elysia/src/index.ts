@@ -11,7 +11,6 @@
 
 import {
   translate as _translate,
-  createCoreContext,
   DEFAULT_LOCALE,
   NOT_REOSLVED,
   // @ts-expect-error -- NOTE(kazupon): internal function
@@ -19,6 +18,7 @@ import {
 } from '@intlify/core'
 import { getHeaderLocale } from '@intlify/utils'
 import { Elysia } from 'elysia'
+import { createIntlifyCoreContext } from '../../shared/src/core.ts'
 
 export {
   getCookieLocale,
@@ -155,7 +155,7 @@ export function intlify<
     }>
   }
 > {
-  const intlify = createCoreContext(options as unknown as CoreOptions)
+  const intlify = createIntlifyCoreContext(options as unknown as CoreOptions)
   const orgLocale = intlify.locale
 
   let staticLocaleDetector: LocaleDetector | null = null
