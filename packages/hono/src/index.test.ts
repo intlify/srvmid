@@ -91,7 +91,9 @@ describe('useTranslation', () => {
       get: (_key: string) => {}
     } as Context
 
-    await expect(() => useTranslation(mockContext)).rejects.toThrowError()
+    await expect(() => useTranslation(mockContext)).rejects.toThrowError(
+      'middleware not initialized'
+    )
   })
 })
 

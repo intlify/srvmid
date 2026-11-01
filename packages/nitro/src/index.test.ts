@@ -76,7 +76,9 @@ describe('useTranslation', () => {
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
     ;(eventMock as any).context = {}
 
-    await expect(() => useTranslation(eventMock)).rejects.toThrowError()
+    await expect(() => useTranslation(eventMock)).rejects.toThrowError(
+      'plugin has not been initialized'
+    )
   })
 })
 
