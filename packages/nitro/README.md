@@ -60,6 +60,17 @@ export default intlify({
 })
 ```
 
+Nitro scans `server/plugins/` and `server/routes/` only when `serverDir` is set, so set it in your Nitro config:
+
+```ts
+// nitro.config.ts
+import { defineConfig } from 'nitro'
+
+export default defineConfig({
+  serverDir: true
+})
+```
+
 ### Translation
 
 Use `useTranslation` in your route handlers:
