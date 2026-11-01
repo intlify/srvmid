@@ -29,7 +29,6 @@ const app = new Elysia()
   })
 
 const server = serve({
-  port: 3000,
   fetch: app.fetch
 })
 
