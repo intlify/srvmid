@@ -25,6 +25,11 @@
       "matchFileNames": ["pnpm-workspace.yaml"],
       "matchPackageNames": ["typescript"],
       "allowedVersions": "<7"
+    },
+    {
+      "description": "Nitro v3 puts the date in the patch of its prerelease versions (`3.0.261029-rc`), and Renovate updates a prerelease only within the same patch by default. Follow the `latest` tag of Nitro instead",
+      "matchPackageNames": ["nitro"],
+      "ignoreUnstable": false
     }
   ]
 }
