@@ -6,6 +6,7 @@ node_modules
 .wrangler
 lib
 dist
+.output
 coverage
 *.log
 *.swp

@@ -19,7 +19,9 @@ export default {
       ignore: ['**/playground/**']
     },
     'packages/nitro': {
-      ignore: ['**/playground/**']
+      ignore: ['**/playground/**'],
+      // `nitro build` in the e2e tests loads `rolldown` as its builder
+      ignoreDependencies: ['rolldown']
     }
   },
   // `publint` is an optional peer dependency of Vite+ that `pack.publint` loads
