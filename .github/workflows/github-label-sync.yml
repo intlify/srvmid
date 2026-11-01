@@ -7,13 +7,31 @@ on:
     paths:
       - .github/labels.yml
       - .github/workflows/github-label-sync.yml
-  workflow_dispatch: # eslint-disable-line yml/no-empty-mapping-value -- NOTE(kazupon): to work manually on GitHub Web UIs
+  pull_request:
+    paths:
+      - .github/labels.yml
+      - .github/workflows/github-label-sync.yml
+  workflow_dispatch:
 
 permissions:
-  issues: write
+  contents: read
 
 jobs:
   sync:
+    name: Sync labels
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
-      - uses: r7kamura/github-label-sync-action@061649dd3b80eb5bafad0316466f72962e62c300 # v0.1.0
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # The labeler deletes the repository labels that are not in `.github/labels.yml`.
+      # On pull requests it only logs the changes it would make
+      - name: Sync labels
+        uses: crazy-max/ghaction-github-labeler@548a7c3603594ec17c819e1239f281a3b801ab4d # v6.0.0
+        with:
+          dry-run: ${{ github.event_name == 'pull_request' }}
