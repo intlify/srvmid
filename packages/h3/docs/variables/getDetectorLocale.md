@@ -7,7 +7,7 @@
 # Variable: getDetectorLocale
 
 ```ts
-const getDetectorLocale: (event) => Promise<Locale>;
+const getDetectorLocale: (event) => Promise<Intl.Locale>;
 ```
 
 ## Parameters
@@ -18,4 +18,4 @@ const getDetectorLocale: (event) => Promise<Locale>;
 
 ## Returns
 
-`Promise`\<`Locale`\>
+`Promise`\<`Intl.Locale`\>

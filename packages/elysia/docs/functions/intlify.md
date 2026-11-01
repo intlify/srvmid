@@ -28,30 +28,9 @@ function intlify<Schema, Locales, Message, Options>(options): Elysia<"", {
   };
   parser: {
   };
-  response: UnionResponseStatus<Metadata["response"], ExtractErrorFromHandle<Resolver>>;
-  schema: {
-  };
-  standaloneSchema: {
-  };
-}, {
-}, {
-  derive: {
-  };
-  resolve: {
-  };
-  response: {
-  };
-  schema: {
-  };
-  standaloneSchema: {
-  };
-}, {
-  derive: {
-  };
-  resolve: {
-  };
-  response: {
-  };
+  response: ExtractErrorFromHandle<{
+     translate: (key, ...args) => string;
+  }>;
   schema: {
   };
   standaloneSchema: {
@@ -99,30 +78,9 @@ Internationalization plugin for Elysia
   \};
   `parser`: \{
   \};
-  `response`: `UnionResponseStatus`\<`Metadata`\[`"response"`\], `ExtractErrorFromHandle`\<`Resolver`\>\>;
-  `schema`: \{
-  \};
-  `standaloneSchema`: \{
-  \};
-\}, \{
-\}, \{
-  `derive`: \{
-  \};
-  `resolve`: \{
-  \};
-  `response`: \{
-  \};
-  `schema`: \{
-  \};
-  `standaloneSchema`: \{
-  \};
-\}, \{
-  `derive`: \{
-  \};
-  `resolve`: \{
-  \};
-  `response`: \{
-  \};
+  `response`: `ExtractErrorFromHandle`\<\{
+     `translate`: (`key`, ...`args`) => `string`;
+  \}\>;
   `schema`: \{
   \};
   `standaloneSchema`: \{
