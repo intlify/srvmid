@@ -68,7 +68,7 @@ new Elysia().get('/', ctx => {
 
 ### Translation
 
-+If you want to use translation, you need to install plugin. As a result, `locale` property and `translation` function will be extended in Elysia Context:
+If you want to use translation, you need to install plugin. As a result, `locale` property and `translate` function will be extended in Elysia Context:
 
 ```ts
 import { Elysia } from 'elysia'
@@ -96,11 +96,27 @@ const app = new Elysia()
   .get('/', ctx => {
     // use `locale` property in handler
     console.log('current locale', ctx.locale)
-    // use `translation` function in handler
+    // use `translate` function in handler
     return ctx.translate('hello', { name: 'elysia' })
   })
 
 export default app
+```
+
+> [!NOTE]
+> Elysia infers the type of the context through method chaining, so `ctx.locale` and `ctx.translate` are typed only on the instance that `.use(intlify(...))` returns. Chain the routes as above, or add them to that instance. If you add them to an instance that does not keep the result of `.use()`, they still work at runtime, but TypeScript does not know about them.
+
+```ts
+const messages = { en: { hello: 'hello, {name}' }, ja: { hello: 'こんにちは, {name}' } }
+
+// ✅ typed: `app` is the instance that `.use()` returns
+const app = new Elysia().use(intlify({ locale: detectLocaleFromAcceptLanguageHeader, messages }))
+app.get('/', ctx => ctx.translate('hello', { name: 'elysia' }))
+
+// ❌ type error: `other` does not keep the result of `.use()`
+const other = new Elysia()
+other.use(intlify({ locale: detectLocaleFromAcceptLanguageHeader, messages }))
+other.get('/', ctx => ctx.translate('hello', { name: 'elysia' }))
 ```
 
 ## 🛠️ Custom locale detection
@@ -192,7 +208,7 @@ resource keys completion has twe ways.
 > [!NOTE]
 > The example code is [here](https://github.com/intlify/elysia/tree/main/playground/local-schema)
 
-You can set the type parameter of `intlify` plugin to the resource schema you want to key completion of the `translation` function.
+You can set the type parameter of `intlify` plugin to the resource schema you want to key completion of the `translate` function.
 
 the part of example:
 

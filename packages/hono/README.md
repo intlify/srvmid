@@ -70,6 +70,27 @@ app.get('/', c => {
 })
 ```
 
+Detect locale from several sources in order, with the `try*` functions, which return `null` instead of throwing an error:
+
+```ts
+import { Hono } from 'hono'
+import { tryCookieLocale, tryHeaderLocale, tryQueryLocale } from '@intlify/hono'
+
+const app = new Hono()
+
+app.get('/', c => {
+  const req = c.req.raw
+  // `lang: ''` makes them return `null` instead of the default locale (`en-US`) when the value is missing,
+  // so that `??` moves on to the next source
+  const locale =
+    tryQueryLocale(req, { lang: '' }) ??
+    tryCookieLocale(req, { lang: '' }) ??
+    tryHeaderLocale(req, { lang: '' }) ??
+    new Intl.Locale('en-US')
+  return c.text(locale.toString())
+})
+```
+
 ### Translation
 
 If you want to use translation, you need to install `intlify` middleware. As a result, you can use `useTranslation` within the handler:
