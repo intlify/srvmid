@@ -23,6 +23,6 @@ export function runCommand(command: string, options?: ExecOptions): Promise<stri
   })
 }
 
-export function delay(ms: number) {
+export function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
