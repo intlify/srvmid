@@ -19,6 +19,7 @@ import type { CoreOptions } from '@intlify/core'
  *
  * `@intlify/core` v11 registers the message compiler, the message resolver, and the locale fallbacker when it is loaded, but a bundler can drop that registration (a module side effect), and then the messages are not translated.
  * This sets them on the context only when they are missing. It does not pass them as options, because a `messageCompiler` option makes `@intlify/core` v11 warn that it is experimental, and options take precedence over what users register with `register*`.
+ * The built-in `resolveWithKeyValue` and `fallbackWithSimple` count as missing, because `createCoreContext` uses them when nothing is registered. To use them, pass them with the `messageResolver` and `localeFallbacker` options.
  *
  * @param options - The options of `createCoreContext`
  * @returns A core context

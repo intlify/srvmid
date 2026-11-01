@@ -1,8 +1,10 @@
 import {
   compile,
   fallbackWithLocaleChain,
+  fallbackWithSimple,
   registerMessageResolver,
   resolveValue,
+  resolveWithKeyValue,
   translate
 } from '@intlify/core'
 import { afterEach, describe, expect, test, vi } from 'vite-plus/test'
@@ -69,5 +71,18 @@ describe('createIntlifyCoreContext', () => {
     expect(context.messageResolver).toBe(resolver)
     expect(context.messageCompiler).toBe(compile)
     expect(context.localeFallbacker).toBe(fallbackWithLocaleChain)
+  })
+
+  test('keeps the built-in ones passed as options', () => {
+    dropCoreRegistration()
+    const context = createIntlifyCoreContext({
+      locale: 'en',
+      messages,
+      messageResolver: resolveWithKeyValue,
+      localeFallbacker: fallbackWithSimple
+    }) as CoreContext
+    expect(context.messageResolver).toBe(resolveWithKeyValue)
+    expect(context.localeFallbacker).toBe(fallbackWithSimple)
+    expect(context.messageCompiler).toBe(compile)
   })
 })
