@@ -1,6 +1,7 @@
 import { createCoreContext } from '@intlify/core'
-import { describe, expect, test } from 'vite-plus/test'
+import { afterEach, describe, expect, test } from 'vite-plus/test'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
+import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
 
 import {
   detectLocaleFromAcceptLanguageHeader,
@@ -11,6 +12,7 @@ import {
 
 import type { CoreContext, LocaleDetector } from '@intlify/core'
 import type { HTTPEvent } from 'nitro/h3'
+import type { NitroAppPlugin } from 'nitro/types'
 
 function createEventMock(acceptLanguage: string, context: Record<symbol, unknown> = {}) {
   return {
@@ -22,6 +24,10 @@ function createEventMock(acceptLanguage: string, context: Record<symbol, unknown
     context
   } as unknown as HTTPEvent
 }
+
+afterEach(() => {
+  restoreCoreRegistration()
+})
 
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const eventMock = createEventMock('en-US,en;q=0.9,ja;q=0.8')
@@ -79,6 +85,37 @@ describe('useTranslation', () => {
     await expect(() => useTranslation(eventMock)).rejects.toThrowError(
       'plugin has not been initialized'
     )
+  })
+
+  test('without the registration of @intlify/core', async () => {
+    dropCoreRegistration()
+    let onRequest: ((event: HTTPEvent) => unknown) | undefined
+    const nitroApp = {
+      hooks: {
+        hook: (name: string, fn: (event: HTTPEvent) => unknown) => {
+          if (name === 'request') {
+            onRequest = fn
+          }
+        }
+      }
+    } as unknown as Parameters<NitroAppPlugin>[0]
+    await intlify({
+      locale: detectLocaleFromAcceptLanguageHeader,
+      messages: {
+        en: {
+          hello: 'hello, {name}'
+        },
+        ja: {
+          hello: 'こんにちは, {name}'
+        }
+      }
+    })(nitroApp)
+
+    const eventMock = createEventMock('ja')
+    expect(onRequest).toBeTypeOf('function')
+    await onRequest?.(eventMock)
+    const t = await useTranslation(eventMock)
+    expect(t('hello', { name: 'nitro' })).toEqual('こんにちは, nitro')
   })
 })
 

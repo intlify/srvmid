@@ -1,12 +1,14 @@
 import { createCoreContext } from '@intlify/core'
-import { mockEvent } from 'h3'
-import { describe, expect, test } from 'vite-plus/test'
+import { H3, mockEvent } from 'h3'
+import { afterEach, describe, expect, test } from 'vite-plus/test'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
+import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
 
 import {
   defineIntlifyMiddleware,
   detectLocaleFromAcceptLanguageHeader,
   getDetectorLocale,
+  intlify,
   useTranslation
 } from './index.ts'
 
@@ -18,6 +20,10 @@ function createEventMock(acceptLanguage: string, context: Record<symbol, unknown
   Object.assign(event.context, context)
   return event
 }
+
+afterEach(() => {
+  restoreCoreRegistration()
+})
 
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const eventMock = createEventMock('en-US,en;q=0.9,ja;q=0.8')
@@ -76,6 +82,34 @@ describe('useTranslation', () => {
     await expect(() => useTranslation(eventMock)).rejects.toThrowError(
       'plugin has not been initialized'
     )
+  })
+
+  test('without the registration of @intlify/core', async () => {
+    dropCoreRegistration()
+    const app = new H3({
+      plugins: [
+        intlify({
+          locale: detectLocaleFromAcceptLanguageHeader,
+          messages: {
+            en: {
+              hello: 'hello, {name}'
+            },
+            ja: {
+              hello: 'こんにちは, {name}'
+            }
+          }
+        })
+      ]
+    })
+    app.get('/', async event => {
+      const t = await useTranslation(event)
+      return t('hello', { name: 'h3' })
+    })
+
+    const res = await app.fetch(
+      new Request('http://localhost/', { headers: { 'accept-language': 'ja' } })
+    )
+    expect(await res.text()).toBe('こんにちは, h3')
   })
 })
 

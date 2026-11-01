@@ -1,5 +1,7 @@
 import { createCoreContext } from '@intlify/core'
-import { describe, expect, test } from 'vite-plus/test'
+import { Hono } from 'hono'
+import { afterEach, describe, expect, test } from 'vite-plus/test'
+import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
 
 import type { LocaleDetector } from '@intlify/core'
 import type { Context } from 'hono'
@@ -10,6 +12,10 @@ import {
   getDetectorLocale,
   useTranslation
 } from './index.ts'
+
+afterEach(() => {
+  restoreCoreRegistration()
+})
 
 test('detectLocaleFromAcceptLanguageHeader', () => {
   const mockContext = {
@@ -94,6 +100,32 @@ describe('useTranslation', () => {
     await expect(() => useTranslation(mockContext)).rejects.toThrowError(
       'middleware not initialized'
     )
+  })
+
+  test('without the registration of @intlify/core', async () => {
+    dropCoreRegistration()
+    const app = new Hono()
+    app.use(
+      '*',
+      defineIntlifyMiddleware({
+        locale: detectLocaleFromAcceptLanguageHeader,
+        messages: {
+          en: {
+            hello: 'hello, {name}'
+          },
+          ja: {
+            hello: 'こんにちは, {name}'
+          }
+        }
+      })
+    )
+    app.get('/', async c => {
+      const t = await useTranslation(c)
+      return c.text(t('hello', { name: 'hono' }))
+    })
+
+    const res = await app.request('/', { headers: { 'accept-language': 'ja' } })
+    expect(await res.text()).toBe('こんにちは, hono')
   })
 })
 
