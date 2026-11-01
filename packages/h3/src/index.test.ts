@@ -73,7 +73,9 @@ describe('useTranslation', () => {
   test('not initialize context', async () => {
     const eventMock = createEventMock('ja,en')
 
-    await expect(() => useTranslation(eventMock)).rejects.toThrowError()
+    await expect(() => useTranslation(eventMock)).rejects.toThrowError(
+      'plugin has not been initialized'
+    )
   })
 })
 
