@@ -27,7 +27,8 @@
       "allowedVersions": "<7"
     },
     {
-      "description": "Nitro v3 puts the date in the patch of its prerelease versions (`3.0.261029-rc`), and Renovate updates a prerelease only within the same patch by default. Follow the `latest` tag of Nitro instead",
+      "description": "Nitro v3 puts the date in the patch of its prerelease versions (`3.0.261029-rc`), and Renovate updates a prerelease only within the same patch by default. Follow the `latest` tag of Nitro in the pnpm catalog only, so that Renovate keeps the peer dependency range of @intlify/nitro as is",
+      "matchFileNames": ["pnpm-workspace.yaml"],
       "matchPackageNames": ["nitro"],
       "ignoreUnstable": false
     }
