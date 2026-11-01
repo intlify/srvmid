@@ -37,6 +37,11 @@
 - name: dependency
   description: Includes dependency fixes
   color: ffbce7
+# Renovate adds this label to its pull requests (`.github/renovate.json`).
+# `description: ''` keeps a label without a description. Without the key, the labeler reports an update on every run
+- name: deps
+  description: ''
+  color: ededed
 - name: todo
   description: todo tasks
   color: c2e0c6
@@ -85,3 +90,16 @@
 - name: 🔥 p5-urgent
   description: 'Priority 5: build-breaking bugs that affect most users and should be fixed ASAP'
   color: '#ee0701'
+# Package labels. `description: ''` for the same reason as `deps`
+- name: Elysia
+  description: ''
+  color: 44476f
+- name: H3
+  description: ''
+  color: fbca04
+- name: Hono
+  description: ''
+  color: b60205
+- name: Nitro
+  description: ''
+  color: ad1b95
