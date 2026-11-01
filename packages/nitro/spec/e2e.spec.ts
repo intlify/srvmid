@@ -1,27 +1,12 @@
 import { spawn } from 'node:child_process'
-import { createServer } from 'node:net'
 import path from 'node:path'
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vite-plus/test'
-import { delay, runCommand } from '../../shared/src/index.ts'
-
-import type { AddressInfo } from 'node:net'
+import { delay, getFreePort, runCommand } from '../../shared/src/index.ts'
 
 const playgroundDir = path.resolve(import.meta.dirname, '../playground/basic')
 const nitroBin = path.resolve(import.meta.dirname, '../node_modules/.bin/nitro')
 
 let serve: ReturnType<typeof spawn> | null = null
-
-// Start each server on a free port, so that the requests do not reach another server, such as one left by an earlier run
-function getFreePort(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = createServer()
-    server.once('error', reject)
-    server.listen(0, () => {
-      const { port } = server.address() as AddressInfo
-      server.close(() => resolve(port))
-    })
-  })
-}
 
 async function waitForServer(url: string, maxRetries = 20, interval = 500): Promise<void> {
   for (let i = 0; i < maxRetries; i++) {

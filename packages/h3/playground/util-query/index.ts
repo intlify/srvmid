@@ -10,7 +10,6 @@ app.get('/', event => {
 })
 
 const server = serve({
-  port: 3000,
   fetch: app.fetch
 })
 
