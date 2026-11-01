@@ -46,7 +46,11 @@ import type {
   RemoveIndexSignature,
   SchemaParams
 } from '@intlify/core'
-import type { Context as ElysiaContext, PreContext as ElysiaPreContext } from 'elysia'
+import type {
+  Context as ElysiaContext,
+  ExtractErrorFromHandle,
+  PreContext as ElysiaPreContext
+} from 'elysia'
 import type { TranslationFunction } from '../../shared/src/types.ts'
 
 type DefaultLocaleMessageSchema<
@@ -129,7 +133,28 @@ export function intlify<
   Message = string,
   Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =
     CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
->(options: Options) {
+>(
+  options: Options
+): Elysia<
+  '',
+  {
+    decorator: { locale: string } & { translate: TranslationFunction }
+    store: {}
+    derive: {}
+    resolve: { readonly translate: (key: string, ...args: unknown[]) => string }
+  },
+  { typebox: {}; error: {} },
+  {
+    schema: {}
+    standaloneSchema: {}
+    macro: {}
+    macroFn: {}
+    parser: {}
+    response: ExtractErrorFromHandle<{
+      readonly translate: (key: string, ...args: unknown[]) => string
+    }>
+  }
+> {
   const intlify = createCoreContext(options as unknown as CoreOptions)
   const orgLocale = intlify.locale
 

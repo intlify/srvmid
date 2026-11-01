@@ -51,7 +51,7 @@ import type {
   LocaleParams,
   SchemaParams
 } from '@intlify/core'
-import type { H3Event, H3EventContext, H3Plugin, Middleware } from 'h3'
+import type { H3Event, H3EventContext, H3Plugin, HTTPEvent, Middleware } from 'h3'
 import type {
   DefaultLocaleMessageSchema as _DefaultLocaleMessageSchema,
   TranslationFunction
@@ -308,4 +308,5 @@ export async function useTranslation<
   return translate
 }
 
-export const getDetectorLocale = createGetDetectorLocale(getEventContext)
+export const getDetectorLocale: (event: HTTPEvent) => Promise<Intl.Locale> =
+  createGetDetectorLocale(getEventContext)

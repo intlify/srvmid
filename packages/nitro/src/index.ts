@@ -53,6 +53,7 @@ import type {
   SchemaParams
 } from '@intlify/core'
 import type { H3EventContext, HTTPEvent } from 'nitro/h3'
+import type { NitroAppPlugin } from 'nitro/types'
 import type {
   DefaultLocaleMessageSchema as _DefaultLocaleMessageSchema,
   TranslationFunction
@@ -118,7 +119,7 @@ export function intlify<
   Message = string,
   Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =
     CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
->(options: Options) {
+>(options: Options): NitroAppPlugin {
   return definePlugin(nitroApp => {
     const { onRequest, onResponse } = createIntlifyHooks<Schema, Locales, Message, Options>(options)
     nitroApp.hooks.hook('request', onRequest)
@@ -272,4 +273,5 @@ export async function useTranslation<
   return translate
 }
 
-export const getDetectorLocale = createGetDetectorLocale(getEventContext)
+export const getDetectorLocale: (event: HTTPEvent) => Promise<Intl.Locale> =
+  createGetDetectorLocale(getEventContext)
