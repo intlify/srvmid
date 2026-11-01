@@ -11,7 +11,6 @@
 
 import {
   translate as _translate,
-  createCoreContext,
   NOT_REOSLVED,
   // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
@@ -22,6 +21,7 @@ import {
   createGetDetectorLocale,
   createGetLocaleAndEventContext
 } from '../../shared/src/context.ts'
+import { createIntlifyCoreContext } from '../../shared/src/core.ts'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 
 export {
@@ -173,7 +173,7 @@ export function defineIntlifyMiddleware<
   Options extends CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>> =
     CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
 >(options: Options): IntlifyMiddleware {
-  const intlify = createCoreContext(options as unknown as CoreOptions)
+  const intlify = createIntlifyCoreContext(options as unknown as CoreOptions)
   const orgLocale = intlify.locale
 
   let staticLocaleDetector: LocaleDetector | null = null
