@@ -148,15 +148,10 @@ export function defineIntlifyMiddleware<
 
   return async (ctx: Context, next: Next) => {
     const detector = getLocaleDetector(ctx, intlify as CoreContext)
-    intlify.locale = detector
     ctx.set('intlifyLocaleDetector', detector)
     ctx.set('intlify', intlify as CoreContext)
 
     await next()
-
-    intlify.locale = orgLocale
-    ctx.set('intlify', undefined)
-    ctx.set('intlifyLocaleDetector', undefined)
   }
 }
 
@@ -249,7 +244,6 @@ export async function useTranslation<
   HonoContext extends Context = Context
 >(c: HonoContext): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, intlify] = await getLocaleAndIntlifyContext(c)
-  intlify.locale = locale
   function translate(key: string, ...args: unknown[]): string {
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
