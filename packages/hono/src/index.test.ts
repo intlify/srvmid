@@ -31,6 +31,46 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   expect(detectLocaleFromAcceptLanguageHeader(mockContext)).toBe('en-US')
 })
 
+test('detectLocaleFromAcceptLanguageHeader with a malformed header', () => {
+  const mockContext = {
+    req: {
+      raw: {
+        headers: {
+          get: _name => (_name === 'accept-language' ? '!!!' : '')
+        }
+      }
+    }
+  } as Context
+
+  expect(detectLocaleFromAcceptLanguageHeader(mockContext)).toBe('en-US')
+})
+
+test('translation with a malformed Accept-Language header', async () => {
+  const app = new Hono()
+  app.use(
+    '*',
+    defineIntlifyMiddleware({
+      locale: detectLocaleFromAcceptLanguageHeader,
+      messages: {
+        en: {
+          hello: 'hello, {name}'
+        },
+        ja: {
+          hello: 'こんにちは, {name}'
+        }
+      }
+    })
+  )
+  app.get('/', async c => {
+    const t = await useTranslation(c)
+    return c.text(t('hello', { name: 'hono' }))
+  })
+
+  const res = await app.request('/', { headers: { 'accept-language': '!!!' } })
+  expect(res.status).toBe(200)
+  expect(await res.text()).toBe('hello, hono')
+})
+
 test('defineIntlifyMiddleware', () => {
   const intlify = defineIntlifyMiddleware({
     locale: detectLocaleFromAcceptLanguageHeader,
