@@ -1,5 +1,5 @@
 import { createCoreContext } from '@intlify/core'
-import { H3, mockEvent } from 'h3'
+import { H3, mockEvent, onResponse } from 'h3'
 import { afterEach, describe, expect, test } from 'vite-plus/test'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
@@ -110,6 +110,104 @@ describe('useTranslation', () => {
       new Request('http://localhost/', { headers: { 'accept-language': 'ja' } })
     )
     expect(await res.text()).toBe('こんにちは, h3')
+  })
+})
+
+describe('after the handler returns', () => {
+  const options = {
+    locale: detectLocaleFromAcceptLanguageHeader,
+    messages: {
+      en: {
+        hello: 'hello, {name}'
+      },
+      ja: {
+        hello: 'こんにちは, {name}'
+      }
+    }
+  }
+  const request = () => new Request('http://localhost/', { headers: { 'accept-language': 'ja' } })
+
+  test('middleware registered before the plugin translates after `await next()`', async () => {
+    let translated = ''
+    const app = new H3()
+    app.use(async (event, next) => {
+      const res = await next()
+      const t = await useTranslation(event)
+      translated = t('hello', { name: 'h3' })
+      return res
+    })
+    app.register(intlify(options))
+    app.get('/', () => 'ok')
+
+    await app.fetch(request())
+    expect(translated).toBe('こんにちは, h3')
+  })
+
+  test('the translation function works after the response', async () => {
+    let t: Awaited<ReturnType<typeof useTranslation>> | undefined
+    const app = new H3({ plugins: [intlify(options)] })
+    app.get('/', async event => {
+      t = await useTranslation(event)
+      return 'ok'
+    })
+
+    const res = await app.fetch(request())
+    await res.text()
+    expect(t?.('hello', { name: 'h3' })).toBe('こんにちは, h3')
+  })
+
+  test('translates while streaming the response body', async () => {
+    const responded = Promise.withResolvers<void>()
+    const app = new H3({ plugins: [intlify(options)] })
+    app.get('/', async event => {
+      const t = await useTranslation(event)
+      return new ReadableStream<Uint8Array>({
+        async pull(controller) {
+          // translate after the response is created
+          await responded.promise
+          controller.enqueue(new TextEncoder().encode(t('hello', { name: 'h3' })))
+          controller.close()
+        }
+      })
+    })
+
+    const res = await app.fetch(request())
+    responded.resolve()
+    expect(await res.text()).toBe('こんにちは, h3')
+  })
+
+  test('translates in the global `onResponse` hook', async () => {
+    const translated = Promise.withResolvers<string>()
+    const app = new H3({
+      plugins: [intlify(options)],
+      onResponse: async (_response, event) => {
+        try {
+          const t = await useTranslation(event)
+          translated.resolve(t('hello', { name: 'h3' }))
+        } catch (error) {
+          translated.reject(error)
+        }
+      }
+    })
+    app.get('/', () => 'ok')
+
+    await app.fetch(request())
+    await expect(translated.promise).resolves.toBe('こんにちは, h3')
+  })
+
+  test('translates in `onResponse()` middleware registered after the plugin', async () => {
+    let translated = ''
+    const app = new H3({ plugins: [intlify(options)] })
+    app.use(
+      onResponse(async (_response, event) => {
+        const t = await useTranslation(event)
+        translated = t('hello', { name: 'h3' })
+      })
+    )
+    app.get('/', () => 'ok')
+
+    await app.fetch(request())
+    expect(translated).toBe('こんにちは, h3')
   })
 })
 
