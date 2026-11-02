@@ -129,6 +129,71 @@ describe('useTranslation', () => {
   })
 })
 
+describe('requests through the middleware', () => {
+  const messages = {
+    en: {
+      hello: 'hello, {name}'
+    },
+    ja: {
+      hello: 'こんにちは, {name}'
+    }
+  }
+
+  test('concurrent requests do not change the shared locale', async () => {
+    const locale = (c: Context) => c.req.header('accept-language') ?? 'en'
+    // typed as a string, but it holds the `locale` option (a function) here
+    const sharedLocale = (c: Context): unknown => c.get('intlify')?.locale
+    const app = new Hono()
+    app.use('*', defineIntlifyMiddleware({ locale, messages }))
+    const waiting = Promise.withResolvers<void>()
+    const release = Promise.withResolvers<void>()
+    app.get('/slow', async c => {
+      const t = await useTranslation(c)
+      const before = sharedLocale(c)
+      waiting.resolve()
+      // another request runs from start to end here
+      await release.promise
+      const after = sharedLocale(c)
+      return c.json({
+        translated: t('hello', { name: 'hono' }),
+        unchanged: before === locale && after === locale
+      })
+    })
+    app.get('/fast', async c => {
+      const t = await useTranslation(c)
+      return c.json({
+        translated: t('hello', { name: 'hono' }),
+        unchanged: sharedLocale(c) === locale
+      })
+    })
+
+    const slow = app.request('/slow', { headers: { 'accept-language': 'ja' } })
+    await waiting.promise
+    const fast = await app.request('/fast', { headers: { 'accept-language': 'en' } })
+    release.resolve()
+    expect(await (await slow).json()).toEqual({ translated: 'こんにちは, hono', unchanged: true })
+    expect(await fast.json()).toEqual({ translated: 'hello, hono', unchanged: true })
+  })
+
+  test('middleware registered before intlify translates after `await next()`', async () => {
+    let translated = ''
+    const app = new Hono()
+    app.use('*', async (c, next) => {
+      await next()
+      const t = await useTranslation(c)
+      translated = t('hello', { name: 'hono' })
+    })
+    app.use(
+      '*',
+      defineIntlifyMiddleware({ locale: detectLocaleFromAcceptLanguageHeader, messages })
+    )
+    app.get('/', c => c.text('ok'))
+
+    await app.request('/', { headers: { 'accept-language': 'ja' } })
+    expect(translated).toBe('こんにちは, hono')
+  })
+})
+
 test('getDetectorLocale', async () => {
   /**
    * setup `defineIntlifyMiddleware` emulates
