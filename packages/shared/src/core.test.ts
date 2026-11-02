@@ -2,21 +2,31 @@ import {
   compile,
   fallbackWithLocaleChain,
   fallbackWithSimple,
+  registerLocaleFallbacker,
   registerMessageResolver,
   resolveValue,
   resolveWithKeyValue,
   translate
 } from '@intlify/core'
 import { afterEach, describe, expect, test, vi } from 'vite-plus/test'
-import { createIntlifyCoreContext } from './core.ts'
+import { createIntlifyCoreContext, createLocaleChainFallbacker } from './core.ts'
 import { dropCoreRegistration, restoreCoreRegistration } from './testing.ts'
 
-import type { CoreContext } from '@intlify/core'
+import type { CoreContext, FallbackLocale, Locale, LocaleFallbacker } from '@intlify/core'
 
 const messages = {
   en: { hello: 'hello, {name}', nav: { home: 'Home' } },
   ja: { hello: 'こんにちは, {name}' }
 }
+
+// the chain that `fallbackWithLocaleChain` of `@intlify/core` returns, without its cache
+const chainOf = (fallback: FallbackLocale, start: Locale): Locale[] =>
+  fallbackWithLocaleChain({} as CoreContext, fallback, start)
+
+// the number of locales in the cache of `fallbackWithLocaleChain` on the context
+const cachedLocales = (context: CoreContext): number =>
+  (context as unknown as { __localeChainCache?: Map<Locale, Locale[]> }).__localeChainCache?.size ??
+  0
 
 afterEach(() => {
   restoreCoreRegistration()
@@ -34,6 +44,10 @@ describe('createIntlifyCoreContext', () => {
     expect(translate(context, 'hello', { name: 'srvmid' })).toBe('こんにちは, srvmid')
     expect(translate(context, 'nav.home')).toBe('Home')
     expect(warn.mock.calls.flat().join('\n')).not.toContain('Custom Message Compiler')
+    // `fallbackWithLocaleChain`, which `@intlify/core` registers, is replaced with the one with a limited cache
+    expect(context.localeFallbacker).not.toBe(fallbackWithLocaleChain)
+    expect(context.localeFallbacker(context, 'en', 'ja-JP')).toEqual(chainOf('en', 'ja-JP'))
+    expect(cachedLocales(context)).toBe(0)
   })
 
   test('without the registration of @intlify/core', () => {
@@ -46,11 +60,13 @@ describe('createIntlifyCoreContext', () => {
     }) as CoreContext
     expect(context.messageCompiler).toBe(compile)
     expect(context.messageResolver).toBe(resolveValue)
-    expect(context.localeFallbacker).toBe(fallbackWithLocaleChain)
+    expect(context.localeFallbacker).not.toBe(fallbackWithSimple)
+    expect(context.localeFallbacker(context, 'en', 'ja-JP')).toEqual(chainOf('en', 'ja-JP'))
     // placeholders need the compiler, nested keys need the resolver, and `ja-JP` -> `ja` needs the locale chain of the fallbacker
     expect(translate(context, 'hello', { name: 'srvmid' })).toBe('こんにちは, srvmid')
     expect(translate(context, 'nav.home')).toBe('Home')
     expect(warn.mock.calls.flat().join('\n')).not.toContain('Custom Message Compiler')
+    expect(cachedLocales(context)).toBe(0)
   })
 
   test('keeps what users register', () => {
@@ -58,6 +74,14 @@ describe('createIntlifyCoreContext', () => {
     registerMessageResolver(resolver)
     const context = createIntlifyCoreContext({ locale: 'en', messages }) as CoreContext
     expect(context.messageResolver).toBe(resolver)
+  })
+
+  test('keeps a locale fallbacker that users register', () => {
+    const fallbacker: LocaleFallbacker = (ctx, fallback, start) =>
+      fallbackWithSimple(ctx, fallback, start)
+    registerLocaleFallbacker(fallbacker)
+    const context = createIntlifyCoreContext({ locale: 'en', messages }) as CoreContext
+    expect(context.localeFallbacker).toBe(fallbacker)
   })
 
   test('uses the options first', () => {
@@ -70,7 +94,7 @@ describe('createIntlifyCoreContext', () => {
     }) as CoreContext
     expect(context.messageResolver).toBe(resolver)
     expect(context.messageCompiler).toBe(compile)
-    expect(context.localeFallbacker).toBe(fallbackWithLocaleChain)
+    expect(context.localeFallbacker(context, 'en', 'ja-JP')).toEqual(chainOf('en', 'ja-JP'))
   })
 
   test('keeps the built-in ones passed as options', () => {
@@ -84,5 +108,43 @@ describe('createIntlifyCoreContext', () => {
     expect(context.messageResolver).toBe(resolveWithKeyValue)
     expect(context.localeFallbacker).toBe(fallbackWithSimple)
     expect(context.messageCompiler).toBe(compile)
+  })
+})
+
+describe('createLocaleChainFallbacker', () => {
+  const context = {} as CoreContext
+
+  test('returns the same chains as fallbackWithLocaleChain', () => {
+    // one fallbacker for all the cases, so the chains must follow the change of the fallback locales
+    const fallbacker: LocaleFallbacker = createLocaleChainFallbacker()
+    const cases: [FallbackLocale, Locale][] = [
+      ['en', 'ja-JP'],
+      [['fr', 'en'], 'de-CH'],
+      [{ 'de-CH': ['fr'], default: ['en'] }, 'de-CH'],
+      ['en', 'zh-Hant-TW']
+    ]
+    for (const [fallback, start] of cases) {
+      expect(fallbacker(context, fallback, start)).toEqual(chainOf(fallback, start))
+    }
+  })
+
+  test('keeps the chains of a limited number of locales', () => {
+    const fallbacker = createLocaleChainFallbacker(2)
+    const ja = fallbacker(context, 'en', 'ja-JP')
+    const fr = fallbacker(context, 'en', 'fr-FR')
+    // kept, and now used most recently
+    expect(fallbacker(context, 'en', 'ja-JP')).toBe(ja)
+    // drops fr-FR, the one used least recently
+    fallbacker(context, 'en', 'de-DE')
+    expect(fallbacker(context, 'en', 'ja-JP')).toBe(ja)
+    const frAgain = fallbacker(context, 'en', 'fr-FR')
+    expect(frAgain).not.toBe(fr)
+    expect(frAgain).toEqual(['fr-FR', 'fr', 'en'])
+  })
+
+  test('keeps nothing on the context', () => {
+    const target = {} as CoreContext
+    createLocaleChainFallbacker()(target, 'en', 'ja-JP')
+    expect(target).toEqual({})
   })
 })
