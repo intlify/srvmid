@@ -70,7 +70,6 @@ type DefaultLocaleMessageSchema = _DefaultLocaleMessageSchema<DefineLocaleMessag
 
 interface IntlifyHooks {
   onRequest: (event: HTTPEvent) => void | Promise<void>
-  onResponse: (res: Response, event: HTTPEvent) => void | Promise<void>
 }
 
 /**
@@ -121,9 +120,8 @@ export function intlify<
     CoreOptions<Message, SchemaParams<Schema, Message>, LocaleParams<Locales>>
 >(options: Options): NitroAppPlugin {
   return definePlugin(nitroApp => {
-    const { onRequest, onResponse } = createIntlifyHooks<Schema, Locales, Message, Options>(options)
+    const { onRequest } = createIntlifyHooks<Schema, Locales, Message, Options>(options)
     nitroApp.hooks.hook('request', onRequest)
-    nitroApp.hooks.hook('response', onResponse)
   })
 }
 
@@ -132,7 +130,7 @@ export function intlify<
  *
  * @param options - An `i18n` options passed to `createCoreContext` of `@intlify/core`
  *
- * @returns An object containing `onRequest` and `onResponse` hooks
+ * @returns An object containing the `onRequest` hook
  *
  * @internal
  */
@@ -166,14 +164,7 @@ function createIntlifyHooks<
     onRequest: event => {
       const context = getEventContext<H3EventContext>(event)
       context[SYMBOL_INTLIFY_LOCALE] = getLocaleDetector(event, intlify as CoreContext)
-      intlify.locale = context[SYMBOL_INTLIFY_LOCALE]
       context[SYMBOL_INTLIFY] = intlify as CoreContext
-    },
-    onResponse: (_res, event) => {
-      intlify.locale = orgLocale
-      const context = getEventContext<H3EventContext>(event)
-      delete context[SYMBOL_INTLIFY]
-      delete context[SYMBOL_INTLIFY_LOCALE]
     }
   }
 }
@@ -251,7 +242,8 @@ export async function useTranslation<
   Event extends HTTPEvent = HTTPEvent
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, context] = await getLocaleAndEventContext(event)
-  context[SYMBOL_INTLIFY]!.locale = locale
+  // keep the core context, so that the function also works after the response
+  const coreContext = context[SYMBOL_INTLIFY]!
   function translate(key: string, ...args: unknown[]): string {
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
@@ -259,7 +251,7 @@ export async function useTranslation<
 
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): generic type
     const result = Reflect.apply(_translate, null, [
-      context[SYMBOL_INTLIFY]!,
+      coreContext,
       key,
       arg2,
       {
