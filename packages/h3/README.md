@@ -73,6 +73,9 @@ app.get('/', event => {
 })
 ```
 
+> [!NOTE]
+> The `get*Locale` functions throw a `RangeError` when the value in the request is not a valid language tag. The `try*Locale` functions return `null` instead, so use them in a locale detector, with a default locale.
+
 ### Translation
 
 If you want to use translation, you need to install `intlify` plugin. As a result, you can use `useTranslation` within the handler:
@@ -121,13 +124,13 @@ example for detecting locale from url query, and get locale with `getDetectorLoc
 
 ```ts
 import { H3 } from 'h3'
-import { intlify, getQueryLocale, getDetectorLocale } from '@intlify/h3'
+import { intlify, tryQueryLocale, getDetectorLocale } from '@intlify/h3'
 
 import type { H3Event } from 'h3'
 
 // define custom locale detector
 const localeDetector = (event: H3Event): string => {
-  return getQueryLocale(event.req).toString()
+  return tryQueryLocale(event.req)?.toString() ?? 'en-US'
 }
 
 const app = new H3({
@@ -154,7 +157,7 @@ You can make that function asynchronous. This is useful when loading resources a
 
 ```ts
 import { H3 } from 'h3'
-import { intlify, getCookieLocale } from '@intlify/h3'
+import { intlify, tryCookieLocale } from '@intlify/h3'
 
 import type { H3Event } from 'h3'
 import type { DefineLocaleMessage, CoreContext } from '@intlify/h3'
@@ -171,7 +174,7 @@ const localeDetector = async (
   intlify: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
   // detect locale
-  const locale = getCookieLocale(event.req).toString()
+  const locale = tryCookieLocale(event.req)?.toString() ?? 'en-US'
 
   // resource lazy loading
   const loader = messages[locale]
