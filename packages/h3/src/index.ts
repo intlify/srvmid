@@ -76,6 +76,8 @@ export interface IntlifyMiddleware {
   onRequest: Middleware
   /**
    * Response middleware which is defined with [`onResponse`](https://h3.dev/utils/more#onresponsehook)
+   *
+   * @deprecated This middleware does nothing, because the event context lives only for the request. Register `onRequest` only. It will be removed in the next major version.
    */
   onResponse: Middleware
 }
@@ -122,9 +124,8 @@ export type IntlifyPluginOptions<
  */
 export const intlify: (options: IntlifyPluginOptions) => H3Plugin =
   definePlugin<IntlifyPluginOptions>((h3, options) => {
-    const { onRequest, onResponse } = defineIntlifyMiddleware(options)
+    const { onRequest } = defineIntlifyMiddleware(options)
     h3.use(onRequest)
-    h3.use(onResponse)
   })
 
 /**
@@ -157,12 +158,11 @@ export const intlify: (options: IntlifyPluginOptions) => H3Plugin =
  *
  * const app = new H3()
  *   .use(intlifyMiddleware.onRequest) // register `onRequest` hook before your application middlewares
- *   .use(intlifyMiddleware.onResponse) // register `onResponse` hook before your application middlewares
  * ```
  *
  * @param options - An `i18n` options like vue-i18n [`createI18n`]({@link https://vue-i18n.intlify.dev/guide/#javascript}), which are passed to `createCoreContext` of `@intlify/core`, see about details [`CoreOptions` of `@intlify/core`](https://github.com/intlify/vue-i18n-next/blob/6a9947dd3e0fe90de7be9c87ea876b8779998de5/packages/core-base/src/context.ts#L196-L216)
  *
- * @returns A defined internationalization middleware, which is included `onRequest` and `onResponse` options of `H3`
+ * @returns A defined internationalization middleware, which is included `onRequest` and `onResponse` options of `H3`. `onResponse` does nothing, and is deprecated
  *
  * @internal
  */
@@ -196,15 +196,10 @@ export function defineIntlifyMiddleware<
     onRequest: onRequest(event => {
       const context = getEventContext<H3EventContext>(event)
       context[SYMBOL_INTLIFY_LOCALE] = getLocaleDetector(event, intlify as CoreContext)
-      intlify.locale = context[SYMBOL_INTLIFY_LOCALE]
       context[SYMBOL_INTLIFY] = intlify as CoreContext
     }),
-    onResponse: onResponse((_, event) => {
-      intlify.locale = orgLocale
-      const context = getEventContext<H3EventContext>(event)
-      delete context[SYMBOL_INTLIFY]
-      delete context[SYMBOL_INTLIFY_LOCALE]
-    })
+    // nothing to clean up, because the event context lives only for the request. Kept for compatibility
+    onResponse: onResponse(() => {})
   }
 }
 
@@ -230,7 +225,6 @@ export function defineIntlifyMiddleware<
  *
  * const app = new H3()
  *   .use(intlifyMiddleware.onRequest)
- *   .use(intlifyMiddleware.onResponse)
  * ```
  *
  * @param event - A H3 event
@@ -285,7 +279,8 @@ export async function useTranslation<
   Event extends H3Event = H3Event
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
   const [locale, context] = await getLocaleAndEventContext(event)
-  context[SYMBOL_INTLIFY]!.locale = locale
+  // keep the core context, so that the function also works after the response
+  const coreContext = context[SYMBOL_INTLIFY]!
   function translate(key: string, ...args: unknown[]): string {
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- NOTE(kazupon): generic type
     const [_, options] = parseTranslateArgs(key, ...args)
@@ -293,7 +288,7 @@ export async function useTranslation<
 
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment -- NOTE(kazupon): generic type
     const result = Reflect.apply(_translate, null, [
-      context[SYMBOL_INTLIFY]!,
+      coreContext,
       key,
       arg2,
       {

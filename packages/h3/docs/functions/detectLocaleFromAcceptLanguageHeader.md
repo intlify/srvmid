@@ -44,5 +44,4 @@ const intlifyMiddleware = defineIntlifyMiddleware({
 
 const app = new H3()
   .use(intlifyMiddleware.onRequest)
-  .use(intlifyMiddleware.onResponse)
 ```
