@@ -35,14 +35,6 @@
     "./package.json": "./package.json"
   },
   "types": "dist/index.d.mts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
-  },
   "dependencies": {
     "@intlify/core": "catalog:",
     "@intlify/utils": "catalog:",
