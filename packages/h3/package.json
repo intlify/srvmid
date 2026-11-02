@@ -47,7 +47,7 @@
     "./dist/*": "./dist/*",
     "./package.json": "./package.json"
   },
-  "types": "dist/index.d.ts",
+  "types": "dist/index.d.mts",
   "typesVersions": {
     "*": {
       "*": [
