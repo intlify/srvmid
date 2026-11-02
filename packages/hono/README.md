@@ -174,7 +174,7 @@ app.get('/', async c => {
 You can make that function asynchronous. This is useful when loading resources along with locale detection.
 
 > [!NOTE]
-> The case which a synchronous function returns a promise is not supported. you need to use `async function`.
+> Both an `async function` and a synchronous function that returns a promise work.
 
 ```ts
 import { Hono } from 'hono'
