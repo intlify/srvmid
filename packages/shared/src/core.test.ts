@@ -142,6 +142,31 @@ describe('createLocaleChainFallbacker', () => {
     expect(frAgain).toEqual(['fr-FR', 'fr', 'en'])
   })
 
+  test('keeps the chains of 1,000 locales by default', () => {
+    // 999 more locales: the first one is still kept
+    const kept = createLocaleChainFallbacker()
+    const first = kept(context, 'en', 'en-x-r0')
+    for (let i = 1; i < 1000; i++) {
+      kept(context, 'en', `en-x-r${i}`)
+    }
+    expect(kept(context, 'en', 'en-x-r0')).toBe(first)
+
+    // 1,000 more locales: the first one is dropped
+    const dropped = createLocaleChainFallbacker()
+    const second = dropped(context, 'en', 'en-x-r0')
+    for (let i = 1; i <= 1000; i++) {
+      dropped(context, 'en', `en-x-r${i}`)
+    }
+    expect(dropped(context, 'en', 'en-x-r0')).not.toBe(second)
+  })
+
+  test('keeps no chain when the size is 0', () => {
+    const fallbacker = createLocaleChainFallbacker(0)
+    const ja = fallbacker(context, 'en', 'ja-JP')
+    expect(ja).toEqual(['ja-JP', 'ja', 'en'])
+    expect(fallbacker(context, 'en', 'ja-JP')).not.toBe(ja)
+  })
+
   test('keeps nothing on the context', () => {
     const target = {} as CoreContext
     createLocaleChainFallbacker()(target, 'en', 'ja-JP')
