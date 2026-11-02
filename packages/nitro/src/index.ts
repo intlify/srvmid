@@ -10,12 +10,13 @@
  */
 
 import {
+  DEFAULT_LOCALE,
   translate as _translate,
   NOT_REOSLVED,
   // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
 } from '@intlify/core'
-import { getHeaderLocale } from '@intlify/utils'
+import { tryHeaderLocale } from '@intlify/utils'
 import { definePlugin } from 'nitro'
 import { getEventContext } from 'nitro/h3'
 import {
@@ -192,10 +193,10 @@ function createIntlifyHooks<
  *
  * @param event - A Nitro HTTP event
  *
- * @returns A locale string, which will be detected of **first** from `Accept-Language` header
+ * @returns A locale string, which will be detected of **first** from `Accept-Language` header. `en-US` if the header has no language, or if the first language is not a valid language tag
  */
 export const detectLocaleFromAcceptLanguageHeader = (event: HTTPEvent): Locale =>
-  getHeaderLocale(event.req).toString()
+  tryHeaderLocale(event.req)?.toString() ?? DEFAULT_LOCALE
 
 /**
  * The type definition of Locale Message for `@intlify/nitro` package

@@ -35,6 +35,40 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
 
+test('detectLocaleFromAcceptLanguageHeader with a malformed header', () => {
+  const eventMock = createEventMock('!!!')
+  expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
+})
+
+test('translation with a malformed Accept-Language header', async () => {
+  let onRequest: ((event: HTTPEvent) => unknown) | undefined
+  const nitroApp = {
+    hooks: {
+      hook: (name: string, fn: (event: HTTPEvent) => unknown) => {
+        if (name === 'request') {
+          onRequest = fn
+        }
+      }
+    }
+  } as unknown as Parameters<NitroAppPlugin>[0]
+  await intlify({
+    locale: detectLocaleFromAcceptLanguageHeader,
+    messages: {
+      en: {
+        hello: 'hello, {name}'
+      },
+      ja: {
+        hello: 'こんにちは, {name}'
+      }
+    }
+  })(nitroApp)
+
+  const eventMock = createEventMock('!!!')
+  await onRequest?.(eventMock)
+  const t = await useTranslation(eventMock)
+  expect(t('hello', { name: 'nitro' })).toEqual('hello, nitro')
+})
+
 test('intlify plugin', () => {
   const plugin = intlify({
     locale: detectLocaleFromAcceptLanguageHeader,

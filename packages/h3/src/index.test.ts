@@ -30,6 +30,39 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
 })
 
+test('detectLocaleFromAcceptLanguageHeader with a malformed header', () => {
+  const eventMock = createEventMock('!!!')
+  expect(detectLocaleFromAcceptLanguageHeader(eventMock)).toBe('en-US')
+})
+
+test('translation with a malformed Accept-Language header', async () => {
+  const app = new H3({
+    plugins: [
+      intlify({
+        locale: detectLocaleFromAcceptLanguageHeader,
+        messages: {
+          en: {
+            hello: 'hello, {name}'
+          },
+          ja: {
+            hello: 'こんにちは, {name}'
+          }
+        }
+      })
+    ]
+  })
+  app.get('/', async event => {
+    const t = await useTranslation(event)
+    return t('hello', { name: 'h3' })
+  })
+
+  const res = await app.fetch(
+    new Request('http://localhost/', { headers: { 'accept-language': '!!!' } })
+  )
+  expect(res.status).toBe(200)
+  expect(await res.text()).toBe('hello, h3')
+})
+
 test('defineIntlifyMiddleware', () => {
   const middleware = defineIntlifyMiddleware({
     locale: detectLocaleFromAcceptLanguageHeader,

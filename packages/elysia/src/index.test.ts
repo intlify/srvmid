@@ -23,6 +23,42 @@ test('detectLocaleFromAcceptLanguageHeader', () => {
   expect(detectLocaleFromAcceptLanguageHeader(mockContext)).toBe('en-US')
 })
 
+test('detectLocaleFromAcceptLanguageHeader with a malformed header', () => {
+  const mockContext = {
+    request: {
+      headers: {
+        get: _name => (_name === 'accept-language' ? '!!!' : '')
+      }
+    }
+  } as ElysiaContext
+
+  expect(detectLocaleFromAcceptLanguageHeader(mockContext)).toBe('en-US')
+})
+
+test('translation with a malformed Accept-Language header', async () => {
+  const app = new Elysia()
+    .use(
+      intlify({
+        locale: detectLocaleFromAcceptLanguageHeader,
+        messages: {
+          en: {
+            hello: 'hello, {name}'
+          },
+          ja: {
+            hello: 'こんにちは, {name}'
+          }
+        }
+      })
+    )
+    .get('/', ctx => ctx.translate('hello', { name: 'elysia' }))
+
+  const res = await app.handle(
+    new Request('http://localhost/', { headers: { 'accept-language': '!!!' } })
+  )
+  expect(res.status).toBe(200)
+  expect(await res.text()).toBe('hello, elysia')
+})
+
 test('translation without the registration of @intlify/core', async () => {
   dropCoreRegistration()
   const app = new Elysia()
