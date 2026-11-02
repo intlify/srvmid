@@ -209,6 +209,28 @@ describe('after the handler returns', () => {
     await app.fetch(request())
     expect(translated).toBe('こんにちは, h3')
   })
+
+  test('the deprecated `onResponse` middleware does nothing when it is registered', async () => {
+    const intlifyMiddleware = defineIntlifyMiddleware(options)
+    let translated = ''
+    const app = new H3()
+    app.use(async (event, next) => {
+      const res = await next()
+      const t = await useTranslation(event)
+      translated = t('hello', { name: 'h3' })
+      return res
+    })
+    app.use(intlifyMiddleware.onRequest)
+    app.use(intlifyMiddleware.onResponse)
+    app.get('/', async event => {
+      const t = await useTranslation(event)
+      return t('hello', { name: 'h3' })
+    })
+
+    const res = await app.fetch(request())
+    expect(await res.text()).toBe('こんにちは, h3')
+    expect(translated).toBe('こんにちは, h3')
+  })
 })
 
 test('getDetectorLocale', async () => {
