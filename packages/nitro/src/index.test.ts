@@ -259,3 +259,37 @@ test('getDetectorLocale', async () => {
   const locale = await getDetectorLocale(eventMock)
   expect(locale.language).toEqual('ja')
 })
+
+test('keeps no locale chains on the shared core context', async () => {
+  let shared: CoreContext | undefined
+  let onRequest: ((event: HTTPEvent) => unknown) | undefined
+  const nitroApp = {
+    hooks: {
+      hook: (name: string, fn: (event: HTTPEvent) => unknown) => {
+        if (name === 'request') {
+          onRequest = fn
+        }
+      }
+    }
+  } as unknown as Parameters<NitroAppPlugin>[0]
+  await intlify({
+    // the default detector, which also gets the shared core context
+    locale: (event: HTTPEvent, context: CoreContext) => {
+      shared = context
+      return detectLocaleFromAcceptLanguageHeader(event)
+    },
+    messages: { en: { hello: 'hello' } }
+  })(nitroApp)
+
+  const texts: string[] = []
+  for (let i = 0; i < 100; i++) {
+    const eventMock = createEventMock(`en-x-r${i}`)
+    await onRequest?.(eventMock)
+    const t = await useTranslation(eventMock)
+    texts.push(t('hello'))
+  }
+  expect(texts).toEqual(Array.from({ length: 100 }, () => 'hello'))
+  const cache = (shared as unknown as { __localeChainCache?: Map<string, unknown> })
+    .__localeChainCache
+  expect(cache?.size ?? 0).toBe(0)
+})

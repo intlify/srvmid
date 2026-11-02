@@ -3,7 +3,7 @@ import { Hono } from 'hono'
 import { afterEach, describe, expect, test } from 'vite-plus/test'
 import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
 
-import type { LocaleDetector } from '@intlify/core'
+import type { CoreContext, LocaleDetector } from '@intlify/core'
 import type { Context } from 'hono'
 
 import {
@@ -262,4 +262,31 @@ test('getDetectorLocale', async () => {
   // test `getDetectorLocale`
   const locale = await getDetectorLocale(mockContext)
   expect(locale.language).toEqual('ja')
+})
+
+test('keeps no locale chains on the shared core context', async () => {
+  let shared: CoreContext | undefined
+  const app = new Hono()
+  app.use(
+    '*',
+    defineIntlifyMiddleware({
+      locale: detectLocaleFromAcceptLanguageHeader,
+      messages: { en: { hello: 'hello' } }
+    })
+  )
+  app.get('/', async c => {
+    shared = c.get('intlify')
+    const t = await useTranslation(c)
+    return c.text(t('hello'))
+  })
+
+  const texts: string[] = []
+  for (let i = 0; i < 100; i++) {
+    const res = await app.request('/', { headers: { 'accept-language': `en-x-r${i}` } })
+    texts.push(await res.text())
+  }
+  expect(texts).toEqual(Array.from({ length: 100 }, () => 'hello'))
+  const cache = (shared as unknown as { __localeChainCache?: Map<string, unknown> })
+    .__localeChainCache
+  expect(cache?.size ?? 0).toBe(0)
 })
