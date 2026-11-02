@@ -63,6 +63,9 @@
     "@intlify/core": "catalog:",
     "@intlify/utils": "catalog:"
   },
+  "peerDependencies": {
+    "elysia": "^1.4.16"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "elysia": "^1.4.16",

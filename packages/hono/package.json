@@ -65,6 +65,9 @@
     "@intlify/core": "catalog:",
     "@intlify/utils": "catalog:"
   },
+  "peerDependencies": {
+    "hono": "^4.0.0"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "hono": "^4.10.6",
