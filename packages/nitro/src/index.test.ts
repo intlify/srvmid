@@ -1,6 +1,6 @@
 import { createCoreContext } from '@intlify/core'
 import { H3 } from 'nitro/h3'
-import { afterEach, describe, expect, test } from 'vite-plus/test'
+import { afterEach, describe, expect, test, vi } from 'vite-plus/test'
 import { SYMBOL_INTLIFY, SYMBOL_INTLIFY_LOCALE } from '../../shared/src/symbols.ts'
 import { dropCoreRegistration, restoreCoreRegistration } from '../../shared/src/testing.ts'
 
@@ -112,6 +112,9 @@ describe('useTranslation', () => {
   })
 
   test('not initialize context', async () => {
+    // a new instance of the module, which no `intlify` plugin of the other tests has set up
+    vi.resetModules()
+    const { useTranslation } = await import('./index.ts')
     const eventMock = createEventMock('ja,en')
     // set empty context for the mock
     // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access -- test mock
@@ -157,39 +160,89 @@ describe('useTranslation', () => {
 type NitroApp = Parameters<NitroAppPlugin>[0]
 type Hook = (...args: never[]) => unknown
 
-describe('after the handler returns', () => {
-  const options = {
-    locale: detectLocaleFromAcceptLanguageHeader,
-    messages: {
-      en: {
-        hello: 'hello, {name}'
-      },
-      ja: {
-        hello: 'こんにちは, {name}'
-      }
+const options = {
+  locale: detectLocaleFromAcceptLanguageHeader,
+  messages: {
+    en: {
+      hello: 'hello, {name}'
+    },
+    ja: {
+      hello: 'こんにちは, {name}'
     }
   }
-  const request = () => new Request('http://localhost/', { headers: { 'accept-language': 'ja' } })
+}
+const request = () => new Request('http://localhost/', { headers: { 'accept-language': 'ja' } })
 
-  // an H3 app that calls the Nitro hooks from its global hooks, like the Nitro runtime does
-  async function createNitroLikeApp(setup?: (nitroApp: NitroApp) => void): Promise<H3> {
-    const hooks: Record<string, Hook[]> = {}
-    const nitroApp = {
-      hooks: { hook: (name: string, fn: Hook) => void (hooks[name] ??= []).push(fn) }
-    } as unknown as NitroApp
-    const call = async (name: string, ...args: unknown[]) => {
-      for (const fn of hooks[name] ?? []) {
-        await (fn as (...a: unknown[]) => unknown)(...args)
-      }
+// An H3 app that calls the Nitro hooks from its global hooks, like the Nitro runtime does.
+// `before` and `after` set up the plugins that Nitro registers before and after the intlify plugin
+async function createNitroLikeApp(
+  plugins: { before?: (nitroApp: NitroApp) => void; after?: (nitroApp: NitroApp) => void } = {}
+): Promise<H3> {
+  const hooks: Record<string, Hook[]> = {}
+  const nitroApp = {
+    hooks: { hook: (name: string, fn: Hook) => void (hooks[name] ??= []).push(fn) }
+  } as unknown as NitroApp
+  const call = async (name: string, ...args: unknown[]) => {
+    for (const fn of hooks[name] ?? []) {
+      await (fn as (...a: unknown[]) => unknown)(...args)
     }
-    await intlify(options)(nitroApp)
-    setup?.(nitroApp)
-    return new H3({
-      onRequest: event => call('request', event),
-      onResponse: (response, event) => call('response', response, event)
+  }
+  plugins.before?.(nitroApp)
+  await intlify(options)(nitroApp)
+  plugins.after?.(nitroApp)
+  return new H3({
+    onRequest: event => call('request', event),
+    onResponse: (response, event) => call('response', response, event)
+  })
+}
+
+describe('the `request` hook of a plugin registered before intlify', () => {
+  test('translates with useTranslation', async () => {
+    const translated = Promise.withResolvers<string>()
+    const app = await createNitroLikeApp({
+      before: nitroApp => {
+        nitroApp.hooks.hook('request', async event => {
+          try {
+            const t = await useTranslation(event)
+            translated.resolve(t('hello', { name: 'nitro' }))
+          } catch (error) {
+            translated.reject(error)
+          }
+        })
+      }
     })
-  }
+    app.get('/', async event => {
+      const t = await useTranslation(event)
+      return t('hello', { name: 'route' })
+    })
 
+    const res = await app.fetch(request())
+    await expect(translated.promise).resolves.toBe('こんにちは, nitro')
+    expect(await res.text()).toBe('こんにちは, route')
+  })
+
+  test('gets the locale with getDetectorLocale', async () => {
+    const detected = Promise.withResolvers<string>()
+    const app = await createNitroLikeApp({
+      before: nitroApp => {
+        nitroApp.hooks.hook('request', async event => {
+          try {
+            const locale = await getDetectorLocale(event)
+            detected.resolve(locale.toString())
+          } catch (error) {
+            detected.reject(error)
+          }
+        })
+      }
+    })
+    app.get('/', () => 'ok')
+
+    await app.fetch(request())
+    await expect(detected.promise).resolves.toBe('ja')
+  })
+})
+
+describe('after the handler returns', () => {
   test('the translation function works after the response', async () => {
     let t: Awaited<ReturnType<typeof useTranslation>> | undefined
     const app = await createNitroLikeApp()
@@ -225,15 +278,17 @@ describe('after the handler returns', () => {
 
   test('translates in the `response` hook of a plugin registered after intlify', async () => {
     const translated = Promise.withResolvers<string>()
-    const app = await createNitroLikeApp(nitroApp => {
-      nitroApp.hooks.hook('response', async (_response, event) => {
-        try {
-          const t = await useTranslation(event)
-          translated.resolve(t('hello', { name: 'nitro' }))
-        } catch (error) {
-          translated.reject(error)
-        }
-      })
+    const app = await createNitroLikeApp({
+      after: nitroApp => {
+        nitroApp.hooks.hook('response', async (_response, event) => {
+          try {
+            const t = await useTranslation(event)
+            translated.resolve(t('hello', { name: 'nitro' }))
+          } catch (error) {
+            translated.reject(error)
+          }
+        })
+      }
     })
     app.get('/', () => 'ok')
 
