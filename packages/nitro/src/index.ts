@@ -122,6 +122,7 @@ export function intlify<
 >(options: Options): NitroAppPlugin {
   return definePlugin(nitroApp => {
     const { onRequest } = createIntlifyHooks<Schema, Locales, Message, Options>(options)
+    prepareEvent = onRequest
     nitroApp.hooks.hook('request', onRequest)
   })
 }
@@ -221,6 +222,26 @@ export interface DefineLocaleMessage extends LocaleMessage<string> {}
 const getLocaleAndEventContext = createGetLocaleAndEventContext(getEventContext)
 
 /**
+ * The `request` hook of the intlify plugin, which prepares the event context.
+ *
+ * Nitro calls the `request` hooks in the order that the plugins register them, so a plugin that runs before the intlify plugin gets an event that is not prepared yet in its `request` hook. Nitro runs all the plugins before it handles requests, so `useTranslation` and `getDetectorLocale` prepare such an event with this hook.
+ */
+let prepareEvent: ((event: HTTPEvent) => void | Promise<void>) | undefined
+
+async function prepare(event: HTTPEvent): Promise<void> {
+  if (getEventContext<H3EventContext>(event)[SYMBOL_INTLIFY] == null) {
+    await prepareEvent?.(event)
+  }
+}
+
+function withPrepare<T>(fn: (event: HTTPEvent) => Promise<T>): (event: HTTPEvent) => Promise<T> {
+  return async event => {
+    await prepare(event)
+    return fn(event)
+  }
+}
+
+/**
  * Use translation function in event handler
  *
  * @example
@@ -242,6 +263,7 @@ export async function useTranslation<
   Schema extends Record<string, any> = {},
   Event extends HTTPEvent = HTTPEvent
 >(event: Event): Promise<TranslationFunction<Schema, DefineLocaleMessage>> {
+  await prepare(event)
   const [locale, context] = await getLocaleAndEventContext(event)
   // keep the core context, so that the function also works after the response
   const coreContext = context[SYMBOL_INTLIFY]!
@@ -266,5 +288,6 @@ export async function useTranslation<
   return translate
 }
 
-export const getDetectorLocale: (event: HTTPEvent) => Promise<Intl.Locale> =
+export const getDetectorLocale: (event: HTTPEvent) => Promise<Intl.Locale> = withPrepare(
   createGetDetectorLocale(getEventContext)
+)
