@@ -39,7 +39,7 @@ locale detection with `Accept-Language` header
 
 `string`
 
-A locale string, which will be detected of **first** from `Accept-Language` header
+A locale string, which will be detected of **first** from `Accept-Language` header. `en-US` if the header has no language, or if the first language is not a valid language tag
 
 ## Example
 

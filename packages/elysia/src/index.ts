@@ -16,7 +16,7 @@ import {
   // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
 } from '@intlify/core'
-import { getHeaderLocale } from '@intlify/utils'
+import { tryHeaderLocale } from '@intlify/utils'
 import { Elysia } from 'elysia'
 import { createIntlifyCoreContext } from '../../shared/src/core.ts'
 
@@ -212,7 +212,7 @@ export function intlify<
  * locale detection with `Accept-Language` header
  *
  * @param ctx - An Elysia context
- * @returns A locale string, which will be detected of **first** from `Accept-Language` header
+ * @returns A locale string, which will be detected of **first** from `Accept-Language` header. `en-US` if the header has no language, or if the first language is not a valid language tag
  *
  * @example
  * ```js
@@ -236,4 +236,4 @@ export function intlify<
  * ```
  */
 export const detectLocaleFromAcceptLanguageHeader = (ctx: ElysiaContext): Locale =>
-  getHeaderLocale(ctx.request).toString()
+  tryHeaderLocale(ctx.request)?.toString() ?? DEFAULT_LOCALE

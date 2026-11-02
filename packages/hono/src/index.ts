@@ -10,11 +10,12 @@
  */
 
 import {
+  DEFAULT_LOCALE,
   translate as _translate,
   NOT_REOSLVED, // @ts-expect-error -- NOTE(kazupon): internal function
   parseTranslateArgs
 } from '@intlify/core'
-import { getHeaderLocale } from '@intlify/utils'
+import { tryHeaderLocale } from '@intlify/utils'
 import { createIntlifyCoreContext } from '../../shared/src/core.ts'
 
 export {
@@ -159,7 +160,7 @@ export function defineIntlifyMiddleware<
  * locale detection with `Accept-Language` header
  *
  * @param c - A Hono context
- * @returns A locale string, which will be detected of **first** from `Accept-Language` header
+ * @returns A locale string, which will be detected of **first** from `Accept-Language` header. `en-US` if the header has no language, or if the first language is not a valid language tag
  *
  * @example
  * ```js
@@ -183,7 +184,7 @@ export function defineIntlifyMiddleware<
  * ```
  */
 export const detectLocaleFromAcceptLanguageHeader = (c: Context): Locale =>
-  getHeaderLocale(c.req.raw).toString()
+  tryHeaderLocale(c.req.raw)?.toString() ?? DEFAULT_LOCALE
 
 async function getLocaleAndIntlifyContext(ctx: Context): Promise<[string, CoreContext]> {
   const intlify = ctx.get('intlify')
