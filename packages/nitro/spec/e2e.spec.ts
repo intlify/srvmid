@@ -45,10 +45,12 @@ async function startProductionServer(
   return { url, server }
 }
 
-// the `x-greeting` header, which a plugin registered after the intlify plugin translates in its `response` hook
-async function fetchGreetingHeader(url: string): Promise<string> {
+// A header of the hooks playground:
+// - `x-early-greeting`: a plugin registered before the intlify plugin translates in its `request` hook
+// - `x-greeting`: a plugin registered after the intlify plugin translates in its `response` hook
+async function fetchHeader(url: string, name: string): Promise<string> {
   const res = await fetch(url, { headers: { 'accept-language': 'ja' } })
-  return decodeURIComponent(res.headers.get('x-greeting') ?? '')
+  return decodeURIComponent(res.headers.get(name) ?? '')
 }
 
 // the body of `/stream`, which is translated after the handler returns
@@ -101,11 +103,17 @@ describe('e2e with a production build', () => {
   })
 })
 
-// The context of the intlify plugin is kept until the end of the request (#430)
-describe('e2e after the handler returns', () => {
+// The hooks of the other plugins, before and after the intlify plugin, and a streamed body.
+// The context of the intlify plugin is ready from the start (#23) to the end (#430) of the request
+describe('e2e with hooks', () => {
+  test('translation in the request hook of an earlier plugin', async () => {
+    const url = await startDevServer(hooksPlaygroundDir)
+    expect(await fetchHeader(url, 'x-early-greeting')).toBe('こんにちは, Nitro')
+  })
+
   test('translation in the response hook of a later plugin', async () => {
     const url = await startDevServer(hooksPlaygroundDir)
-    expect(await fetchGreetingHeader(url)).toBe('こんにちは, Nitro')
+    expect(await fetchHeader(url, 'x-greeting')).toBe('こんにちは, Nitro')
   })
 
   test('translation while streaming the body', async () => {
@@ -114,7 +122,7 @@ describe('e2e after the handler returns', () => {
   })
 })
 
-describe('e2e after the handler returns, with a production build', () => {
+describe('e2e with hooks, with a production build', () => {
   let url = ''
   let server: ReturnType<typeof spawn> | null = null
 
@@ -127,8 +135,12 @@ describe('e2e after the handler returns, with a production build', () => {
     server = null
   })
 
+  test('translation in the request hook of an earlier plugin', async () => {
+    expect(await fetchHeader(url, 'x-early-greeting')).toBe('こんにちは, Nitro')
+  })
+
   test('translation in the response hook of a later plugin', async () => {
-    expect(await fetchGreetingHeader(url)).toBe('こんにちは, Nitro')
+    expect(await fetchHeader(url, 'x-greeting')).toBe('こんにちは, Nitro')
   })
 
   test('translation while streaming the body', async () => {
