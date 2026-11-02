@@ -66,6 +66,9 @@ new Elysia().get('/', ctx => {
 })
 ```
 
+> [!NOTE]
+> The `get*Locale` functions throw a `RangeError` when the value in the request is not a valid language tag. The `try*Locale` functions return `null` instead, so use them in a locale detector, with a default locale.
+
 ### Translation
 
 If you want to use translation, you need to install plugin. As a result, `locale` property and `translate` function will be extended in Elysia Context:
@@ -127,7 +130,7 @@ example for detecting locale from url query:
 
 ```ts
 import { Elysia } from 'elysia'
-import { getQueryLocale, intlify } from '@intlify/elysia'
+import { intlify, tryQueryLocale } from '@intlify/elysia'
 
 import type { Context } from 'elysia'
 
@@ -136,7 +139,7 @@ const DEFAULT_LOCALE = 'en'
 // define custom locale detector
 const localeDetector = (ctx: Context): string => {
   try {
-    return getQueryLocale(ctx.request).toString()
+    return tryQueryLocale(ctx.request)?.toString() ?? 'en-US'
   } catch {
     return DEFAULT_LOCALE
   }
@@ -159,7 +162,7 @@ You can make that function asynchronous. This is useful when loading resources a
 
 ```ts
 import { Elysia } from 'elysia'
-import { intlify, getCookieLocale } from '@intlify/elysia'
+import { intlify, tryCookieLocale } from '@intlify/elysia'
 
 import type { Context } from 'elysia'
 import type { DefineLocaleMessage, CoreContext } from '@intlify/elysia'
@@ -177,7 +180,7 @@ const localeDetector = async (
   intlify: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
   // detect locale
-  const locale = getCookieLocale(ctx.request).toString()
+  const locale = tryCookieLocale(ctx.request)?.toString() ?? 'en-US'
 
   // resource lazy loading
   const loader = messages[locale]

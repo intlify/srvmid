@@ -91,6 +91,9 @@ app.get('/', c => {
 })
 ```
 
+> [!NOTE]
+> The `get*Locale` functions throw a `RangeError` when the value in the request is not a valid language tag. The `try*Locale` functions return `null` instead, so use them in a locale detector, with a default locale.
+
 ### Translation
 
 If you want to use translation, you need to install `intlify` middleware. As a result, you can use `useTranslation` within the handler:
@@ -142,7 +145,7 @@ example for detecting locale from url query, and get locale with `getDetectorLoc
 
 ```ts
 import { Hono } from 'hono'
-import { defineIntlifyMiddleware, getQueryLocale, getDetectorLocale } from '@intlify/hono'
+import { defineIntlifyMiddleware, tryQueryLocale, getDetectorLocale } from '@intlify/hono'
 import type { Context } from 'hono'
 
 const DEFAULT_LOCALE = 'en'
@@ -150,7 +153,7 @@ const DEFAULT_LOCALE = 'en'
 // define custom locale detector
 const localeDetector = (c: Context): string => {
   try {
-    return getQueryLocale(c.req.raw).toString()
+    return tryQueryLocale(c.req.raw)?.toString() ?? 'en-US'
   } catch {
     return DEFAULT_LOCALE
   }
@@ -178,7 +181,7 @@ You can make that function asynchronous. This is useful when loading resources a
 
 ```ts
 import { Hono } from 'hono'
-import { defineIntlifyMiddleware, getCookieLocale } from '@intlify/hono'
+import { defineIntlifyMiddleware, tryCookieLocale } from '@intlify/hono'
 
 import type { Context } from 'hono'
 import type { DefineLocaleMessage, CoreContext } from '@intlify/hono'
@@ -195,7 +198,7 @@ const localeDetector = async (
   intlify: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
   // detect locale
-  const locale = getCookieLocale(c.req.raw).toString()
+  const locale = tryCookieLocale(c.req.raw)?.toString() ?? 'en-US'
 
   // resource lazy loading
   const loader = messages[locale]

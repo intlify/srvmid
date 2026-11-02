@@ -101,6 +101,9 @@ export default defineHandler(event => {
 })
 ```
 
+> [!NOTE]
+> The `get*Locale` functions throw a `RangeError` when the value in the request is not a valid language tag. The `try*Locale` functions return `null` instead, so use them in a locale detector, with a default locale.
+
 ## 🛠️ Custom locale detection
 
 You can detect locale with your custom logic from the current HTTP event.
@@ -109,12 +112,12 @@ Example for detecting locale from URL query:
 
 ```ts
 // server/plugins/i18n.ts
-import { intlify, getQueryLocale } from '@intlify/nitro'
+import { intlify, tryQueryLocale } from '@intlify/nitro'
 
 import type { HTTPEvent } from 'nitro/h3'
 
 const localeDetector = (event: HTTPEvent): string => {
-  return getQueryLocale(event.req).toString()
+  return tryQueryLocale(event.req)?.toString() ?? 'en-US'
 }
 
 export default intlify({
@@ -146,7 +149,7 @@ You can make that function asynchronous. This is useful when loading resources a
 
 ```ts
 // server/plugins/i18n.ts
-import { intlify, getCookieLocale } from '@intlify/nitro'
+import { intlify, tryCookieLocale } from '@intlify/nitro'
 
 import type { HTTPEvent } from 'nitro/h3'
 import type { DefineLocaleMessage, CoreContext } from '@intlify/nitro'
@@ -161,7 +164,7 @@ const localeDetector = async (
   event: HTTPEvent,
   intlify: CoreContext<string, DefineLocaleMessage>
 ): Promise<string> => {
-  const locale = getCookieLocale(event.req).toString()
+  const locale = tryCookieLocale(event.req)?.toString() ?? 'en-US'
 
   const loader = messages[locale]
   if (loader && !intlify.messages[locale]) {
