@@ -249,3 +249,35 @@ test('getDetectorLocale', async () => {
   const locale = await getDetectorLocale(eventMock)
   expect(locale.language).toEqual('ja')
 })
+
+test('keeps no locale chains on the shared core context', async () => {
+  let shared: CoreContext | undefined
+  const app = new H3({
+    plugins: [
+      intlify({
+        // the default detector, which also gets the shared core context
+        locale: (event: H3Event, context: CoreContext) => {
+          shared = context
+          return detectLocaleFromAcceptLanguageHeader(event)
+        },
+        messages: { en: { hello: 'hello' } }
+      })
+    ]
+  })
+  app.get('/', async event => {
+    const t = await useTranslation(event)
+    return t('hello')
+  })
+
+  const texts: string[] = []
+  for (let i = 0; i < 100; i++) {
+    const res = await app.fetch(
+      new Request('http://localhost/', { headers: { 'accept-language': `en-x-r${i}` } })
+    )
+    texts.push(await res.text())
+  }
+  expect(texts).toEqual(Array.from({ length: 100 }, () => 'hello'))
+  const cache = (shared as unknown as { __localeChainCache?: Map<string, unknown> })
+    .__localeChainCache
+  expect(cache?.size ?? 0).toBe(0)
+})
