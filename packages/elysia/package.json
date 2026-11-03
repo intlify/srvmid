@@ -1,7 +1,7 @@
 {
   "name": "@intlify/elysia",
   "description": "Internationalization for Elysia",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.3",
   "author": {
     "name": "kazuya kawaguchi",
     "email": "kawakazu80@gmail.com"
