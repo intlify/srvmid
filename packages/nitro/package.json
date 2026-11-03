@@ -28,7 +28,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.0",
   "engines": {
     "node": ">= 22"
   },
