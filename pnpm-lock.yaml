@@ -177,8 +177,8 @@ catalogs:
       specifier: 2.0.8
       version: 2.0.8
     nitro:
-      specifier: 3.0.261102-rc
-      version: 3.0.261102-rc
+      specifier: 3.0.261103-rc
+      version: 3.0.261103-rc
     publint:
       specifier: ^0.3.21
       version: 0.3.21
@@ -353,7 +353,7 @@ importers:
         version: 2.0.8(crossws@0.4.17(srvx@1.0.8))(ocache@0.3.1)
       nitro:
         specifier: 'catalog:'
-        version: 3.0.261102-rc
+        version: 3.0.261103-rc
       publint:
         specifier: 'catalog:'
         version: 0.3.21
@@ -2238,8 +2238,8 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  nitro@3.0.261102-rc:
-    resolution: {integrity: sha512-Qbje+O758prySsNhyRercCVkgP3qar0i28dDlCRpzq02EIO6i4FTqmTfL5tY+UKzAEoujxxa7WiQtPJ4SylbKA==}
+  nitro@3.0.261103-rc:
+    resolution: {integrity: sha512-tLD7r5fWCtwnQEE4ZkckLUnx1wkWDaLY48dD+BCJtcQ+srSWAUpxJEK3YfTsgN3v+e4UgBYRzuR7zV7Sqns/zA==}
     engines: {node: '>=22.22.0'}
     hasBin: true
 
@@ -4126,7 +4126,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  nitro@3.0.261102-rc:
+  nitro@3.0.261103-rc:
     dependencies:
       crossws: 0.4.17(srvx@1.0.8)
       env-runner: 0.3.11
