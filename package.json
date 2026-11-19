@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/intlify/srvmid.git"
   },
-  "packageManager": "pnpm@12.19.0",
+  "packageManager": "pnpm@12.20.0",
   "engines": {
     "node": ">= 22"
   },
